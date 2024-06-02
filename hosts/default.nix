@@ -25,11 +25,14 @@ in
 
       home-manager.nixosModules.home-manager
       {
-        home-manager.useUserPackages = true;
-        home-manager.useGlobalPkgs = true;
+        home-manager = {
+          useUserPackages = true;
+          useGlobalPkgs = true;
+          backupFileExtension = "bak";
 
-        home-manager.users.susan = {
-          imports = [ ../home ];
+          users.susan = {
+            imports = [ ../home ];
+          };
         };
       }
     ];

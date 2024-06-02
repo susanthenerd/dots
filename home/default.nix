@@ -4,6 +4,8 @@
     ./sway
     ./fish
     ./starship
+    ./i3status-rust
+    ./eza
   ];
   home = {
     username = "susan";
@@ -19,7 +21,9 @@
   };
 
   programs = {
-    home-manager.enable = true;
+    home-manager = {
+      enable = true;
+    };
     direnv = {
       enable = true;
       enableBashIntegration = true;
