@@ -4,8 +4,7 @@
   security.polkit.enable = true;
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "FiraCode" ]; })
-    font-awesome
+    (nerdfonts.override { fonts = [ "FiraCode" "Recursive" ]; })
     fira
   ];
 
@@ -31,6 +30,9 @@
   programs = {
     dconf.enable = true;
     fish.enable = true;
+    neovim.enable = true;
+    git.enable = true;
+    firefox.enable = true;
   };
 
   nix = {

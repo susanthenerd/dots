@@ -1,5 +1,10 @@
 { config, lib, pkgs, ... }:
 {
+  imports = [
+    ./sway
+    ./fish
+    ./starship
+  ];
   home = {
     username = "susan";
     homeDirectory = "/home/susan";
@@ -7,6 +12,7 @@
     packages = with pkgs; [
       neofetch
       htop
+      github-cli
     ];
 
     stateVersion = "24.05";
@@ -26,4 +32,5 @@
   gtk = {
     enable = true;
   };
+
 }

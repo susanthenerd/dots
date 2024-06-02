@@ -29,7 +29,7 @@ in
         home-manager.useGlobalPkgs = true;
 
         home-manager.users.susan = {
-          imports = [ ./home.nix ];
+          imports = [ ../home ];
         };
       }
     ];
