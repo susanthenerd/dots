@@ -6,29 +6,26 @@
   networking = {
     hostName = "framework";
     networkmanager.enable = true;
+    useDHCP = lib.mkDefault true;
   };
 
   fileSystems = {
-    "/" =
-      {
-        device = "/dev/disk/by-uuid/ee2b1f06-a609-46b5-9473-91ac6d0af432";
-        fsType = "btrfs";
-      };
+    "/" = {
+      device = "/dev/disk/by-uuid/ee2b1f06-a609-46b5-9473-91ac6d0af432";
+      fsType = "btrfs";
+    };
 
-    "/boot" =
-      {
-        device = "/dev/disk/by-uuid/F82A-A86B";
-        fsType = "vfat";
-        options = [ "fmask=0077" "dmask=0077" ];
-      };
+    "/boot" = {
+      device = "/dev/disk/by-uuid/F82A-A86B";
+      fsType = "vfat";
+      options = [ "fmask=0077" "dmask=0077" ];
+    };
   };
 
   swapDevices =
     [{ device = "/dev/disk/by-uuid/15b75aa0-73db-48e0-87b2-d5e83ed7a680"; }];
 
-  networking.useDHCP = lib.mkDefault true;
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
@@ -48,15 +45,17 @@
     };
   };
 
+
   hardware = {
     opengl = {
       enable = true;
       extraPackages = with pkgs; [
-        intel-media-driver # LIBVA_DRIVER_NAME=iHD
+        intel-media-driver
         libvdpau-va-gl
       ];
     };
 
     pulseaudio.enable = false;
+    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
 }

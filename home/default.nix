@@ -6,7 +6,10 @@
     ./starship
     ./i3status-rust
     ./eza
+    ./foot
+    ./github-cli
   ];
+
   home = {
     username = "susan";
     homeDirectory = "/home/susan";
@@ -14,7 +17,6 @@
     packages = with pkgs; [
       neofetch
       htop
-      github-cli
     ];
 
     stateVersion = "24.05";
@@ -26,7 +28,6 @@
     };
     direnv = {
       enable = true;
-      enableBashIntegration = true;
       nix-direnv.enable = true;
     };
   };
