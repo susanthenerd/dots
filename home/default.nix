@@ -1,13 +1,18 @@
 { config, lib, pkgs, ... }:
 {
   imports = [
-    ./sway
+    # ./sway
     ./fish
     ./starship
-    ./i3status-rust
+    # ./i3status-rust
     ./eza
-    ./foot
+    ./alacritty
     ./github-cli
+    ./waybar
+    ./hyprland
+    ./wofi
+    ./hyprlock
+    ./hypridle
   ];
 
   home = {
@@ -17,15 +22,29 @@
     packages = with pkgs; [
       neofetch
       htop
+      discord
+      firefox-devedition-bin
+      polypane
+      vscode
+      nm-tray
+      pavucontrol
+      brightnessctl
+      vlc
+      helvum
+      jetbrains.clion
+      clang-tools
+      cmake
+      gdb
+      clang
     ];
 
     stateVersion = "24.05";
   };
 
   programs = {
-    home-manager = {
-      enable = true;
-    };
+    home-manager.enable = true;
+    obs-studio.enable = true;
+    google-chrome.enable = true;
     direnv = {
       enable = true;
       nix-direnv.enable = true;

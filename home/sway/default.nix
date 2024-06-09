@@ -4,7 +4,8 @@
     enable = true;
     config = rec {
       modifier = "Mod4";
-      terminal = "foot";
+      terminal = "alacritty";
+      menu = "wofi --show drun";
       fonts = {
         names = [ "Rec Mono Duotone Nerd Font" ];
       };
@@ -20,42 +21,16 @@
 
           position = "bottom";
           statusCommand = "i3status-rs ~/.config/i3status-rust/config-default.toml";
-          # colors={
-          #  separator = "#666666";
-          #  background = "#222222";
-          #  statusline = "#dddddd";
-          #  focusedWorkspace = {
-          #    background = "#0088CC";
-          #    border = "#0088CC";
-          #    text = "#ffffff";
-          #  };
-          #  activeWorkspace = {
-          #    background = "#333333";
-          #    border = "#333333";
-          #    text = "#ffffff";
-          #  };
-          #  inactiveWorkspace = {
-          #   background = "#333333";
-          #   border = "#333333";
-          #   text = "#888888";
-          #  };
-          #  urgentWorkspace = {
-          #    background = "#2f343a";
-          #    border = "#900000";
-          #    text = "#ffffff";
-          #  };
-          #};
         }
       ];
       gaps = {
         outer = 2;
         inner = 2;
-        # smartBorders = "on";
       };
       keybindings = {
         #Launch stuff
         "${modifier}+Return" = "exec ${terminal}";
-        "${modifier}+Shift+Return" = "exec fuzzel";
+        "${modifier}+Shift+Return" = "exec ${menu}";
 
         # Windows
         "${modifier}+Shift+c" = "kill";
