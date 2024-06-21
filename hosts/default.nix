@@ -1,4 +1,4 @@
-{ lib, inputs, nixpkgs, home-manager, ... }:
+{ lib, inputs, nixpkgs, home-manager, disko, ... }:
 let
   system = "x86_64_linux";
 in
@@ -35,6 +35,8 @@ in
           };
         };
       }
+
+      disko.nixosModules.disko
     ];
   };
 }
