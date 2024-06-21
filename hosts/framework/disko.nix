@@ -13,7 +13,7 @@
               content = {
                 type = "filesystem";
                 format = "vfat";
-                mountpoint = "/efi";
+                mountpoint = "/boot";
                 mountOptions = [
                   "defaults"
                 ];
