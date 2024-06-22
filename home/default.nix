@@ -2,6 +2,7 @@
 {
   imports = [
     # ./sway
+    ./emacs
     ./fish
     ./starship
     # ./i3status-rust
@@ -11,8 +12,8 @@
     ./waybar
     ./hyprland
     ./wofi
-    ./hyprlock
-    ./hypridle
+    # ./hyprlock
+    # ./hypridle
   ];
 
   home = {

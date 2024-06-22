@@ -1,4 +1,4 @@
-{ lib, inputs, nixpkgs, home-manager, disko, ... }:
+{ lib, inputs, nixpkgs, home-manager, disko, emacs-overlay, ... }:
 let
   system = "x86_64_linux";
 in
@@ -9,6 +9,7 @@ in
     modules = [
       {
         nixpkgs = {
+	  overlays = [ emacs-overlay.overlay ];
           config.allowUnfree = true;
         };
 
