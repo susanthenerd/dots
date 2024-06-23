@@ -6,6 +6,7 @@
   fonts.packages = with pkgs; [
     (nerdfonts.override { fonts = [ "FiraCode" "Recursive" ]; })
     fira
+    recursive
   ];
 
 
@@ -14,7 +15,7 @@
     defaultUserShell = pkgs.fish;
     users.susan = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "video" "networkmanager" ];
+      extraGroups = [ "docker" "wheel" "video" "networkmanager" ];
       hashedPassword = "$6$vru/Kz/2RFnBeCXQ$FPDE/DET/P2pNfE2bpVsEdDCeMegmeMApE4l3m/2YR9t6qCSrdiTzqUr8aN1gnOTAcYXBQ30NUf3UtqxINmDL.";
     };
   };

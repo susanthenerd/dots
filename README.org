@@ -1,5 +1,23 @@
-(setq package-enable-at-startup nil)
+#+TITLE: My personal configs
+#+AUTHOR: Susan
+#+EMAIL: susan@susan.lol
+#+PROPERTY: header-args :tangle-mode (identity #o444)
+#+STARTUP: overview
 
+* EMACS
+:PROPERTIES:
+:header-args:emacs-lisp: :tangle ./home/emacs/config.el
+:END:
+
+This is my emacs config
+
+** Ensure we are loading packages from nix
+#+begin_src emacs-lisp
+(setq package-enable-at-startup nil)
+#+end_src
+
+** Fonts
+#+begin_src emacs-lisp
 (set-face-attribute 'default nil
   :font "RecMonoDuotone Nerd Font Mono"
   :height 130
@@ -46,7 +64,10 @@
 				       "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%"))
 
   (global-ligature-mode 't))
+#+end_src
 
+** GUI settings
+#+begin_src emacs-lisp
 (setq-default cursor-type 'bar)
 (setq make-pointer-invisible t)
 
@@ -71,15 +92,27 @@
   (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
+#+end_src
 
+** All the icons
+#+begin_src emacs-lisp
 (use-package all-the-icons
   :if (display-graphic-p))
+#+end_src
 
+** Languages
+*** Nix
+#+begin_src emacs-lisp
 (use-package nix-ts-mode
  :mode "\\.nix\\'")
+#+end_src
 
+** Eat
+#+begin_src emacs-lisp
 (use-package eat)
-
+#+end_src
+** Eshell
+#+begin_src emacs-lisp
 (use-package eshell-toggle
   :custom
   (eshell-toggle-size-fraction 3)
@@ -106,7 +139,9 @@
 (use-package fish-completion
   :config
   (global-fish-completion-mode))
-
+#+end_src
+** Evil mode
+#+begin_src emacs-lisp
 (use-package evil
   :init
   (setq evil-want-integration t)
@@ -119,19 +154,39 @@
   :config
   (evil-collection-init))
 (use-package evil-tutor)
+#+end_src
 
+** General
+#+begin_src emacs-lisp
+#+end_src
 
+** Magit
+#+begin_src emacs-lisp
+#+end_src
 
-
-
+** ORG Mode
+*** Stop indent
+#+begin_src emacs-lisp
 (eval-after-load 'org-indent '(diminish 'org-indent-mode))
 (electric-indent-mode -1)
 (setq org-edit-src-content-indentation 0)
-
+#+end_src
+*** TOC
+#+begin_src emacs-lisp
 (use-package toc-org
     :commands toc-org-enable
     :init (add-hook 'org-mode-hook 'toc-org-enable))
+#+end_src
 
+*** Org Bullets
+#+begin_src emacs-lisp
+(add-hook 'org-mode-hook 'org-indent-mode)
+(use-package org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src emacs-lisp
+
+** Consult
+#+begin_src emacs-lisp
 (use-package consult
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :init
@@ -193,7 +248,11 @@
   ;;;; 5. No project support
   ;; (setq consult-project-function nil)
 )
+#+end_src
 
+** Corfu
+Corfu provides completion in files
+#+begin_src emacs-lisp
 (use-package corfu
   ;; Optional customizations
   :custom
@@ -223,7 +282,9 @@
   :init
   (setq tab-always-indent 'complete)
   (setq read-extended-command-predicate #'command-completion-default-include-p))
-
+#+end_src
+** Embark
+#+begin_src emacs-lisp
 (use-package embark
   :init
 
@@ -239,19 +300,38 @@
 (use-package embark-consult
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
+#+end_src
 
+** Marginalia
+Marginalia provides rich anotations
+
+#+begin_src emacs-lisp
 (use-package marginalia
   :init
   (marginalia-mode))
+#+end_src
 
+** Sudo Edit
+#+begin_src emacs-lisp
 (use-package sudo-edit)
+#+end_src
 
+** Savehist
+Persist history of text inputs
+#+begin_src emacs-lisp
 (use-package savehist
   :init
   (savehist-mode))
+#+end_src
 
+** Treemacs
+
+#+begin_src emacs-lisp
 (use-package treemacs)
+#+end_src
 
+
+#+begin_src emacs-lisp
 (use-package treemacs-evil
   :after (treemacs evil))
 
@@ -271,7 +351,10 @@
 (use-package treemacs-tab-bar ;;treemacs-tab-bar if you use tab-bar-mode
   :after (treemacs)
   :config (treemacs-set-scope-type 'Tabs))
+#+end_src
 
+** Vertico
+#+begin_src emacs-lisp
 (use-package vertico
   :init
   (vertico-mode)
@@ -305,9 +388,13 @@
   (setq enable-recursive-minibuffers t)
 
   (setq read-extended-command-predicate #'command-completion-default-include-p))
+#+end_src
 
-
-
+** Vterm
+#+begin_src emacs-lisp
+#+end_src
+** Which-key
+#+begin_src emacs-lisp
 (use-package which-key
   :init
     (which-key-mode 1)
@@ -326,3 +413,4 @@
 	  which-key-max-description-length 25
 	  which-key-allow-imprecise-window-fit nil
 	  which-key-separator " → " ))
+#+end_src

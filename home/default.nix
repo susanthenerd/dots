@@ -21,6 +21,8 @@
     homeDirectory = "/home/susan";
 
     packages = with pkgs; [
+      bat
+      foot
       neofetch
       htop
       discord
@@ -37,6 +39,7 @@
       cmake
       gdb
       clang
+      devcontainer
     ];
 
     stateVersion = "24.05";
