@@ -5,13 +5,19 @@
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+    wlr.enable = true;
   };
 
 
   programs = {
-    hyprland.enable = true;
     steam.enable = true;
-    hyprlock.enable = true;
+    sway.enable = true;
+    _1password.enable = true;
+    _1password-gui = {
+      enable = true;
+      polkitPolicyOwners = ["susan"];
+    };
+    thunar.enable = true;
   };
 
   services = {
@@ -23,12 +29,12 @@
     };
 
     gnome.gnome-keyring.enable = true;
-
-    displayManager.sddm = {
-      enable = true;
-      wayland.enable = true;
-    };
   };
+
+  environment.systemPackages = [
+    pkgs.s-tui
+    pkgs.stress-ng
+  ];
 
   virtualisation = {
     docker = {
@@ -38,8 +44,6 @@
       };
     };
   };
-
   security.pam.services.sddm.enableGnomeKeyring = true;
 
 }
-

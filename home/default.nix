@@ -1,19 +1,15 @@
 { config, lib, pkgs, ... }:
 {
   imports = [
-    # ./sway
-    ./emacs
+    ./sway
     ./fish
     ./starship
-    # ./i3status-rust
+    ./i3status-rust
     ./eza
     ./alacritty
     ./github-cli
-    ./waybar
-    ./hyprland
     ./wofi
-    # ./hyprlock
-    # ./hypridle
+    ./git
   ];
 
   home = {
@@ -32,14 +28,11 @@
       nm-tray
       pavucontrol
       brightnessctl
+      zed-editor
       vlc
-      helvum
-      jetbrains.clion
-      clang-tools
-      cmake
-      gdb
-      clang
-      devcontainer
+      lutris
+      lunar-client
+      prismlauncher
     ];
 
     stateVersion = "24.05";

@@ -7,25 +7,23 @@
       terminal = "alacritty";
       menu = "wofi --show drun";
       fonts = {
-        names = [ "Rec Mono Duotone Nerd Font" ];
+        names = [ "RecMonoDuotone Nerd Font" ];
       };
       bars = [
         {
-          /*
           fonts = {
-            names = [ "FiraCode Nerd Font Mono" "FontAwesome" ];
+            names = [ "RecMonoDuotone Nerd Font Mono" "FontAwesome" ];
             style = "Regular";
-            size = 11.0;
+            size = 14.0;
           };
-          */
 
           position = "bottom";
           statusCommand = "i3status-rs ~/.config/i3status-rust/config-default.toml";
         }
       ];
       gaps = {
-        outer = 2;
-        inner = 2;
+        outer = 4;
+        inner = 4;
       };
       keybindings = {
         #Launch stuff
@@ -46,7 +44,7 @@
 
         "${modifier}+f" = "fullscreen";
 
-        # Toggle the current focus between tiling and floating mode
+        # Toggle the current focus between tiling and floating moder
         "${modifier}+Shift+space" = "floating toggle";
 
         # Swap focus between the tiling area and the floating area
@@ -65,6 +63,7 @@
         "${modifier}+7" = "workspace number 7";
         "${modifier}+8" = "workspace number 8";
         "${modifier}+9" = "workspace number 9";
+        "${modifier}+0" = "workspace number 10";
 
         "${modifier}+Shift+1" = "move container to workspace number 1";
         "${modifier}+Shift+2" = "move container to workspace number 2";
@@ -75,6 +74,7 @@
         "${modifier}+Shift+7" = "move container to workspace number 7";
         "${modifier}+Shift+8" = "move container to workspace number 8";
         "${modifier}+Shift+9" = "move container to workspace number 9";
+        "${modifier}+Shift+0" = "move container to workspace number 10";
 
         # Screenshot
         "Print" = "exec grim ~/Pictures/screenshot-$(date +'%Y-%m-%d-%H-%M-%S' ).png";
@@ -108,10 +108,17 @@
         };
       };
       window = {
-        border = 1;
-        titlebar = false;
+        border = 2;
+        titlebar = true;
       };
       workspaceAutoBackAndForth = true;
+
+      input = {
+        "2362:628:PIXA3854:00_093A:0274_Touchpad" = {
+            dwt = "enabled";
+            tap = "enabled";
+        };
+      };
     };
   };
 }
