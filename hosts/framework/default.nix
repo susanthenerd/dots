@@ -28,6 +28,8 @@
       pulse.enable = true;
     };
 
+    flatpak.enable = true;
+
     gnome.gnome-keyring.enable = true;
   };
 

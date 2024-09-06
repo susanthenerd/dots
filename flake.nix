@@ -13,20 +13,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    emacs-overlay = {
-      url = "github:nix-community/emacs-overlay";
-    };
-
   };
 
-  outputs = inputs @ { nixpkgs, home-manager, disko, emacs-overlay, ... }:
+  outputs = inputs @ { nixpkgs, home-manager, disko, ... }:
     {
       nixosConfigurations = (
         import ./hosts {
           inherit (nixpkgs) lib;
-          inherit inputs nixpkgs home-manager disko emacs-overlay;
+          inherit inputs nixpkgs home-manager disko;
         }
       );
     };
 }
-

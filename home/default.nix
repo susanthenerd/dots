@@ -10,6 +10,7 @@
     ./github-cli
     ./wofi
     ./git
+    ./ssh
   ];
 
   home = {
@@ -33,6 +34,14 @@
       lutris
       lunar-client
       prismlauncher
+      clang
+      clang-tools
+      gdb
+      cmake
+      jetbrains.clion
+      grim
+      slurp
+      wl-clipboard
     ];
 
     stateVersion = "24.05";

@@ -6,6 +6,7 @@
       modifier = "Mod4";
       terminal = "alacritty";
       menu = "wofi --show drun";
+
       fonts = {
         names = [ "RecMonoDuotone Nerd Font" ];
       };
@@ -63,7 +64,6 @@
         "${modifier}+7" = "workspace number 7";
         "${modifier}+8" = "workspace number 8";
         "${modifier}+9" = "workspace number 9";
-        "${modifier}+0" = "workspace number 10";
 
         "${modifier}+Shift+1" = "move container to workspace number 1";
         "${modifier}+Shift+2" = "move container to workspace number 2";
@@ -74,11 +74,10 @@
         "${modifier}+Shift+7" = "move container to workspace number 7";
         "${modifier}+Shift+8" = "move container to workspace number 8";
         "${modifier}+Shift+9" = "move container to workspace number 9";
-        "${modifier}+Shift+0" = "move container to workspace number 10";
 
         # Screenshot
         "Print" = "exec grim ~/Pictures/screenshot-$(date +'%Y-%m-%d-%H-%M-%S' ).png";
-        "${modifier}+Print" = "exec slurp | grim -g - ~/Pictures/screenshot-slurp-$(date +'%Y-%m-%d-%H-%M-%S' ).png";
+        "${modifier}+Print" = "exec slurp | grim -g - ~/Pictures/screenshot-slurp-$(date +'%Y-%m-%d-%H-%M-%S' ).pn";
 
         # Resize
         "${modifier}+r" = "mode resize";
