@@ -1,4 +1,4 @@
-{ lib, inputs, nixpkgs, home-manager, disko, ... }:
+{ lib, inputs, nixpkgs, home-manager, disko, stylix, ... }:
 let
   system = "x86_64_linux";
 in
@@ -22,6 +22,10 @@ in
 
       ./framework
       ./configuration.nix
+      ../home/stylix
+
+
+      stylix.nixosModules.stylix
 
       home-manager.nixosModules.home-manager
       {
@@ -33,6 +37,7 @@ in
           users.susan = {
             imports = [ ../home ];
           };
+
         };
       }
 

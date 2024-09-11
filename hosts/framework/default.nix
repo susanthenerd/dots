@@ -10,7 +10,6 @@
 
 
   programs = {
-    steam.enable = true;
     sway.enable = true;
     _1password.enable = true;
     _1password-gui = {
@@ -18,6 +17,9 @@
       polkitPolicyOwners = ["susan"];
     };
     thunar.enable = true;
+    firefox.enable = true;
+    steam.enable = true;
+    virt-manager.enable = true;
   };
 
   services = {
@@ -29,14 +31,19 @@
     };
 
     flatpak.enable = true;
-
     gnome.gnome-keyring.enable = true;
+    displayManager.sddm = {
+      enable = true;
+      wayland.enable = true;
+    };
   };
 
   environment.systemPackages = [
     pkgs.s-tui
     pkgs.stress-ng
   ];
+
+  environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
 
   virtualisation = {
     docker = {
@@ -45,7 +52,10 @@
 	data-root = "/data/docker";
       };
     };
+
+    libvirtd = {
+      enable = true;
+    };
   };
   security.pam.services.sddm.enableGnomeKeyring = true;
-
 }

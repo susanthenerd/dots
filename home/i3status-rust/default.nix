@@ -13,11 +13,9 @@
           {
             block = "cpu";
           }
-          /*{
+          {
             block = "battery";
-            format = " $icon $percentage $time $power ";
-            interval = 5;
-          } */
+          }
           {
             block = "net";
             format = "$icon ^icon_net_down$speed_down.eng(prefix:M) ^icon_net_up$speed_up.eng(prefix:M)";

@@ -2,15 +2,18 @@
 {
   imports = [
     ./sway
+    ./swaylock
     ./fish
     ./starship
     ./i3status-rust
     ./eza
     ./alacritty
     ./github-cli
-    ./wofi
+    ./fuzzel
     ./git
     ./ssh
+    ./mako
+    ./xdg
   ];
 
   home = {
@@ -22,7 +25,6 @@
       foot
       neofetch
       htop
-      discord
       firefox-devedition-bin
       polypane
       vscode
@@ -31,9 +33,6 @@
       brightnessctl
       zed-editor
       vlc
-      lutris
-      lunar-client
-      prismlauncher
       clang
       clang-tools
       gdb
@@ -42,6 +41,8 @@
       grim
       slurp
       wl-clipboard
+      vesktop
+      wget
     ];
 
     stateVersion = "24.05";
@@ -51,6 +52,7 @@
     home-manager.enable = true;
     obs-studio.enable = true;
     google-chrome.enable = true;
+    firefox.enable = true;
     direnv = {
       enable = true;
       nix-direnv.enable = true;
@@ -62,5 +64,4 @@
   gtk = {
     enable = true;
   };
-
 }

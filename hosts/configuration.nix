@@ -4,7 +4,7 @@
   security.polkit.enable = true;
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "FiraCode" "Recursive" ]; })
+    (nerdfonts.override { fonts = [ "FiraCode" "Recursive" "Monaspace" ]; })
     fira
     recursive
   ];
@@ -25,7 +25,12 @@
     fish.enable = true;
     neovim.enable = true;
     git.enable = true;
-    firefox.enable = true;
+    nh = {
+      enable = true;
+      clean.enable = true;
+      flake = "/home/susan/dots";
+
+    };
   };
 
   nix = {
@@ -33,22 +38,14 @@
       experimental-features = [ "nix-command" "flakes" ];
       auto-optimise-store = true;
     };
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 15d";
-    };
+
   };
 
   environment.systemPackages = with pkgs; [
     ddcutil
     nixd
     nixpkgs-fmt
-    qbittorrent
-    
   ];
-
-
 
   system = {
     # This value determines the NixOS release from which the default

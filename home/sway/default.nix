@@ -5,11 +5,17 @@
     config = rec {
       modifier = "Mod4";
       terminal = "alacritty";
-      menu = "wofi --show drun";
+      menu = "fuzzel";
 
       fonts = {
         names = [ "RecMonoDuotone Nerd Font" ];
       };
+
+      startup = [
+        { command = "1password --silent"; }
+        { command = "mako"; }
+      ];
+
       bars = [
         {
           fonts = {
@@ -22,10 +28,7 @@
           statusCommand = "i3status-rs ~/.config/i3status-rust/config-default.toml";
         }
       ];
-      gaps = {
-        outer = 4;
-        inner = 4;
-      };
+
       keybindings = {
         #Launch stuff
         "${modifier}+Return" = "exec ${terminal}";
@@ -82,6 +85,8 @@
         # Resize
         "${modifier}+r" = "mode resize";
 
+        # Lock Screen
+        "${modifier}+Shift+l" = "exec swaylock -fF";
         # Other keybindings
         "${modifier}+Shift+r" = "reload";
         "${modifier}+Shift+e" = "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
@@ -119,5 +124,9 @@
         };
       };
     };
+    /*extraConfig = "
+    corner_radius = 4;
+    ";
+    */
   };
 }
