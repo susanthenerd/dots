@@ -14,6 +14,8 @@
     ./ssh
     ./mako
     ./xdg
+    ./fastfetch
+    ./hyfetch
   ];
 
   home = {
@@ -23,7 +25,6 @@
     packages = with pkgs; [
       bat
       foot
-      neofetch
       htop
       firefox-devedition-bin
       polypane

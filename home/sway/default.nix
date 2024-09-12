@@ -80,7 +80,7 @@
 
         # Screenshot
         "Print" = "exec grim ~/Pictures/screenshot-$(date +'%Y-%m-%d-%H-%M-%S' ).png";
-        "${modifier}+Print" = "exec slurp | grim -g - ~/Pictures/screenshot-slurp-$(date +'%Y-%m-%d-%H-%M-%S' ).pn";
+        "${modifier}+Print" = "exec slurp | grim -g - ~/Pictures/screenshot-slurp-$(date +'%Y-%m-%d-%H-%M-%S' ).png";
 
         # Resize
         "${modifier}+r" = "mode resize";
