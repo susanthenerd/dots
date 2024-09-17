@@ -16,6 +16,9 @@
     ./xdg
     ./fastfetch
     ./hyfetch
+    ./swayidle
+    ./fzf
+    ./bat
   ];
 
   home = {
@@ -23,8 +26,6 @@
     homeDirectory = "/home/susan";
 
     packages = with pkgs; [
-      bat
-      foot
       htop
       firefox-devedition-bin
       polypane
@@ -44,6 +45,7 @@
       wl-clipboard
       vesktop
       wget
+
     ];
 
     stateVersion = "24.05";

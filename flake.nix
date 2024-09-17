@@ -18,14 +18,19 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
-  outputs = inputs @ { nixpkgs, home-manager, disko, stylix, ... }:
+  outputs = inputs @ { nixpkgs, home-manager, disko, stylix, lanzaboote, ... }:
     {
       nixosConfigurations = (
         import ./hosts {
           inherit (nixpkgs) lib;
-          inherit inputs nixpkgs home-manager disko stylix;
+          inherit inputs nixpkgs home-manager disko stylix lanzaboote;
         }
       );
     };

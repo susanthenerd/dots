@@ -48,6 +48,7 @@
     ddcutil
     nixd
     nixpkgs-fmt
+    sbctl
   ];
 
   system = {

@@ -4,7 +4,7 @@
     enable = true;
     config = rec {
       modifier = "Mod4";
-      terminal = "alacritty";
+      terminal = "${pkgs.alacritty}/bin/alacritty";
       menu = "fuzzel";
 
       fonts = {

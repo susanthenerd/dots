@@ -1,4 +1,4 @@
-{ lib, inputs, nixpkgs, home-manager, disko, stylix, ... }:
+{ lib, inputs, nixpkgs, home-manager, disko, stylix, lanzaboote, ... }:
 let
   system = "x86_64_linux";
 in
@@ -42,6 +42,7 @@ in
       }
 
       disko.nixosModules.disko
+      lanzaboote.nixosModules.lanzaboote
     ];
   };
 }
