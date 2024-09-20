@@ -17,8 +17,10 @@
     ./fastfetch
     ./hyfetch
     ./swayidle
+    ./yazi
     ./fzf
     ./bat
+    ./zoxide
   ];
 
   home = {
@@ -60,6 +62,7 @@
       enable = true;
       nix-direnv.enable = true;
     };
+    ripgrep.enable = true;
   };
 
   # services = { };
