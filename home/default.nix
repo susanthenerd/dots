@@ -21,6 +21,7 @@
     ./fzf
     ./bat
     ./zoxide
+    ./vscode
   ];
 
   home = {
@@ -31,7 +32,6 @@
       htop
       firefox-devedition-bin
       polypane
-      vscode
       nm-tray
       pavucontrol
       brightnessctl

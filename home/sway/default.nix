@@ -79,8 +79,10 @@
         "${modifier}+Shift+9" = "move container to workspace number 9";
 
         # Screenshot
-        "Print" = "exec grim ~/Pictures/screenshot-$(date +'%Y-%m-%d-%H-%M-%S' ).png";
-        "${modifier}+Print" = "exec slurp | grim -g - ~/Pictures/screenshot-slurp-$(date +'%Y-%m-%d-%H-%M-%S' ).png";
+        "Print" = "exec grim - | wl-copy";
+        "${modifier}+Print" = "exec slurp | grim -g - - | wl-copy";
+        "Shift+Print" = "exec grim ~/Pictures/screenshot-$(date +'%Y-%m-%d-%H-%M-%S' ).png";
+        "${modifier}+Shift+Print" = "exec slurp | grim -g - ~/Pictures/screenshot-slurp-$(date +'%Y-%m-%d-%H-%M-%S' ).png";
 
         # Resize
         "${modifier}+r" = "mode resize";

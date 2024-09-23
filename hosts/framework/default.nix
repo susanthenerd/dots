@@ -14,7 +14,7 @@
     _1password.enable = true;
     _1password-gui = {
       enable = true;
-      polkitPolicyOwners = ["susan"];
+      polkitPolicyOwners = [ "susan" ];
     };
     thunar.enable = true;
     firefox.enable = true;
@@ -36,6 +36,9 @@
       enable = true;
       wayland.enable = true;
     };
+
+    power-profiles-daemon.enable = true;
+    fprintd.enable = true;
   };
 
   environment.systemPackages = [
@@ -49,7 +52,7 @@
     docker = {
       enable = true;
       daemon.settings = {
-	data-root = "/data/docker";
+        data-root = "/data/docker";
       };
     };
 

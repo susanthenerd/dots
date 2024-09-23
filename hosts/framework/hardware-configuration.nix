@@ -20,12 +20,15 @@
     kernelModules = [ "kvm-intel" ];
     extraModulePackages = [ ];
     loader = {
-      systemd-boot.enable = lib.mkForce false;
+      systemd-boot = {
+        enable = lib.mkForce true;
+        netbootxyz.enable = true;
+      };
       efi.canTouchEfiVariables = true;
     };
     plymouth.enable = true;
     lanzaboote = {
-      enable = true;
+      enable = false;
       pkiBundle = "/etc/secureboot";
     };
   };
