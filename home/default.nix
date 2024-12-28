@@ -47,10 +47,11 @@
       wl-clipboard
       vesktop
       wget
-
+      unzip
     ];
 
     stateVersion = "24.05";
+
   };
 
   programs = {

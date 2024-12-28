@@ -4,7 +4,8 @@
   security.polkit.enable = true;
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "FiraCode" "Recursive" "Monaspace" ]; })
+    nerd-fonts.fira-code
+    nerd-fonts.recursive-mono
     fira
     recursive
   ];

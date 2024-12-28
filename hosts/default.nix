@@ -1,4 +1,4 @@
-{ lib, inputs, nixpkgs, home-manager, disko, stylix, lanzaboote, ... }:
+{ lib, inputs, nixpkgs, home-manager, disko, lanzaboote, ... }:
 let
   system = "x86_64_linux";
 in
@@ -22,10 +22,6 @@ in
 
       ./framework
       ./configuration.nix
-      ../home/stylix
-
-
-      stylix.nixosModules.stylix
 
       home-manager.nixosModules.home-manager
       {
