@@ -39,6 +39,7 @@
 
     power-profiles-daemon.enable = true;
     fprintd.enable = true;
+    pulseaudio.enable = false;
   };
 
   environment.systemPackages = [

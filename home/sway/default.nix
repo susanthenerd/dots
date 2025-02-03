@@ -12,8 +12,10 @@
       };
 
       startup = [
+        { command = "gnome-keyring-daemon --start --components=secrets"; }
         { command = "1password --silent"; }
         { command = "mako"; }
+        { command = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"; }
       ];
 
       bars = [
@@ -30,6 +32,15 @@
       ];
 
       keybindings = {
+        # Volume controls
+        "XF86AudioRaiseVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ +5%";
+        "XF86AudioLowerVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ -5%";
+        "XF86AudioMute" = "exec pactl set-sink-mute @DEFAULT_SINK@ toggle";
+
+        # Brightness controls
+        "XF86MonBrightnessUp" = "exec brightnessctl set +5%";
+        "XF86MonBrightnessDown" = "exec brightnessctl set 5%-";
+
         #Launch stuff
         "${modifier}+Return" = "exec ${terminal}";
         "${modifier}+Shift+Return" = "exec ${menu}";

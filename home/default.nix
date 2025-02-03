@@ -21,7 +21,6 @@
     ./fzf
     ./bat
     ./zoxide
-    ./vscode
   ];
 
   home = {
@@ -48,6 +47,9 @@
       vesktop
       wget
       unzip
+      vscode
+      microsoft-edge
+      obsidian
     ];
 
     stateVersion = "24.05";
@@ -71,4 +73,5 @@
   gtk = {
     enable = true;
   };
+
 }

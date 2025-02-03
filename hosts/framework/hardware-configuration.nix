@@ -43,7 +43,6 @@
       ];
     };
 
-    pulseaudio.enable = false;
     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
 
