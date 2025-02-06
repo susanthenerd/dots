@@ -48,6 +48,34 @@
         # Windows
         "${modifier}+Shift+c" = "kill";
 
+        # Move focused window
+        "${modifier}+Shift+h" = "move left";
+        "${modifier}+Shift+j" = "move down";
+        "${modifier}+Shift+k" = "move up";
+        "${modifier}+Shift+l" = "move right";
+        
+        # Alternative: Arrow keys for moving windows
+        "${modifier}+Shift+Left" = "move left";
+        "${modifier}+Shift+Down" = "move down";
+        "${modifier}+Shift+Up" = "move up";
+        "${modifier}+Shift+Right" = "move right";
+
+        # Move focus
+        "${modifier}+h" = "focus left";
+        "${modifier}+j" = "focus down";
+        "${modifier}+k" = "focus up";
+        "${modifier}+l" = "focus right";
+
+        # Alternative: Arrow keys for focus
+        "${modifier}+Left" = "focus left";
+        "${modifier}+Down" = "focus down";
+        "${modifier}+Up" = "focus up";
+        "${modifier}+Right" = "focus right";
+
+        # Mouse binding for dragging floating windows
+        "--whole-window ${modifier}+button1" = "move";
+        "--whole-window ${modifier}+button3" = "resize";
+
         # Layouts
         "${modifier}+b" = "splith";
         "${modifier}+v" = "splitv";
@@ -90,8 +118,8 @@
         "${modifier}+Shift+9" = "move container to workspace number 9";
 
         # Screenshot
-        "Print" = "exec grim - | wl-copy";
-        "${modifier}+Print" = "exec slurp | grim -g - - | wl-copy";
+        "Print" = "exec slurp | grim -g - - | wl-copy";
+        "Control+Print" = "exec grim - | wl-copy";
         "Shift+Print" = "exec grim ~/Pictures/screenshot-$(date +'%Y-%m-%d-%H-%M-%S' ).png";
         "${modifier}+Shift+Print" = "exec slurp | grim -g - ~/Pictures/screenshot-slurp-$(date +'%Y-%m-%d-%H-%M-%S' ).png";
 
@@ -99,7 +127,7 @@
         "${modifier}+r" = "mode resize";
 
         # Lock Screen
-        "${modifier}+Shift+l" = "exec swaylock -fF";
+        "${modifier}+Shift+o" = "exec swaylock -fF";
         # Other keybindings
         "${modifier}+Shift+r" = "reload";
         "${modifier}+Shift+e" = "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";

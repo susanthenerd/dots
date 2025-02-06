@@ -34,7 +34,6 @@
       nm-tray
       pavucontrol
       brightnessctl
-      zed-editor
       vlc
       clang
       clang-tools
@@ -50,6 +49,8 @@
       vscode
       microsoft-edge
       obsidian
+      devbox
+      discord
     ];
 
     stateVersion = "24.05";
