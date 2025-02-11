@@ -49,11 +49,13 @@
       vscode
       microsoft-edge
       obsidian
-      devbox
       discord
+      teamspeak3
+      devenv
+      pgmodeler
     ];
 
-    stateVersion = "24.05";
+    stateVersion = "24.11";
 
   };
 

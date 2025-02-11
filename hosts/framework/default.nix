@@ -20,6 +20,7 @@
     firefox.enable = true;
     steam.enable = true;
     virt-manager.enable = true;
+    nix-ld.enable = true;
   };
 
   services = {
