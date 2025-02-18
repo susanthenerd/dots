@@ -46,10 +46,10 @@
   };
 
   environment.systemPackages = with pkgs; [
-    ddcutil
     nixd
-    nixpkgs-fmt
+    nixfmt-rfc-style
     sbctl
+    pciutils
   ];
 
   system = {

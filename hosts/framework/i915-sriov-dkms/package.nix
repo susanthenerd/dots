@@ -1,43 +1,49 @@
-{ stdenv, lib, pkgs, kernel, kmod }:
+{
+  stdenv,
+  lib,
+  pkgs,
+  kernel,
+  kmod, ...
+}:
 
 stdenv.mkDerivation rec {
   pname = "i915-sriov-dkms";
-  version = "0.2.0"; # adjust version as needed
+  version = "2025.02.03";
 
   src = pkgs.fetchFromGitHub {
     owner = "strongtz";
     repo = "i915-sriov-dkms";
     rev = version;
-    sha256 = "sha256-183y9jzc5fc70fc4f93b8aq8rdd87askqvp5ayx62vx0anbm3g34";
+    sha256 = "sha256-bBcV4Na1VVlw8ftCg6SPG+levrhsxZFJ2BKna5Ar2EQ=";
   };
 
-  hardeningDisable = [ "pic" "format" ];
-  
-  nativeBuildInputs = [ kmod ] ++ kernel.moduleBuildDependencies;
+  nativeBuildInputs = kernel.moduleBuildDependencies ++ [ pkgs.xz ];
 
-  # Add proper build phase
+  makeFlags = [
+    "KERNELRELEASE=${kernel.modDirVersion}"
+    "KERNEL_DIR=${kernel.dev}/lib/modules/${kernel.modDirVersion}/build"
+  ];
+
   buildPhase = ''
-    make KERNELRELEASE=${kernel.modDirVersion} \
-         KERNEL_DIR=${kernel.dev}/lib/modules/${kernel.modDirVersion}/build
+    make -C ${kernel.dev}/lib/modules/${kernel.modDirVersion}/build \
+      M=$(pwd) \
+      KERNELRELEASE=${kernel.modDirVersion}
   '';
 
-  # Add proper install phase
   installPhase = ''
-    make KERNELRELEASE=${kernel.modDirVersion} \
-         KERNEL_DIR=${kernel.dev}/lib/modules/${kernel.modDirVersion}/build \
-         INSTALL_MOD_PATH=$out \
-         install
+    mkdir -p $out/lib/modules/${kernel.modDirVersion}/extra
+    ${pkgs.xz}/bin/xz -z -f i915.ko
+    cp i915.ko.xz $out/lib/modules/${kernel.modDirVersion}/extra/i915-sriov.ko.xz
   '';
 
-  meta = {
+  meta = with lib; {
     description = "DKMS module for Linux i915 driver with SR-IOV support (kernel ${kernel.version})";
     homepage = "https://github.com/strongtz/i915-sriov-dkms";
-    license = lib.licenses.mit;
+    license = licenses.gpl2Only;
     longDescription = ''
       Experimental DKMS module enabling SR-IOV support in the Linux i915 driver.
       Tested on kernel versions 6.8–6.13. Use with caution!
     '';
-    maintainers = with lib.maintainers; [ "susanthenerd" ];
-    platforms = lib.platforms.linux;
+    platforms = platforms.linux;
   };
 }

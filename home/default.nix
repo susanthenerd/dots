@@ -52,7 +52,7 @@
       discord
       teamspeak3
       devenv
-      pgmodeler
+      looking-glass-client
     ];
 
     stateVersion = "24.11";

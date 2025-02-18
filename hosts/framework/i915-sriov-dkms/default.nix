@@ -1,7 +1,14 @@
-{ config, lib, pkgs, stdenv, kmod, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  stdenv,
+  kmod,
+  ...
+}:
 
 let
-  i915SriovDkms = config.boot.kernelPackages.callPackage ./package.nix {};
+  i915SriovDkms = config.boot.kernelPackages.callPackage ./package.nix { };
 in
 {
   options.hardware.graphics.i915-sriov-dkms = {
@@ -30,19 +37,27 @@ in
   };
 
   config = lib.mkIf config.hardware.graphics.i915-sriov-dkms.enable {
-    boot.initrd.kernelModules = ["i915-sriov-dkms"];
+    boot = {
+      kernelModules = [ "i915-sriov-dkms" ];
+      blacklistedKernelModules = [
+        "i915"
+        "xe"
+      ];
+      extraModulePackages = [ i915SriovDkms ];
 
-    boot.kernelParams = [
-      "intel_iommu=on"
-      "i915.enable_guc=3"
-      "i915.max_vfs=${toString config.hardware.graphics.i915-sriov-dkms.numVFs}"
-      "module_blacklist=xe"
-    ];
+      kernelParams = [
+        "intel_iommu=on"
+        "i915.enable_guc=3"
+        "i915.max_vfs=${toString config.hardware.graphics.i915-sriov-dkms.numVFs}"
+      ];
+    };
 
-  
     systemd.services.i915SriovVFSetup = {
       description = "Configure i915 SR-IOV Virtual Functions";
-      after = [ "systemd-modules-load.service" "local-fs.target" ];
+      after = [
+        "systemd-modules-load.service"
+        "local-fs.target"
+      ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         Type = "oneshot";

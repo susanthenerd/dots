@@ -1,13 +1,20 @@
-{ config, pkgs, lib, ... }:
 {
-  imports = [ ./hardware-configuration.nix ./disko.nix ];
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
+  imports = [
+    ./hardware-configuration.nix
+    ./disko.nix
+  ];
 
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
     wlr.enable = true;
   };
-
 
   programs = {
     sway.enable = true;
@@ -43,13 +50,6 @@
     pulseaudio.enable = false;
   };
 
-  environment.systemPackages = [
-    pkgs.s-tui
-    pkgs.stress-ng
-  ];
-
-  environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
-
   virtualisation = {
     docker = {
       enable = true;
@@ -58,9 +58,24 @@
       };
     };
 
-    libvirtd = {
-      enable = true;
-    };
+    # libvirtd = {
+    #   enable = true;
+    #   qemu = {
+    #     package = pkgs.qemu_kvm;
+    #     runAsRoot = true;
+    #     swtpm.enable = true;
+    #     ovmf = {
+    #       enable = true;
+    #       packages = [
+    #         (pkgs.OVMF.override {
+    #           secureBoot = true;
+    #           httpSupport = true;
+    #           tpmSupport = true;
+    #         }).fd
+    #       ];
+    #     };
+    #   };
+    # };
   };
   security.pam.services.sddm.enableGnomeKeyring = true;
 }
