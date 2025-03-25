@@ -47,6 +47,10 @@
       enable = false;
       pkiBundle = "/etc/secureboot";
     };
+    kernelParams = [
+      "intel_iommu=on"
+      "iommu=pt"
+    ];
   };
 
   hardware = {
