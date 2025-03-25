@@ -14,17 +14,22 @@
     };
 
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/v0.4.1";
+      url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    niri = {
+      url = "github:sodiboo/niri-flake";
+
     };
   };
 
-  outputs = inputs @ { nixpkgs, home-manager, disko, lanzaboote, ... }:
+  outputs = inputs @ { nixpkgs, home-manager, disko, lanzaboote, niri, ... }:
     {
       nixosConfigurations = (
         import ./hosts {
           inherit (nixpkgs) lib;
-          inherit inputs nixpkgs home-manager disko lanzaboote;
+          inherit inputs nixpkgs home-manager disko lanzaboote niri;
         }
       );
     };

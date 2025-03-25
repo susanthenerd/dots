@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 {
   wayland.windowManager.sway = {
-    enable = true;
+    enable = false;
     config = rec {
       modifier = "Mod4";
       terminal = "${pkgs.alacritty}/bin/alacritty";
@@ -33,9 +33,9 @@
 
       keybindings = {
         # Volume controls
-        "XF86AudioRaiseVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ +5%";
-        "XF86AudioLowerVolume" = "exec pactl set-sink-volume @DEFAULT_SINK@ -5%";
-        "XF86AudioMute" = "exec pactl set-sink-mute @DEFAULT_SINK@ toggle";
+        "XF86AudioRaiseVolume" = "exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+";
+        "XF86AudioLowerVolume" = "exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
+        "XF86AudioMute" = "exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
 
         # Brightness controls
         "XF86MonBrightnessUp" = "exec brightnessctl set +5%";

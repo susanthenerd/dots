@@ -13,11 +13,11 @@
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
-    wlr.enable = true;
   };
 
   programs = {
-    sway.enable = true;
+    hyprland.enable = true;
+    sway.enable = false;
     _1password.enable = true;
     _1password-gui = {
       enable = true;
@@ -28,6 +28,7 @@
     steam.enable = true;
     virt-manager.enable = true;
     nix-ld.enable = true;
+    niri.enable = false;
   };
 
   services = {
@@ -58,24 +59,24 @@
       };
     };
 
-    # libvirtd = {
-    #   enable = true;
-    #   qemu = {
-    #     package = pkgs.qemu_kvm;
-    #     runAsRoot = true;
-    #     swtpm.enable = true;
-    #     ovmf = {
-    #       enable = true;
-    #       packages = [
-    #         (pkgs.OVMF.override {
-    #           secureBoot = true;
-    #           httpSupport = true;
-    #           tpmSupport = true;
-    #         }).fd
-    #       ];
-    #     };
-    #   };
-    # };
+    libvirtd = {
+      enable = true;
+      qemu = {
+        package = pkgs.qemu_kvm;
+        runAsRoot = true;
+        swtpm.enable = true;
+        ovmf = {
+          enable = true;
+          packages = [
+            (pkgs.OVMF.override {
+              secureBoot = true;
+              httpSupport = true;
+              tpmSupport = true;
+            }).fd
+          ];
+        };
+      };
+    };
   };
   security.pam.services.sddm.enableGnomeKeyring = true;
 }

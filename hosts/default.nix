@@ -1,4 +1,13 @@
-{ lib, inputs, nixpkgs, home-manager, disko, lanzaboote, ... }:
+{
+  lib,
+  inputs,
+  nixpkgs,
+  home-manager,
+  disko,
+  lanzaboote,
+  niri,
+  ...
+}:
 let
   system = "x86_64_linux";
 in
@@ -13,7 +22,7 @@ in
         };
 
         nix.settings = {
-          substituters = [ 
+          substituters = [
             "https://nix-community.cachix.org"
             "https://devenv.cachix.org"
           ];
@@ -35,7 +44,10 @@ in
           backupFileExtension = "bak";
 
           users.susan = {
-            imports = [ ../home ];
+            imports = [
+              niri.homeModules.niri
+              ../home
+            ];
           };
 
         };

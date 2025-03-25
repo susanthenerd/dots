@@ -6,7 +6,7 @@
     ./fish
     ./starship
     ./i3status-rust
-    ./eza
+    # ./eza
     ./alacritty
     ./github-cli
     ./fuzzel
@@ -21,6 +21,9 @@
     ./fzf
     ./bat
     ./zoxide
+    ./niri
+    ./nushell
+    ./hyprland
   ];
 
   home = {
@@ -29,7 +32,6 @@
 
     packages = with pkgs; [
       htop
-      firefox-devedition-bin
       polypane
       nm-tray
       pavucontrol
@@ -43,20 +45,20 @@
       grim
       slurp
       wl-clipboard
-      vesktop
       wget
       unzip
       vscode
-      microsoft-edge
-      obsidian
       discord
-      teamspeak3
       devenv
       looking-glass-client
+      xwayland-satellite
     ];
 
     stateVersion = "24.11";
-
+    shell = {
+      enableNushellIntegration = true;
+      enableFishIntegration = true;
+    };
   };
 
   programs = {

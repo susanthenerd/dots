@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   time.timeZone = "Europe/Bucharest";
   security.polkit.enable = true;
@@ -10,13 +15,17 @@
     recursive
   ];
 
-
   users = {
     mutableUsers = false;
     defaultUserShell = pkgs.fish;
     users.susan = {
       isNormalUser = true;
-      extraGroups = [ "docker" "wheel" "video" "networkmanager" ];
+      extraGroups = [
+        "docker"
+        "wheel"
+        "video"
+        "networkmanager"
+      ];
       hashedPassword = "$6$vru/Kz/2RFnBeCXQ$FPDE/DET/P2pNfE2bpVsEdDCeMegmeMApE4l3m/2YR9t6qCSrdiTzqUr8aN1gnOTAcYXBQ30NUf3UtqxINmDL.";
     };
   };
@@ -39,7 +48,10 @@
 
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       auto-optimise-store = true;
     };
 
@@ -61,4 +73,6 @@
     # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
     stateVersion = "24.05"; # Did you read the comment?
   };
+
+  documentation.nixos.enable = false;
 }
