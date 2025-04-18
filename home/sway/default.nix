@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 {
   wayland.windowManager.sway = {
-    enable = false;
+    enable = true;
     config = rec {
       modifier = "Mod4";
       terminal = "${pkgs.alacritty}/bin/alacritty";

@@ -16,8 +16,8 @@
   };
 
   programs = {
-    hyprland.enable = true;
-    sway.enable = false;
+    hyprland.enable = false;
+    sway.enable = true;
     _1password.enable = true;
     _1password-gui = {
       enable = true;
@@ -28,7 +28,6 @@
     steam.enable = true;
     virt-manager.enable = true;
     nix-ld.enable = true;
-    niri.enable = false;
   };
 
   services = {
@@ -49,8 +48,22 @@
     power-profiles-daemon.enable = true;
     fprintd.enable = true;
     pulseaudio.enable = false;
+    gvfs.enable = true;
+    blueman.enable = true;
   };
 
+  environment.systemPackages = [
+    (pkgs.writeShellScriptBin "qemu-system-x86_64-uefi" ''
+      qemu-system-x86_64 \
+        -bios ${pkgs.OVMF.fd}/FV/OVMF.fd \
+        "$@"
+    '')
+
+    pkgs.stress-ng
+    pkgs.s-tui
+    pkgs.framework-system-tools
+    pkgs.fw-ectool
+  ];
   virtualisation = {
     docker = {
       enable = true;
@@ -78,5 +91,6 @@
       };
     };
   };
+
   security.pam.services.sddm.enableGnomeKeyring = true;
 }

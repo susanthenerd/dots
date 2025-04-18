@@ -1,12 +1,17 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   imports = [
     ./sway
+    ./i3status-rust
     ./swaylock
     ./fish
     ./starship
-    ./i3status-rust
-    # ./eza
+    ./eza
     ./alacritty
     ./github-cli
     ./fuzzel
@@ -21,9 +26,8 @@
     ./fzf
     ./bat
     ./zoxide
-    ./niri
-    ./nushell
     ./hyprland
+    ./senpai
   ];
 
   home = {
@@ -48,10 +52,15 @@
       wget
       unzip
       vscode
-      discord
       devenv
       looking-glass-client
       xwayland-satellite
+      nautilus
+      (discord.override {
+        withVencord = true;
+      })
+      gimp
+      prismlauncher
     ];
 
     stateVersion = "24.11";

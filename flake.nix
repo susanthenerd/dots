@@ -18,18 +18,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    niri = {
-      url = "github:sodiboo/niri-flake";
-
-    };
   };
 
-  outputs = inputs @ { nixpkgs, home-manager, disko, lanzaboote, niri, ... }:
+  outputs = inputs @ { nixpkgs, home-manager, disko, lanzaboote, ... }:
     {
       nixosConfigurations = (
         import ./hosts {
           inherit (nixpkgs) lib;
-          inherit inputs nixpkgs home-manager disko lanzaboote niri;
+          inherit inputs nixpkgs home-manager disko lanzaboote;
         }
       );
     };

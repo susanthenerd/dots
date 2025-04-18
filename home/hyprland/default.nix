@@ -6,9 +6,11 @@
 }:
 {
   wayland.windowManager.hyprland = {
-    enable = true;
+    enable = false;
+    package = null;
+    portalPackage = null;
     plugins = [
-      pkgs.hyprlandPlugins.hy3
+      # pkgs.hyprlandPlugins.hy3
     ];
     settings = {
       "$mod" = "SUPER";
@@ -146,17 +148,17 @@
     };
 
     extraConfig = ''
-    submap = resize
-    binde = , H, resizeactive, -10 0
-    binde = , J, resizeactive, 0 10
-    binde = , K, resizeactive, 0 -10
-    binde = , L, resizeactive, 10 0
-    binde = , left, resizeactive, -10 0
-    binde = , down, resizeactive, 0 10
-    binde = , up, resizeactive, 0 -10
-    binde = , right, resizeactive, 10 0
-    bind = , escape, submap, reset
-    submap = reset
+      submap = resize
+      binde = , H, resizeactive, -10 0
+      binde = , J, resizeactive, 0 10
+      binde = , K, resizeactive, 0 -10
+      binde = , L, resizeactive, 10 0
+      binde = , left, resizeactive, -10 0
+      binde = , down, resizeactive, 0 10
+      binde = , up, resizeactive, 0 -10
+      binde = , right, resizeactive, 10 0
+      bind = , escape, submap, reset
+      submap = reset
     '';
   };
 }

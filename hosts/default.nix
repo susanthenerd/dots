@@ -5,7 +5,6 @@
   home-manager,
   disko,
   lanzaboote,
-  niri,
   ...
 }:
 let
@@ -45,7 +44,6 @@ in
 
           users.susan = {
             imports = [
-              niri.homeModules.niri
               ../home
             ];
           };
