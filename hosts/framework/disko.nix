@@ -53,25 +53,12 @@
 
           };
 
-
           root = {
-            size = "512G";
-            content = {
-              type = "filesystem";
-              format = "btrfs";
-              mountpoint = "/";
-              mountOptions = [
-                "defaults"
-              ];
-            };
-          };
-
-          data = {
             size = "100%FREE";
             content = {
               type = "filesystem";
               format = "btrfs";
-              mountpoint = "/data";
+              mountpoint = "/";
               mountOptions = [
                 "defaults"
               ];

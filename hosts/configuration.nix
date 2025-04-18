@@ -64,8 +64,7 @@
     sbctl
     pciutils
     killall
-    framework-system-tools
-    fw-ectool
+
   ];
 
   system = {
