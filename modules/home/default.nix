@@ -2,32 +2,16 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
 {
   imports = [
-    ./sway
-    ./i3status-rust
-    ./swaylock
-    ./fish
-    ./starship
-    ./eza
-    ./alacritty
-    ./github-cli
-    ./fuzzel
-    ./git
-    ./ssh
-    ./mako
-    ./xdg
-    ./fastfetch
-    ./hyfetch
-    ./swayidle
-    ./yazi
-    ./fzf
-    ./bat
-    ./zoxide
-    ./hyprland
-    ./senpai
+    ./desktop
+    ./alacritty.nix
+    ./shell
+    ./vscode.nix
+
   ];
 
   home = {
@@ -61,6 +45,8 @@
       })
       gimp
       prismlauncher
+      brightnessctl
+      code-cursor
     ];
 
     stateVersion = "24.11";

@@ -10,14 +10,7 @@
     ./disko.nix
   ];
 
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
-  };
-
   programs = {
-    hyprland.enable = false;
-    sway.enable = true;
     _1password.enable = true;
     _1password-gui = {
       enable = true;
@@ -28,6 +21,10 @@
     steam.enable = true;
     virt-manager.enable = true;
     nix-ld.enable = true;
+    sway = {
+      enable = true;
+      extraPackages = [ ];
+    };
   };
 
   services = {
@@ -90,6 +87,13 @@
         };
       };
     };
+  };
+
+  xdg.portal = {
+    enable = true;
+    # extraPortals = [ pkgs.xdg-desktop-portal-gtk ]; # Add if needed
+    # Silence warning about explicit portal backend config
+    config.common.default = "*";
   };
 
   security.pam.services.sddm.enableGnomeKeyring = true;

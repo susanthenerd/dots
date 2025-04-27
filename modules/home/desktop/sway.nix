@@ -1,7 +1,13 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   wayland.windowManager.sway = {
     enable = true;
+    package = null;
     config = rec {
       modifier = "Mod4";
       terminal = "${pkgs.alacritty}/bin/alacritty";
@@ -16,12 +22,16 @@
         { command = "1password --silent"; }
         { command = "mako"; }
         { command = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"; }
+        { command = "discord"; }
       ];
 
       bars = [
         {
           fonts = {
-            names = [ "RecMonoDuotone Nerd Font Mono" "FontAwesome" ];
+            names = [
+              "RecMonoDuotone Nerd Font Mono"
+              "FontAwesome"
+            ];
             style = "Regular";
             size = 14.0;
           };
@@ -53,7 +63,7 @@
         "${modifier}+Shift+j" = "move down";
         "${modifier}+Shift+k" = "move up";
         "${modifier}+Shift+l" = "move right";
-        
+
         # Alternative: Arrow keys for moving windows
         "${modifier}+Shift+Left" = "move left";
         "${modifier}+Shift+Down" = "move down";
@@ -121,7 +131,8 @@
         "Print" = "exec slurp | grim -g - - | wl-copy";
         "Control+Print" = "exec grim - | wl-copy";
         "Shift+Print" = "exec grim ~/Pictures/screenshot-$(date +'%Y-%m-%d-%H-%M-%S' ).png";
-        "${modifier}+Shift+Print" = "exec slurp | grim -g - ~/Pictures/screenshot-slurp-$(date +'%Y-%m-%d-%H-%M-%S' ).png";
+        "${modifier}+Shift+Print" =
+          "exec slurp | grim -g - ~/Pictures/screenshot-slurp-$(date +'%Y-%m-%d-%H-%M-%S' ).png";
 
         # Resize
         "${modifier}+r" = "mode resize";
@@ -130,7 +141,8 @@
         "${modifier}+Shift+o" = "exec swaylock -fF";
         # Other keybindings
         "${modifier}+Shift+r" = "reload";
-        "${modifier}+Shift+e" = "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
+        "${modifier}+Shift+e" =
+          "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
       };
       modes = {
         resize = {
@@ -160,14 +172,15 @@
 
       input = {
         "2362:628:PIXA3854:00_093A:0274_Touchpad" = {
-            dwt = "enabled";
-            tap = "enabled";
+          dwt = "enabled";
+          tap = "enabled";
         };
       };
     };
-    /*extraConfig = "
-    corner_radius = 4;
-    ";
+    /*
+      extraConfig = "
+      corner_radius = 4;
+      ";
     */
   };
 }

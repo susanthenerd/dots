@@ -43,19 +43,7 @@
         extraArgs = "--keep 5 --keep-since 3d";
       };
       flake = "/home/susan/dots";
-
     };
-  };
-
-  nix = {
-    settings = {
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-      auto-optimise-store = true;
-    };
-
   };
 
   environment.systemPackages = with pkgs; [
