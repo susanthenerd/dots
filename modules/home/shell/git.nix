@@ -1,16 +1,22 @@
-{config, lib, pkgs, ... }:{
-programs.git = {
-enable = true;
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  programs.git = {
+    enable = true;
 
-userEmail = "susan@susan.lol";
-userName = "Susan";
+    userEmail = "susan@susan.lol";
+    userName = "Susan";
 
-extraConfig = {
+    extraConfig = {
       gpg = {
         format = "ssh";
       };
       "gpg \"ssh\"" = {
-        program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
+        program = "${pkgs._1password-gui}/bin/op-ssh-sign";
       };
       commit = {
         gpgsign = true;
@@ -20,5 +26,5 @@ extraConfig = {
         signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINcre3PZxAV2Zt46k5NTegD4NgyzDnwrxFOr9g5vsUYr";
       };
     };
-};
+  };
 }

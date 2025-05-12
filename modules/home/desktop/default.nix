@@ -14,5 +14,10 @@
     ./swayidle.nix
     ./swaylock.nix
     ./xdg.nix
+    ./i3wsr.nix
+  ];
+
+  home.packages = with pkgs; [
+    kdePackages.dolphin
   ];
 }

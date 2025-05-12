@@ -16,8 +16,6 @@
       enable = true;
       polkitPolicyOwners = [ "susan" ];
     };
-    thunar.enable = true;
-    firefox.enable = true;
     steam.enable = true;
     virt-manager.enable = true;
     nix-ld.enable = true;
@@ -60,13 +58,19 @@
     pkgs.s-tui
     pkgs.framework-system-tools
     pkgs.fw-ectool
+    (pkgs.runCommand "intelgopdriver"
+      {
+      }
+      ''
+        mkdir -p $out/share/kvm
+
+        cp ${./intelgopdriver.efi} $out/share/kvm/intelgopdriver_framework.bin
+      ''
+    )
   ];
   virtualisation = {
     docker = {
       enable = true;
-      daemon.settings = {
-        data-root = "/data/docker";
-      };
     };
 
     libvirtd = {
@@ -85,6 +89,15 @@
             }).fd
           ];
         };
+        verbatimConfig = ''
+          cgroup_device_acl = [
+            "/dev/null", "/dev/full", "/dev/zero",
+            "/dev/random", "/dev/urandom",
+            "/dev/ptmx", "/dev/kvm", "/dev/kqemu",
+            "/dev/rtc","/dev/hpet", "/dev/vfio/vfio",
+            "/dev/kvmfr0"
+          ]
+        '';
       };
     };
   };

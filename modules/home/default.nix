@@ -30,6 +30,10 @@
       gdb
       cmake
       jetbrains.clion
+      jetbrains.rust-rover
+      rustc
+      rust-analyzer
+      cargo
       grim
       slurp
       wl-clipboard
@@ -39,7 +43,6 @@
       devenv
       looking-glass-client
       xwayland-satellite
-      nautilus
       (discord.override {
         withVencord = true;
       })
@@ -47,11 +50,12 @@
       prismlauncher
       brightnessctl
       code-cursor
+      remmina
+      playerctl
     ];
 
     stateVersion = "24.11";
     shell = {
-      enableNushellIntegration = true;
       enableFishIntegration = true;
     };
   };

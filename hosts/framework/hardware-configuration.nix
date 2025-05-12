@@ -5,11 +5,10 @@
   modulesPath,
   ...
 }:
-
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
-    ./i915-sriov-dkms
+    ./sriov-configuration.nix
   ];
 
   networking = {
@@ -21,7 +20,6 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
     initrd = {
       availableKernelModules = [
         "xhci_pci"
@@ -31,26 +29,49 @@
         "usbhid"
         "sd_mod"
       ];
-      kernelModules = [ "dm-snapshot" ];
+
+      kernelModules = [
+        "dm-snapshot"
+        "kvmfr"
+      ];
     };
-    kernelModules = [ "kvm-intel" ];
-    extraModulePackages = [ ];
+
+    kernelModules = [
+      "kvm-intel"
+      "kvmfr"
+    ];
+
+    extraModulePackages = [
+      config.boot.kernelPackages.kvmfr
+    ];
+
     loader = {
       systemd-boot = {
         enable = lib.mkForce true;
-        netbootxyz.enable = true;
       };
       efi.canTouchEfiVariables = true;
     };
+
     plymouth.enable = true;
     lanzaboote = {
       enable = false;
       pkiBundle = "/etc/secureboot";
     };
+
     kernelParams = [
-      "intel_iommu=on"
       "iommu=pt"
+      "intel_iommu=on"
     ];
+
+    extraModprobeConfig = ''
+      options kvmfr static_size_mb=128
+    '';
+  };
+
+  services.udev = {
+    extraRules = ''
+      SUBSYSTEM=="kvmfr", OWNER="susan", GROUP="kvm", MODE="0660"
+    '';
   };
 
   hardware = {
@@ -60,7 +81,6 @@
         intel-media-driver
         libvdpau-va-gl
       ];
-      i915-sriov-dkms.enable = false;
     };
 
     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
@@ -69,5 +89,4 @@
       powerOnBoot = true;
     };
   };
-
 }

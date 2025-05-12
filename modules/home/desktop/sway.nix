@@ -11,18 +11,22 @@
     config = rec {
       modifier = "Mod4";
       terminal = "${pkgs.alacritty}/bin/alacritty";
-      menu = "fuzzel";
+      menu = "${pkgs.fuzzel}/bin/fuzzel";
 
       fonts = {
         names = [ "RecMonoDuotone Nerd Font" ];
       };
 
       startup = [
-        { command = "gnome-keyring-daemon --start --components=secrets"; }
-        { command = "1password --silent"; }
-        { command = "mako"; }
+        { command = "${pkgs.gnome-keyring}/bin/gnome-keyring-daemon --start --components=secrets"; }
+        { command = "${pkgs._1password-gui}/bin/1password --silent"; }
+        { command = "${pkgs.mako}/bin/mako"; }
         { command = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"; }
-        { command = "discord"; }
+        { command = "${pkgs.discord}/bin/discord"; }
+        {
+          command = "${pkgs.i3wsr}/bin/i3wsr";
+          always = true;
+        }
       ];
 
       bars = [
@@ -37,19 +41,22 @@
           };
 
           position = "bottom";
-          statusCommand = "i3status-rs ~/.config/i3status-rust/config-default.toml";
+          statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-default.toml";
         }
       ];
 
       keybindings = {
         # Volume controls
-        "XF86AudioRaiseVolume" = "exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+";
-        "XF86AudioLowerVolume" = "exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
-        "XF86AudioMute" = "exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-
+        "XF86AudioRaiseVolume" = "exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+";
+        "XF86AudioLowerVolume" = "exec ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
+        "XF86AudioMute" = "exec ${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
         # Brightness controls
-        "XF86MonBrightnessUp" = "exec brightnessctl set +5%";
-        "XF86MonBrightnessDown" = "exec brightnessctl set 5%-";
+        "XF86MonBrightnessUp" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set +5%";
+        "XF86MonBrightnessDown" = "exec ${pkgs.brightnessctl}/bin/brightnessctl set 5%-";
+        # Media controls
+        "XF86AudioPlay" = "exec ${pkgs.playerctl}/bin/playerctl play-pause";
+        "XF86AudioNext" = "exec ${pkgs.playerctl}/bin/playerctl next";
+        "XF86AudioPrev" = "exec ${pkgs.playerctl}/bin/playerctl previous";
 
         #Launch stuff
         "${modifier}+Return" = "exec ${terminal}";
@@ -116,6 +123,7 @@
         "${modifier}+7" = "workspace number 7";
         "${modifier}+8" = "workspace number 8";
         "${modifier}+9" = "workspace number 9";
+        "${modifier}+0" = "workspace number 10";
 
         "${modifier}+Shift+1" = "move container to workspace number 1";
         "${modifier}+Shift+2" = "move container to workspace number 2";
@@ -126,23 +134,26 @@
         "${modifier}+Shift+7" = "move container to workspace number 7";
         "${modifier}+Shift+8" = "move container to workspace number 8";
         "${modifier}+Shift+9" = "move container to workspace number 9";
+        "${modifier}+Shift+0" = "move container to workspace number 10";
 
         # Screenshot
-        "Print" = "exec slurp | grim -g - - | wl-copy";
-        "Control+Print" = "exec grim - | wl-copy";
-        "Shift+Print" = "exec grim ~/Pictures/screenshot-$(date +'%Y-%m-%d-%H-%M-%S' ).png";
+        "Print" =
+          "exec ${pkgs.slurp}/bin/slurp | ${pkgs.grim}/bin/grim -g - - | ${pkgs.wl-clipboard}/bin/wl-copy";
+        "Control+Print" = "exec ${pkgs.grim}/bin/grim - | ${pkgs.wl-clipboard}/bin/wl-copy";
+        "Shift+Print" =
+          "exec ${pkgs.grim}/bin/grim ~/Pictures/screenshot-$(date +'%Y-%m-%d-%H-%M-%S' ).png";
         "${modifier}+Shift+Print" =
-          "exec slurp | grim -g - ~/Pictures/screenshot-slurp-$(date +'%Y-%m-%d-%H-%M-%S' ).png";
+          "exec ${pkgs.slurp}/bin/slurp | ${pkgs.grim}/bin/grim -g - ~/Pictures/screenshot-slurp-$(date +'%Y-%m-%d-%H-%M-%S' ).png";
 
         # Resize
         "${modifier}+r" = "mode resize";
 
         # Lock Screen
-        "${modifier}+Shift+o" = "exec swaylock -fF";
+        "${modifier}+Shift+o" = "exec ${pkgs.swaylock}/bin/swaylock -fF";
         # Other keybindings
         "${modifier}+Shift+r" = "reload";
         "${modifier}+Shift+e" =
-          "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
+          "exec ${pkgs.sway}/bin/swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
       };
       modes = {
         resize = {
