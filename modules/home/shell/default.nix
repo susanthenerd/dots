@@ -1,4 +1,10 @@
-{config, lib, pkgs, ...} : {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   imports = [
     ./bat.nix
     ./eza.nix
@@ -10,5 +16,6 @@
     ./starship.nix
     ./yazi.nix
     ./zoxide.nix
+    ./jujutsu.nix
   ];
 }
