@@ -18,4 +18,8 @@
     ./zoxide.nix
     ./jujutsu.nix
   ];
+
+  home.packages = with pkgs; [
+    mergiraf
+  ];
 }

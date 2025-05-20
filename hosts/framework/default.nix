@@ -33,18 +33,28 @@
       pulse.enable = true;
     };
 
+    blueman.enable = true;
     flatpak.enable = true;
     gnome.gnome-keyring.enable = true;
-    displayManager.sddm = {
-      enable = true;
-      wayland.enable = true;
+    displayManager = {
+      sddm = {
+        enable = true;
+        wayland.enable = true;
+      };
+
+      cosmic-greeter = {
+        enable = false;
+      };
     };
 
+    desktopManager.cosmic = {
+      enable = false;
+      xwayland.enable = false;
+    };
     power-profiles-daemon.enable = true;
     fprintd.enable = true;
     pulseaudio.enable = false;
     gvfs.enable = true;
-    blueman.enable = true;
   };
 
   environment.systemPackages = [

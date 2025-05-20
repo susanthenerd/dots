@@ -11,7 +11,6 @@
     ./alacritty.nix
     ./shell
     ./vscode.nix
-
   ];
 
   home = {
@@ -31,9 +30,6 @@
       cmake
       jetbrains.clion
       jetbrains.rust-rover
-      rustc
-      rust-analyzer
-      cargo
       grim
       slurp
       wl-clipboard
@@ -52,6 +48,8 @@
       code-cursor
       remmina
       playerctl
+      xournalpp
+      rustup
     ];
 
     stateVersion = "24.11";
@@ -72,7 +70,9 @@
     ripgrep.enable = true;
   };
 
-  # services = { };
+  services = {
+    blueman-applet.enable = true;
+  };
 
   gtk = {
     enable = true;

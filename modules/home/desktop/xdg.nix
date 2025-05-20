@@ -19,6 +19,7 @@
       };
 
       extraPortals = [
+        # pkgs.xdg-desktop-portal-cosmic
         pkgs.xdg-desktop-portal-wlr
         pkgs.kdePackages.xdg-desktop-portal-kde
       ];

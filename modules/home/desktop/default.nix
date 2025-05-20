@@ -3,6 +3,7 @@
   lib,
   pkgs,
   inputs,
+
   ...
 }:
 {
@@ -18,6 +19,6 @@
   ];
 
   home.packages = with pkgs; [
-    kdePackages.dolphin
+    #kdePackages.dolphin
   ];
 }
