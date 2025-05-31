@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   disko.devices = {
     disk = {
       nvme = {
@@ -8,7 +14,7 @@
           type = "gpt";
           partitions = {
             ESP = {
-              size = "500M";
+              size = "512M";
               type = "EF00";
               content = {
                 type = "filesystem";
