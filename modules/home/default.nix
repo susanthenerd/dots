@@ -3,6 +3,7 @@
   lib,
   pkgs,
   inputs,
+  media-fetcher,
   ...
 }:
 {
@@ -17,40 +18,49 @@
     username = "susan";
     homeDirectory = "/home/susan";
 
-    packages = with pkgs; [
-      htop
-      polypane
-      nm-tray
-      pavucontrol
-      brightnessctl
-      vlc
-      clang
-      clang-tools
-      gdb
-      cmake
-      jetbrains.clion
-      jetbrains.rust-rover
-      grim
-      slurp
-      wl-clipboard
-      wget
-      unzip
-      vscode
-      devenv
-      looking-glass-client
-      xwayland-satellite
-      (discord.override {
-        withVencord = true;
-      })
-      gimp
-      prismlauncher
-      brightnessctl
-      code-cursor
-      remmina
-      playerctl
-      xournalpp
-      rustup
-    ];
+    packages =
+      with pkgs;
+      [
+        htop
+        polypane
+        nm-tray
+        pavucontrol
+        brightnessctl
+        vlc
+        clang
+        clang-tools
+        gdb
+        cmake
+        jetbrains.clion
+        jetbrains.rust-rover
+        grim
+        slurp
+        wl-clipboard
+        wget
+        unzip
+        deploy-rs
+        vscode
+        age
+        sops
+        devenv
+        looking-glass-client
+        xwayland-satellite
+        (discord.override {
+          withMoonlight = true;
+        })
+        gimp
+        prismlauncher
+        brightnessctl
+        code-cursor
+        kdePackages.dolphin
+        remmina
+        playerctl
+        solaar
+        xournalpp
+        rustup
+        youtube-music
+      ]
+      ++ [ media-fetcher ];
 
     stateVersion = "24.11";
     shell = {
@@ -67,11 +77,13 @@
       enable = true;
       nix-direnv.enable = true;
     };
+    gpg.enable = true;
     ripgrep.enable = true;
   };
 
   services = {
     blueman-applet.enable = true;
+    yubikey-agent.enable = true;
   };
 
   gtk = {

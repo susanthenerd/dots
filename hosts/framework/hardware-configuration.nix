@@ -66,6 +66,7 @@
     extraModprobeConfig = ''
       options kvmfr static_size_mb=128
     '';
+    kernelPackages = pkgs.linuxPackages_latest;
   };
 
   services.udev = {
@@ -81,6 +82,11 @@
         intel-media-driver
         libvdpau-va-gl
       ];
+    };
+
+    logitech.wireless = {
+      enable = true;
+      enableGraphical = true;
     };
 
     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

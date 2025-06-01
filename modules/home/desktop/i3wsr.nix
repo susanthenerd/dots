@@ -12,7 +12,7 @@
 
   xdg.configFile."i3wsr/config.toml".source = (pkgs.formats.toml { }).generate "config.toml" {
     general = {
-      # separator = "  ";
+      separator = "|";
       # default_icon = "💀"; # Optional: Uncomment to set a default icon
       # empty_label = "🌕";   # Optional: Uncomment to set a label for empty workspaces
       display_property = "name";
@@ -38,15 +38,15 @@
         "jetbrains-rustrover" = "Rust Rover";
         "Cursor" = "Code";
         "discord" = "Discord";
+        "com.github.th_ch.youtube_music" = "Youtube Music";
       };
 
       app_id = {
         "virt-manager-wrapped" = "virt-manager";
-        "firefox" = "Firefox";
       };
     };
     icons = {
-      "Firefox" = "";
+      "firefox" = "";
       "Chrome" = "";
       "CLion" = "";
       "Rust Rover" = "";
@@ -57,7 +57,8 @@
       "obs" = "";
       "virt-manager" = "";
       "nvim.*" = "";
-      "steam_app_*" = " ";
+      "steam*" = "";
+      "Youtube Music" = "";
     };
 
     options = {

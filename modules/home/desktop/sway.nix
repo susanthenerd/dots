@@ -22,7 +22,7 @@
         { command = "${pkgs._1password-gui}/bin/1password --silent"; }
         { command = "${pkgs.mako}/bin/mako"; }
         { command = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"; }
-        { command = "${pkgs.discord}/bin/discord"; }
+        { command = "discord"; }
         {
           command = "${pkgs.i3wsr}/bin/i3wsr";
           always = true;

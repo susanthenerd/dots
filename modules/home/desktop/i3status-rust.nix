@@ -13,6 +13,34 @@
         icons = "material-nf";
         blocks = [
           {
+            block = "music";
+            format = " $icon {$combo.str(max_w:20,rot_interval:0.5) $play $next |}";
+            format_alt = " $icon ";
+            click = [
+              {
+                button = "back";
+                action = "seek_backward";
+              }
+              {
+                button = "forward";
+                action = "seek_forward";
+              }
+              {
+                button = "down";
+                action = "volume_down";
+              }
+              {
+                button = "up";
+                action = "volume_up";
+              }
+              {
+                button = "middle";
+                widget = ".";
+                action = "toggle_format";
+              }
+            ];
+          }
+          {
             block = "memory";
           }
           {

@@ -50,15 +50,6 @@
       pool = {
         type = "lvm_vg";
         lvs = {
-          swap = {
-            size = "64G";
-            content = {
-              type = "swap";
-              resumeDevice = true;
-            };
-
-          };
-
           root = {
             size = "100%FREE";
             content = {

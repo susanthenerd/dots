@@ -23,11 +23,17 @@
       enable = true;
       extraPackages = [ ];
     };
+
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
   };
 
   services = {
-    # udev.packages = [ pkgs.yubikey-personalization ];
+    udev.packages = [ pkgs.yubikey-personalization ];
     pcscd.enable = true;
+
     pipewire = {
       enable = true;
       pulse.enable = true;
@@ -68,6 +74,8 @@
     pkgs.s-tui
     pkgs.framework-system-tools
     pkgs.fw-ectool
+    pkgs.powertop
+
     (pkgs.runCommand "intelgopdriver"
       {
       }
