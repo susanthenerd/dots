@@ -8,13 +8,16 @@
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
-    ./sriov-configuration.nix
   ];
 
   networking = {
     hostName = "framework";
     networkmanager.enable = true;
     useDHCP = lib.mkDefault true;
+    firewall.trustedInterfaces = [
+      "wlp166s0"
+      "virbr0"
+    ];
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
@@ -66,7 +69,7 @@
     extraModprobeConfig = ''
       options kvmfr static_size_mb=128
     '';
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
   };
 
   services.udev = {
@@ -94,5 +97,7 @@
       enable = true;
       powerOnBoot = true;
     };
+
+    sriov.enable = true;
   };
 }

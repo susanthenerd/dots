@@ -3,64 +3,57 @@
   lib,
   pkgs,
   inputs,
-  media-fetcher,
   ...
 }:
 {
   imports = [
     ./desktop
-    ./alacritty.nix
     ./shell
-    ./vscode.nix
   ];
 
   home = {
     username = "susan";
     homeDirectory = "/home/susan";
 
-    packages =
-      with pkgs;
-      [
-        htop
-        polypane
-        nm-tray
-        pavucontrol
-        brightnessctl
-        vlc
-        clang
-        clang-tools
-        gdb
-        cmake
-        jetbrains.clion
-        jetbrains.rust-rover
-        grim
-        slurp
-        wl-clipboard
-        wget
-        unzip
-        deploy-rs
-        vscode
-        age
-        sops
-        devenv
-        looking-glass-client
-        xwayland-satellite
-        (discord.override {
-          withMoonlight = true;
-        })
-        gimp
-        prismlauncher
-        brightnessctl
-        code-cursor
-        kdePackages.dolphin
-        remmina
-        playerctl
-        solaar
-        xournalpp
-        rustup
-        youtube-music
-      ]
-      ++ [ media-fetcher ];
+    packages = with pkgs; [
+      htop
+      nm-tray
+      pavucontrol
+      brightnessctl
+      vlc
+      clang
+      clang-tools
+      gdb
+      cmake
+      jetbrains.clion
+      # jetbrains.rust-rover
+      grim
+      slurp
+      wl-clipboard
+      wget
+      unzip
+      deploy-rs
+      vscode
+      age
+      sops
+      devenv
+      (discord.override {
+        withMoonlight = true;
+      })
+
+      brightnessctl
+      code-cursor
+      kdePackages.dolphin
+      remmina
+      playerctl
+      solaar
+      xournalpp
+      rustup
+      youtube-music
+      claude-code
+      easyeffects
+      btop
+    ];
 
     stateVersion = "24.11";
     shell = {

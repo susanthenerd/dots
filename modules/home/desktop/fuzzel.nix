@@ -9,7 +9,7 @@
     enable = true;
     settings = {
       main = {
-        terminal = "${pkgs.alacritty}/bin/alacritty";
+        terminal = "ghostty";
         fields = "filename, name, generic, exec";
       };
     };

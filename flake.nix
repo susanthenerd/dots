@@ -18,6 +18,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    #claude-desktop = {
+    #  url = "github:k3d3/claude-desktop-linux-flake";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
+
+    i915-sriov-dkms = {
+      url = "github:strongtz/i915-sriov-dkms";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     flake-parts.url = "github:hercules-ci/flake-parts";
   };
 
@@ -28,6 +38,7 @@
       home-manager,
       disko,
       lanzaboote,
+      i915-sriov-dkms,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } (
@@ -40,59 +51,92 @@
       {
 
         flake = {
+          overlays = {
+            looking-glass-overlay = import ./overlays/looking-glass-client.nix;
+          };
+
           nixosConfigurations = {
-            framework = nixpkgs.lib.nixosSystem {
+            framework = withSystem "x86_64-linux" (
+              {
+                config,
+                inputs',
+                pkgs,
+                ...
+              }:
+              nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                specialArgs = {
+                  packages = config.packages;
 
-              modules = [
-                {
-                  nix.settings = {
-                    substituters = [
-                      "https://nix-community.cachix.org"
-                      "https://devenv.cachix.org"
-                      "https://cache.nixos.org"
-                    ];
-                    trusted-public-keys = [
-                      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-                      "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
-                    ];
-                  };
-                }
+                  inherit inputs inputs';
+                };
 
-                ./hosts/framework
-                ./hosts/configuration.nix
-                ./modules/nix-common.nix
-
-                home-manager.nixosModules.home-manager
-                {
-                  home-manager = {
-                    useUserPackages = true;
-                    useGlobalPkgs = true;
-                    backupFileExtension = "bak";
-                    users.susan = {
-                      imports = [
-                        ./modules/home
+                modules = [
+                  { nixpkgs = { inherit pkgs; }; }
+                  {
+                    nix.settings = {
+                      substituters = [
+                        "https://nix-community.cachix.org"
+                        "https://devenv.cachix.org"
+                        "https://cache.nixos.org"
+                      ];
+                      trusted-public-keys = [
+                        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+                        "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
                       ];
                     };
-                  };
-                }
+                  }
 
-                disko.nixosModules.disko
-                lanzaboote.nixosModules.lanzaboote
-              ];
-            };
+                  ./hosts/framework
+                  ./hosts/configuration.nix
+                  ./modules/nix-common.nix
+                  ./modules/nixos/sriov.nix
+                  ./modules/nixos/livebook.nix
+
+                  i915-sriov-dkms.nixosModules.default
+
+                  home-manager.nixosModules.home-manager
+                  {
+                    home-manager = {
+                      useUserPackages = true;
+                      useGlobalPkgs = true;
+                      backupFileExtension = "bak";
+                      extraSpecialArgs = { inherit inputs; };
+                      users.susan = {
+                        imports = [
+                          ./modules/home
+                        ];
+                      };
+                    };
+                  }
+
+                  disko.nixosModules.disko
+                  lanzaboote.nixosModules.lanzaboote
+                ];
+              }
+            );
           };
         };
         systems = [ "x86_64-linux" ];
-        perSystem =
-          { config, pkgs, ... }:
-          {
-            # Recommended: move all package definitions here.
-            # e.g. (assuming you have a nixpkgs input)
-            # packages.foo = pkgs.callPackage ./foo/package.nix { };
-            # packages.bar = pkgs.callPackage ./bar/package.nix {
-            #   foo = config.packages.foo;
-            # };
 
+        perSystem =
+          {
+            config,
+            pkgs,
+            system,
+            ...
+          }:
+          {
+
+            _module.args.pkgs = import nixpkgs {
+              inherit system;
+              overlays = [
+                top.config.flake.overlays.looking-glass-overlay
+              ];
+              config = {
+                allowUnfree = true;
+              };
+            };
           };
       }
     );

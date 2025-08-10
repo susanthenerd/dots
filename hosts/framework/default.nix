@@ -47,16 +47,8 @@
         enable = true;
         wayland.enable = true;
       };
-
-      cosmic-greeter = {
-        enable = false;
-      };
     };
 
-    desktopManager.cosmic = {
-      enable = false;
-      xwayland.enable = false;
-    };
     power-profiles-daemon.enable = true;
     fprintd.enable = true;
     pulseaudio.enable = false;
@@ -82,7 +74,7 @@
       ''
         mkdir -p $out/share/kvm
 
-        cp ${./intelgopdriver.efi} $out/share/kvm/intelgopdriver_framework.bin
+        cp ${./intelgopdriver.bin} $out/intelgopdriver.bin
       ''
     )
   ];
@@ -118,6 +110,7 @@
         '';
       };
     };
+
   };
 
   xdg.portal = {

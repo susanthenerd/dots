@@ -10,7 +10,7 @@
     package = null;
     config = rec {
       modifier = "Mod4";
-      terminal = "${pkgs.alacritty}/bin/alacritty";
+      terminal = "ghostty";
       menu = "${pkgs.fuzzel}/bin/fuzzel";
 
       fonts = {

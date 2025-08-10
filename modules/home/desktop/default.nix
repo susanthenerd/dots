@@ -16,6 +16,8 @@
     ./swaylock.nix
     ./xdg.nix
     ./i3wsr.nix
+    ./looking-glass-client.nix
+    ./ghostty.nix
   ];
 
   home.packages = with pkgs; [

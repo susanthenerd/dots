@@ -36,29 +36,40 @@
         "Google-chrome" = "Chrome";
         "jetbrains-clion" = "CLion";
         "jetbrains-rustrover" = "Rust Rover";
+        "jetbrains-pycharm" = "PyCharm";
         "Cursor" = "Code";
         "discord" = "Discord";
+        "1Password" = "1Password";
         "com.github.th_ch.youtube_music" = "Youtube Music";
       };
 
       app_id = {
         "virt-manager-wrapped" = "virt-manager";
+        "com.mitchellh.ghostty" = "Ghostty";
+        "firefox" = "firefox";
+        "looking-glass-client" = "looking-glass";
+        "google-chrome" = "Chrome";
       };
+
     };
     icons = {
       "firefox" = "";
       "Chrome" = "";
       "CLion" = "";
       "Rust Rover" = "";
+      "PyCharm" = "";
       "Code" = "";
       "Discord" = "󰙯";
-      "Alacritty" = "";
+      "Ghostty" = "";
       "steam" = "";
       "obs" = "";
-      "virt-manager" = "";
+      "virt-manager" = "";
       "nvim.*" = "";
       "steam*" = "";
       "Youtube Music" = "";
+      "Claude" = "";
+      "looking-glass" = "";
+      "1Password" = "󰌆";
     };
 
     options = {

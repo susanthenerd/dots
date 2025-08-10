@@ -14,8 +14,8 @@
         blocks = [
           {
             block = "music";
-            format = " $icon {$combo.str(max_w:20,rot_interval:0.5) $play $next |}";
-            format_alt = " $icon ";
+            format = " $icon ";
+            format_alt = " $icon {$combo.str(max_w:20,rot_interval:0.5) $play $next |}";
             click = [
               {
                 button = "back";
@@ -32,11 +32,6 @@
               {
                 button = "up";
                 action = "volume_up";
-              }
-              {
-                button = "middle";
-                widget = ".";
-                action = "toggle_format";
               }
             ];
           }
@@ -59,7 +54,6 @@
           }
           {
             block = "backlight";
-            invert_icons = true;
             format = "$icon $brightness";
           }
           {
