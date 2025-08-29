@@ -39,6 +39,8 @@
       pulse.enable = true;
     };
 
+    fwupd.enable = true;
+
     blueman.enable = true;
     flatpak.enable = true;
     gnome.gnome-keyring.enable = true;

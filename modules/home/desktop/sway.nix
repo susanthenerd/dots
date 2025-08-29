@@ -170,11 +170,6 @@
         };
       };
 
-      output = {
-        eDP-1 = {
-          scale = "1";
-        };
-      };
       window = {
         border = 2;
         titlebar = true;

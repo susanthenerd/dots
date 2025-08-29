@@ -72,10 +72,14 @@
     kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
   };
 
-  services.udev = {
-    extraRules = ''
-      SUBSYSTEM=="kvmfr", OWNER="susan", GROUP="kvm", MODE="0660"
-    '';
+  services = {
+    udev = {
+      extraRules = ''
+        SUBSYSTEM=="kvmfr", OWNER="susan", GROUP="kvm", MODE="0660"
+      '';
+      packages = [ pkgs.ddcutil ];
+    };
+    hardware.bolt.enable = true;
   };
 
   hardware = {
@@ -99,5 +103,6 @@
     };
 
     sriov.enable = true;
+    i2c.enable = true;
   };
 }

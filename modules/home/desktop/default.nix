@@ -18,9 +18,6 @@
     ./i3wsr.nix
     ./looking-glass-client.nix
     ./ghostty.nix
-  ];
-
-  home.packages = with pkgs; [
-    #kdePackages.dolphin
+    ./kanshi.nix
   ];
 }
