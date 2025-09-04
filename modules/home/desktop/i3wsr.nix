@@ -41,6 +41,7 @@
         "discord" = "Discord";
         "1Password" = "1Password";
         "com.github.th_ch.youtube_music" = "Youtube Music";
+        "ticktick" = "ticktick";
       };
 
       app_id = {
@@ -49,6 +50,11 @@
         "firefox" = "firefox";
         "looking-glass-client" = "looking-glass";
         "google-chrome" = "Chrome";
+        "cursor" = "Code";
+        "discord" = "Discord";
+        "com.github.th_ch.youtube_music" = "Youtube Music";
+        "ticktick" = "ticktick";
+        "org.gnome.Nautilus" = "Nautilus";
       };
 
     };
@@ -70,6 +76,9 @@
       "Claude" = "";
       "looking-glass" = "";
       "1Password" = "󰌆";
+      "heroic" = "";
+      "ticktick" = "";
+      "Nautilus" = "";
     };
 
     options = {

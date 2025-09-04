@@ -42,6 +42,7 @@
     kernelModules = [
       "kvm-intel"
       "kvmfr"
+      "msr"
     ];
 
     extraModulePackages = [
@@ -96,7 +97,13 @@
       enableGraphical = true;
     };
 
-    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    cpu = {
+      intel.updateMicrocode = true;
+      x86.msr.enable = true;
+    };
+
+    enableRedistributableFirmware = true;
+
     bluetooth = {
       enable = true;
       powerOnBoot = true;
