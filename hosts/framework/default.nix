@@ -8,6 +8,8 @@
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
+    ../../modules/nixos/kvmfr.nix
+    ../../modules/nixos/tailscale.nix
   ];
 
   programs = {

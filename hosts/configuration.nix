@@ -52,7 +52,6 @@
     sbctl
     pciutils
     killall
-
   ];
 
   system = {

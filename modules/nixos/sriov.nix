@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.hardware.sriov;
+  cfg = config.hardware.graphics.sriov;
 in
 {
-  options.hardware.sriov = {
+  options.hardware.graphics.sriov = {
     enable = lib.mkOption {
       type = lib.types.bool;
       default = false;

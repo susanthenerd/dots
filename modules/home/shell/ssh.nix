@@ -1,8 +1,28 @@
-{config, lib, pkgs, ...} : {
-programs.ssh = {
-   enable = true;
-   extraConfig = ''
-    IdentityAgent ~/.1password/agent.sock
-   '';
- };
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
+  programs.ssh = {
+    enable = true;
+    enableDefaultConfig = false;
+    extraConfig = ''
+      IdentityAgent ~/.1password/agent.sock
+    '';
+
+    matchBlocks."*" = {
+      forwardAgent = false;
+      addKeysToAgent = "no";
+      compression = false;
+      serverAliveInterval = 0;
+      serverAliveCountMax = 3;
+      hashKnownHosts = false;
+      userKnownHostsFile = "~/.ssh/known_hosts";
+      controlMaster = "no";
+      controlPath = "~/.ssh/master-%r@%n:%p";
+      controlPersist = "no";
+    };
+  };
 }

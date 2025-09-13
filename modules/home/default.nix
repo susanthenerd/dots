@@ -19,44 +19,52 @@
       "NIXOS_OZONE_WL" = 1;
     };
 
-    packages = with pkgs; [
-      htop
-      nm-tray
-      pavucontrol
-      brightnessctl
-      vlc
-      clang
-      clang-tools
-      gdb
-      cmake
-      jetbrains.clion
-      jetbrains.rust-rover
-      grim
-      slurp
-      wl-clipboard
-      wget
-      unzip
-      deploy-rs
-      vscode
-      age
-      sops
-      devenv
-      (discord.override {
-        withMoonlight = true;
-      })
+    packages =
+      with pkgs;
+      [
+        htop
+        pavucontrol
+        brightnessctl
+        vlc
+        clang
+        clang-tools
+        gdb
+        cmake
+        jetbrains.clion
+        jetbrains.rust-rover
+        grim
+        slurp
+        wl-clipboard
+        wget
+        unzip
+        deploy-rs
+        vscode
+        age
+        sops
+        devenv
+        (discord.override {
+          withMoonlight = true;
+        })
 
-      brightnessctl
-      code-cursor
-      remmina
-      playerctl
-      rustup
-      youtube-music
-      easyeffects
-      btop
-      nautilus
-      heroic
-      ticktick
-    ];
+        brightnessctl
+        code-cursor
+        remmina
+        playerctl
+        rustup
+        youtube-music
+        easyeffects
+        btop
+        nautilus
+        heroic
+        prismlauncher
+        ticktick
+        nicotine-plus
+        libation
+        cozy
+      ]
+      ++ (with inputs.nix-ai-tools.packages.${pkgs.system}; [
+        opencode
+      ]);
 
     stateVersion = "24.11";
     shell = {

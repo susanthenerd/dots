@@ -38,10 +38,8 @@
         "jetbrains-rustrover" = "Rust Rover";
         "jetbrains-pycharm" = "PyCharm";
         "Cursor" = "Code";
-        "discord" = "Discord";
-        "1Password" = "1Password";
-        "com.github.th_ch.youtube_music" = "Youtube Music";
         "ticktick" = "ticktick";
+        "steam" = "Steam";
       };
 
       app_id = {
@@ -55,6 +53,8 @@
         "com.github.th_ch.youtube_music" = "Youtube Music";
         "ticktick" = "ticktick";
         "org.gnome.Nautilus" = "Nautilus";
+        "1Password" = "1Password";
+        "org.prismlauncher.PrismLauncher" = "Prism Launcher";
       };
 
     };
@@ -67,7 +67,7 @@
       "Code" = "";
       "Discord" = "󰙯";
       "Ghostty" = "";
-      "steam" = "";
+      "Steam" = "";
       "obs" = "";
       "virt-manager" = "";
       "nvim.*" = "";
@@ -79,6 +79,7 @@
       "heroic" = "";
       "ticktick" = "";
       "Nautilus" = "";
+      "Prism Launcher" = "";
     };
 
     options = {

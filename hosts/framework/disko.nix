@@ -25,6 +25,7 @@
                 ];
               };
             };
+
             luks = {
               size = "100%";
               content = {
@@ -46,20 +47,18 @@
       };
     };
 
-    lvm_vg = {
-      pool = {
-        type = "lvm_vg";
-        lvs = {
-          root = {
-            size = "100%FREE";
-            content = {
-              type = "filesystem";
-              format = "btrfs";
-              mountpoint = "/";
-              mountOptions = [
-                "defaults"
-              ];
-            };
+    lvm_vg.pool = {
+      type = "lvm_vg";
+      lvs = {
+        root = {
+          size = "100%FREE";
+          content = {
+            type = "filesystem";
+            format = "btrfs";
+            mountpoint = "/";
+            mountOptions = [
+              "defaults"
+            ];
           };
         };
       };

@@ -28,7 +28,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
+
+    nix-ai-tools.url = "github:numtide/nix-ai-tools";
     flake-parts.url = "github:hercules-ci/flake-parts";
+
+    deploy-rs.url = "github:serokell/deploy-rs";
+
   };
 
   outputs =
@@ -39,6 +50,9 @@
       disko,
       lanzaboote,
       i915-sriov-dkms,
+      quadlet-nix,
+      sops-nix,
+      deploy-rs,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } (
@@ -112,9 +126,36 @@
 
                   disko.nixosModules.disko
                   lanzaboote.nixosModules.lanzaboote
+
                 ];
               }
             );
+
+            vps = nixpkgs.lib.nixosSystem {
+              system = "x86_64-linux";
+
+              modules = [
+                ./hosts/vps
+                ./modules/nix-common.nix
+
+                quadlet-nix.nixosModules.quadlet
+                disko.nixosModules.disko
+                sops-nix.nixosModules.sops
+              ];
+            };
+          };
+
+          deploy = {
+            remoteBuild = true;
+            nodes.vps = {
+              hostname = "vps.susan.lol";
+              sshUser = "root";
+
+              profiles.system = {
+                user = "root";
+                path = deploy-rs.lib.x86_64-linux.activate.nixos top.config.flake.nixosConfigurations.vps;
+              };
+            };
           };
         };
         systems = [ "x86_64-linux" ];

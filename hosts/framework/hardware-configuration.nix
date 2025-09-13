@@ -35,19 +35,14 @@
 
       kernelModules = [
         "dm-snapshot"
-        "kvmfr"
       ];
     };
 
     kernelModules = [
       "kvm-intel"
-      "kvmfr"
-      "msr"
     ];
 
-    extraModulePackages = [
-      config.boot.kernelPackages.kvmfr
-    ];
+    extraModulePackages = [ ];
 
     loader = {
       systemd-boot = {
@@ -67,29 +62,29 @@
       "intel_iommu=on"
     ];
 
-    extraModprobeConfig = ''
-      options kvmfr static_size_mb=128
-    '';
     kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
   };
 
   services = {
-    udev = {
-      extraRules = ''
-        SUBSYSTEM=="kvmfr", OWNER="susan", GROUP="kvm", MODE="0660"
-      '';
-      packages = [ pkgs.ddcutil ];
-    };
+    udev.packages = [ pkgs.ddcutil ];
     hardware.bolt.enable = true;
   };
 
   hardware = {
+    kvmfr = {
+      enable = false;
+      staticSizeMB = 128;
+      user = "susan";
+      group = "kvm";
+    };
+
     graphics = {
       enable = true;
       extraPackages = with pkgs; [
         intel-media-driver
         libvdpau-va-gl
       ];
+      sriov.enable = false;
     };
 
     logitech.wireless = {
@@ -109,7 +104,6 @@
       powerOnBoot = true;
     };
 
-    sriov.enable = true;
     i2c.enable = true;
   };
 }
