@@ -4,10 +4,6 @@
   pkgs,
   ...
 }:
-
-let
-  domain = "headscale.vps.susan.lol";
-in
 {
   services = {
     headscale = {
@@ -15,7 +11,7 @@ in
       settings = {
         address = "0.0.0.0";
         port = 8080;
-        server_url = "https://${domain}";
+        server_url = "https://headscale.vps.susan.lol";
         dns = {
           base_domain = "tailnet.susan.lol";
           nameservers.global = [
@@ -25,20 +21,5 @@ in
         };
       };
     };
-
-    caddy = {
-      enable = true;
-      virtualHosts = {
-        "${domain}" = {
-          extraConfig = ''
-            reverse_proxy http://localhost:${toString config.services.headscale.port}
-          '';
-        };
-      };
-    };
   };
-  networking.firewall.allowedTCPPorts = [
-    80
-    443
-  ];
 }

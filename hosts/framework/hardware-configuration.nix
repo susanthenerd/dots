@@ -17,6 +17,7 @@
     firewall.trustedInterfaces = [
       "wlp166s0"
       "virbr0"
+      "tailscale0"
     ];
   };
 

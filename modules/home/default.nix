@@ -64,6 +64,11 @@
       ]
       ++ (with inputs.nix-ai-tools.packages.${pkgs.system}; [
         opencode
+        crush
+        claude-code
+        claude-code-router
+        codex
+        crush
       ]);
 
     stateVersion = "24.11";

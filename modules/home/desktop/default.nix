@@ -19,5 +19,6 @@
     ./looking-glass-client.nix
     ./ghostty.nix
     ./kanshi.nix
+    ./syncthing.nix
   ];
 }
