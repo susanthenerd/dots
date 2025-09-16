@@ -27,18 +27,18 @@
       url = "github:strongtz/i915-sriov-dkms";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
 
     nix-ai-tools.url = "github:numtide/nix-ai-tools";
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     deploy-rs.url = "github:serokell/deploy-rs";
+
+    clan-core = {
+      url = "https://git.clan.lol/clan/clan-core/archive/main.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+    };
 
   };
 
@@ -51,8 +51,7 @@
       lanzaboote,
       i915-sriov-dkms,
       quadlet-nix,
-      sops-nix,
-      deploy-rs,
+      clan-core,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } (
@@ -64,48 +63,55 @@
       }:
       {
 
+        imports = [
+          clan-core.flakeModules.default
+        ];
+
         flake = {
           overlays = {
             looking-glass-overlay = import ./overlays/looking-glass-client.nix;
           };
 
-          nixosConfigurations = {
-            framework = withSystem "x86_64-linux" (
-              {
-                config,
-                inputs',
-                pkgs,
-                ...
-              }:
-              nixpkgs.lib.nixosSystem {
-                system = "x86_64-linux";
-                specialArgs = {
-                  packages = config.packages;
+          clan = {
+            meta.name = "my-clan";
 
-                  inherit inputs inputs';
+            inventory = {
+              machines = {
+                framework = {
+                  tags = [
+                    "laptop"
+                    "client"
+                  ];
                 };
 
-                modules = [
-                  { nixpkgs = { inherit pkgs; }; }
-                  {
-                    nix.settings = {
-                      substituters = [
-                        "https://nix-community.cachix.org"
-                        "https://devenv.cachix.org"
-                        "https://cache.nixos.org"
-                      ];
-                      trusted-public-keys = [
-                        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-                        "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
-                      ];
-                    };
-                  }
+                vps = {
+                  tags = [
+                    "server"
+                  ];
+                };
+              };
 
+              imports = [
+                ./instances/admin.nix
+                ./instances/sshd.nix
+                ./instances/clan-cache.nix
+              ];
+
+              # Instances are provided via clan.imports above
+              instances = { };
+            };
+            machines = {
+
+              framework = {
+                nixpkgs.hostPlatform = "x86_64-linux";
+                clan.core.networking.targetHost = "root@framework.tailnet.susan.lol";
+
+                imports = [
                   ./hosts/framework
+                  ./modules/nix-common.nix
                   ./hosts/configuration.nix
                   ./modules/nix-common.nix
                   ./modules/nixos/sriov.nix
-                  ./modules/nixos/livebook.nix
 
                   i915-sriov-dkms.nixosModules.default
 
@@ -124,39 +130,39 @@
                     };
                   }
 
+                  {
+                    environment.systemPackages = [ clan-core.packages."x86_64-linux".clan-cli ];
+                  }
+
+                  {
+                    nixpkgs = {
+                      overlays = [
+                        top.config.flake.overlays.looking-glass-overlay
+                      ];
+                    };
+                  }
+
+                  disko.nixosModules.disko
+                  lanzaboote.nixosModules.lanzaboote
+                ];
+
+              };
+              vps = {
+                nixpkgs.hostPlatform = "x86_64-linux";
+                clan.core.networking.targetHost = "root@vps";
+
+                imports = [
+                  ./modules/nix-common.nix
+
+                  quadlet-nix.nixosModules.quadlet
                   disko.nixosModules.disko
                   lanzaboote.nixosModules.lanzaboote
 
                 ];
-              }
-            );
-
-            vps = nixpkgs.lib.nixosSystem {
-              system = "x86_64-linux";
-
-              modules = [
-                ./hosts/vps
-                ./modules/nix-common.nix
-
-                quadlet-nix.nixosModules.quadlet
-                disko.nixosModules.disko
-                sops-nix.nixosModules.sops
-              ];
-            };
-          };
-
-          deploy = {
-            remoteBuild = true;
-            nodes.vps = {
-              hostname = "vps.susan.lol";
-              sshUser = "root";
-
-              profiles.system = {
-                user = "root";
-                path = deploy-rs.lib.x86_64-linux.activate.nixos top.config.flake.nixosConfigurations.vps;
               };
             };
           };
+
         };
         systems = [ "x86_64-linux" ];
 
@@ -168,16 +174,6 @@
             ...
           }:
           {
-
-            _module.args.pkgs = import nixpkgs {
-              inherit system;
-              overlays = [
-                top.config.flake.overlays.looking-glass-overlay
-              ];
-              config = {
-                allowUnfree = true;
-              };
-            };
           };
       }
     );

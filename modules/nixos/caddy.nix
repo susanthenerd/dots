@@ -10,7 +10,7 @@
     virtualHosts = {
       "headscale.vps.susan.lol" = {
         extraConfig = ''
-          reverse_proxy http://localhost:8080
+          reverse_proxy http://127.0.0.1:8080
         '';
       };
     };

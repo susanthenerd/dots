@@ -1,9 +1,0 @@
-{
-  "machines": {
-    "vps": {
-      "tags": [
-        "server"
-      ]
-    }
-  }
-}
