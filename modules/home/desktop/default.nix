@@ -20,5 +20,6 @@
     ./ghostty.nix
     ./kanshi.nix
     ./syncthing.nix
+    ./handlr-regex.nix
   ];
 }

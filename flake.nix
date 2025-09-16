@@ -70,6 +70,7 @@
         flake = {
           overlays = {
             looking-glass-overlay = import ./overlays/looking-glass-client.nix;
+            todoist-overlay = import ./overlays/todoist.nix;
           };
 
           clan = {
@@ -84,18 +85,7 @@
                   ];
                 };
 
-                vps = {
-                  tags = [
-                    "server"
-                  ];
-                };
               };
-
-              imports = [
-                ./instances/admin.nix
-                ./instances/sshd.nix
-                ./instances/clan-cache.nix
-              ];
 
               # Instances are provided via clan.imports above
               instances = { };
@@ -135,11 +125,12 @@
                   }
 
                   {
-                    nixpkgs = {
-                      overlays = [
-                        top.config.flake.overlays.looking-glass-overlay
-                      ];
+
+                    nix.settings = {
+                      substituters = [ "https://devenv.cachix.org" ];
+                      trusted-public-keys = [ "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=" ];
                     };
+
                   }
 
                   disko.nixosModules.disko
@@ -147,19 +138,7 @@
                 ];
 
               };
-              vps = {
-                nixpkgs.hostPlatform = "x86_64-linux";
-                clan.core.networking.targetHost = "root@vps";
 
-                imports = [
-                  ./modules/nix-common.nix
-
-                  quadlet-nix.nixosModules.quadlet
-                  disko.nixosModules.disko
-                  lanzaboote.nixosModules.lanzaboote
-
-                ];
-              };
             };
           };
 
@@ -174,6 +153,14 @@
             ...
           }:
           {
+            _module.args.pkgs = import inputs.nixpkgs {
+              inherit system;
+              overlays = [
+                top.config.flake.overlays.looking-glass-overlay
+                top.config.flake.overlays.todoist-overlay
+              ];
+              config = { };
+            };
           };
       }
     );

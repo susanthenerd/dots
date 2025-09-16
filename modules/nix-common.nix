@@ -12,6 +12,8 @@
         "flakes"
       ];
       auto-optimise-store = true;
+
+      trusted-substituters = [ "https://cache.nixos.org/" ];
     };
   };
 

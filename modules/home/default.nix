@@ -41,6 +41,11 @@
         vscode
         age
         sops
+        morgen
+        todoist
+        ticktick
+        todoist-electron
+
         devenv
         (discord.override {
           withMoonlight = true;
@@ -48,7 +53,6 @@
 
         brightnessctl
         code-cursor
-        remmina
         playerctl
         rustup
         youtube-music
@@ -57,18 +61,13 @@
         nautilus
         heroic
         prismlauncher
-        ticktick
         nicotine-plus
         libation
-        cozy
+        anki
       ]
       ++ (with inputs.nix-ai-tools.packages.${pkgs.system}; [
         opencode
-        crush
-        claude-code
-        claude-code-router
         codex
-        crush
       ]);
 
     stateVersion = "24.11";
