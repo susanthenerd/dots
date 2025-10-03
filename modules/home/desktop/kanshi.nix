@@ -8,6 +8,7 @@ let
   laptop = "eDP-1";
   main = "LG Electronics LG ULTRAFINE 505NTEPHC988";
   left = "LG Electronics LG ULTRAFINE 505NTLEHC984";
+  right = "LG Electronics LG ULTRAFINE 506NTFAHW667";
 in
 {
   services.kanshi = {
@@ -42,10 +43,17 @@ in
               position = "2160,810";
             }
             {
+              # right monitor vertical
+              criteria = right;
+              scale = 1.0;
+              transform = "270";
+              position = "6000,0";
+            }
+            {
               # laptop monitor
               criteria = laptop;
-              scale = 1.25;
-              position = "6000,1120";
+              scale = 1.0;
+              position = "8160,810";
             }
           ];
         };

@@ -57,13 +57,16 @@
         nautilus
         heroic
         prismlauncher
-        ticktick
         nicotine-plus
         libation
-        cozy
+
+        morgen
+        todoist-electron
+
       ]
       ++ (with inputs.nix-ai-tools.packages.${pkgs.system}; [
-        opencode
+        codex
+        claude-code
       ]);
 
     stateVersion = "24.11";

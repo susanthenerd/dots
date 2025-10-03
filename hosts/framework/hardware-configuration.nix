@@ -72,7 +72,7 @@
 
   hardware = {
     kvmfr = {
-      enable = false;
+      enable = true;
       staticSizeMB = 128;
       user = "susan";
       group = "kvm";
@@ -84,7 +84,7 @@
         intel-media-driver
         libvdpau-va-gl
       ];
-      sriov.enable = false;
+      sriov.enable = true;
     };
 
     logitech.wireless = {

@@ -1,7 +1,7 @@
 final: prev:
 let
-  gitCommitHash = "f15d72c";
-  commitSrcHash = "sha256-UDSRL33nae5F/d2Bfoo52EytyiuWkwutXkSQD3n86/g=";
+  gitCommitHash = "fddcb7f";
+  commitSrcHash = "sha256-e5Lvzbj+i5U70/NH73CYFIen44hjNIyT+S7dy4yS5/0=";
 
 in
 {
