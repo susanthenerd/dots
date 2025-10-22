@@ -55,9 +55,11 @@
         "org.gnome.Nautilus" = "Nautilus";
         "1Password" = "1Password";
         "org.prismlauncher.PrismLauncher" = "Prism Launcher";
+        "windsurf" = "Code";
+        "org.pulseaudio.volumecontrol" = "Volume";
       };
-
     };
+
     icons = {
       "firefox" = "";
       "Chrome" = "";
@@ -80,6 +82,7 @@
       "ticktick" = "";
       "Nautilus" = "";
       "Prism Launcher" = "";
+      "Volume" = "󰎄";
     };
 
     options = {

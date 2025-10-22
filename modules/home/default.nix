@@ -31,7 +31,7 @@
         gdb
         cmake
         jetbrains.clion
-        jetbrains.rust-rover
+        # jetbrains.rust-rover
         grim
         slurp
         wl-clipboard
@@ -47,6 +47,7 @@
         })
 
         brightnessctl
+        obsidian
         code-cursor
         remmina
         playerctl
@@ -59,14 +60,12 @@
         prismlauncher
         nicotine-plus
         libation
-
-        morgen
         todoist-electron
 
+        windsurf
       ]
       ++ (with inputs.nix-ai-tools.packages.${pkgs.system}; [
         codex
-        claude-code
       ]);
 
     stateVersion = "24.11";
@@ -98,3 +97,4 @@
   };
 
 }
+

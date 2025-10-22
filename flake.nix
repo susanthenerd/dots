@@ -24,7 +24,7 @@
     };
 
     i915-sriov-dkms = {
-      url = "github:strongtz/i915-sriov-dkms";
+      url = "github:strongtz/i915-sriov-dkms/";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -67,6 +67,7 @@
         flake = {
           overlays = {
             looking-glass-overlay = import ./overlays/looking-glass-client.nix;
+            cmake-overlay = import ./overlays/cmake.nix;
           };
 
           nixosConfigurations = {
@@ -148,6 +149,7 @@
               inherit system;
               overlays = [
                 top.config.flake.overlays.looking-glass-overlay
+                top.config.flake.overlays.cmake-overlay
               ];
               config = {
                 allowUnfree = true;

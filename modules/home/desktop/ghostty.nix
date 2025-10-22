@@ -17,6 +17,7 @@
       window-decoration = "server";
       adw-toolbar-style = "flat";
       gtk-wide-tabs = false;
+      shell-integration-features = "ssh-env";
     };
   };
 }

@@ -60,6 +60,8 @@
     kernelParams = [
       "iommu=pt"
       "intel_iommu=on"
+      "i915.force_probe=!46a6"
+      "xe.force_probe=46a6"
     ];
 
     kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;

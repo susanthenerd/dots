@@ -188,6 +188,11 @@
           dwt = "enabled";
           tap = "enabled";
         };
+
+        "*" = {
+          xkb_layout = "ro";
+        };
+
       };
     };
     /*

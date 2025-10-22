@@ -92,16 +92,7 @@
         package = pkgs.qemu_kvm;
         runAsRoot = true;
         swtpm.enable = true;
-        ovmf = {
-          enable = true;
-          packages = [
-            (pkgs.OVMF.override {
-              secureBoot = true;
-              httpSupport = true;
-              tpmSupport = true;
-            }).fd
-          ];
-        };
+
         verbatimConfig = ''
           cgroup_device_acl = [
             "/dev/null", "/dev/full", "/dev/zero",

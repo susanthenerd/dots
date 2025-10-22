@@ -31,7 +31,12 @@
         # see handlr-regex.nix for more details
         "x-scheme-handler/http" = [ "handlr-dispatcher.desktop" ];
         "x-scheme-handler/https" = [ "handlr-dispatcher.desktop" ];
+        "application/pdf" = [ "firefox.desktop" ];
       };
+
+      defaultApplicationPackages = [
+        pkgs.firefox
+      ];
     };
   };
 }

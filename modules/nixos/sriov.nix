@@ -20,29 +20,22 @@ in
       default = 7;
       description = "Maximum number of virtual functions to create.";
     };
-
-    enableGuc = lib.mkOption {
-      type = lib.types.int;
-      default = 3;
-      description = "Enable GuC (Graphics micro Controller) with specified value.";
-    };
   };
 
   config = lib.mkIf cfg.enable {
     boot = {
       kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
 
-      extraModulePackages = [ pkgs.i915-sriov ];
+      extraModulePackages = [ pkgs.xe-sriov ];
 
       blacklistedKernelModules = [
-        "xe"
+        "i915"
       ];
 
-      initrd.kernelModules = [ "i915" ];
+      initrd.kernelModules = [ "xe" ];
 
       extraModprobeConfig = ''
-        options i915 enable_guc=${toString cfg.enableGuc}
-        options i915 max_vfs=${toString cfg.maxVfs}
+        options xe max_vfs=${toString cfg.maxVfs}
       '';
     };
 
