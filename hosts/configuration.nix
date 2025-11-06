@@ -25,6 +25,8 @@
         "wheel"
         "video"
         "networkmanager"
+        "adbusers"
+        "kvm"
         "libvirtd"
       ];
       hashedPassword = "$6$vru/Kz/2RFnBeCXQ$FPDE/DET/P2pNfE2bpVsEdDCeMegmeMApE4l3m/2YR9t6qCSrdiTzqUr8aN1gnOTAcYXBQ30NUf3UtqxINmDL.";
@@ -32,6 +34,7 @@
   };
 
   programs = {
+    adb.enable = true;
     dconf.enable = true;
     fish.enable = true;
     neovim.enable = true;

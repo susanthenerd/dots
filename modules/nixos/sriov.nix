@@ -29,6 +29,7 @@ in
       extraModulePackages = [ pkgs.xe-sriov ];
 
       blacklistedKernelModules = [
+        "xe"
         "i915"
       ];
 

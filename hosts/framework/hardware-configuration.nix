@@ -73,12 +73,7 @@
   };
 
   hardware = {
-    kvmfr = {
-      enable = true;
-      staticSizeMB = 128;
-      user = "susan";
-      group = "kvm";
-    };
+    kvmfr.enable = true;
 
     graphics = {
       enable = true;

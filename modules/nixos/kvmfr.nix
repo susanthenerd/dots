@@ -21,12 +21,6 @@ in
       description = "Static framebuffer size in MB for kvmfr module (static_size_mb).";
     };
 
-    user = lib.mkOption {
-      type = lib.types.str;
-      default = "susan";
-      description = "User that owns /dev/kvmfr* devices via udev rule.";
-    };
-
     group = lib.mkOption {
       type = lib.types.str;
       default = "kvm";
@@ -45,7 +39,7 @@ in
     };
 
     services.udev.extraRules = ''
-      SUBSYSTEM=="kvmfr", OWNER="${cfg.user}", GROUP="${cfg.group}", MODE="0660"
+      SUBSYSTEM=="kvmfr", GROUP="${cfg.group}", MODE="0660"
     '';
   };
 }

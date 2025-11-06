@@ -8,10 +8,7 @@
   programs.git = {
     enable = true;
 
-    userEmail = "susan@susan.lol";
-    userName = "Susan";
-
-    extraConfig = {
+    settings = {
       gpg = {
         format = "ssh";
       };
@@ -23,6 +20,8 @@
       };
 
       user = {
+        email = "susan@susan.lol";
+        name = "Susan";
         signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINcre3PZxAV2Zt46k5NTegD4NgyzDnwrxFOr9g5vsUYr";
       };
     };

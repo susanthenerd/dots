@@ -1,7 +1,16 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   programs.fish = {
     enable = true;
-    shellInit = "set -g fish_greeting";
+    shellInit = ''
+      set -g fish_greeting
+      terminal-wakatime init | source
+    '';
+
   };
 }

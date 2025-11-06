@@ -53,7 +53,8 @@
         "com.github.th_ch.youtube_music" = "Youtube Music";
         "ticktick" = "ticktick";
         "org.gnome.Nautilus" = "Nautilus";
-        "1Password" = "1Password";
+        "1password" = "1Password";
+        "super-productivity" = "Super Productivity";
         "org.prismlauncher.PrismLauncher" = "Prism Launcher";
         "windsurf" = "Code";
         "org.pulseaudio.volumecontrol" = "Volume";
@@ -72,6 +73,7 @@
       "Steam" = "";
       "obs" = "";
       "virt-manager" = "";
+
       "nvim.*" = "";
       "steam*" = "";
       "Youtube Music" = "";
@@ -83,6 +85,7 @@
       "Nautilus" = "";
       "Prism Launcher" = "";
       "Volume" = "󰎄";
+      "Super Productivity" = "";
     };
 
     options = {

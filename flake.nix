@@ -33,12 +33,19 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    microvm-nix = {
+      url = "github:microvm-nix/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
 
     nix-ai-tools.url = "github:numtide/nix-ai-tools";
     flake-parts.url = "github:hercules-ci/flake-parts";
 
     deploy-rs.url = "github:serokell/deploy-rs";
+
+    terminal-wakatime.url = "github:hackclub/terminal-wakatime";
 
   };
 
@@ -53,6 +60,8 @@
       quadlet-nix,
       sops-nix,
       deploy-rs,
+      microvm-nix,
+      terminal-wakatime,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } (
@@ -94,13 +103,17 @@
                         "https://nix-community.cachix.org"
                         "https://devenv.cachix.org"
                         "https://cache.nixos.org"
+                        "https://microvm.cachix.org"
                       ];
                       trusted-public-keys = [
                         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
                         "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+                        "microvm.cachix.org-1:oXnBc6hRE3eX5rSYdRyMYXnfzcCxC7yKPTbZXALsqys="
                       ];
                     };
                   }
+
+                  sops-nix.nixosModules.sops
 
                   ./hosts/framework
                   ./hosts/configuration.nix
@@ -121,6 +134,10 @@
                           ./modules/home
                         ];
                       };
+
+                      sharedModules = [
+                        sops-nix.homeManagerModules.sops
+                      ];
                     };
                   }
 

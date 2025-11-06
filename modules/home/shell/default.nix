@@ -17,6 +17,8 @@
     ./yazi.nix
     ./zoxide.nix
     ./jujutsu.nix
+
+    ./wakatime.nix
   ];
 
   home.packages = with pkgs; [

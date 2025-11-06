@@ -52,6 +52,11 @@
       };
     };
 
+    mullvad-vpn = {
+      enable = true;
+      package = pkgs.mullvad-vpn;
+    };
+    resolved.enable = true;
     power-profiles-daemon.enable = true;
     fprintd.enable = true;
     pulseaudio.enable = false;
@@ -67,7 +72,7 @@
 
     pkgs.stress-ng
     pkgs.s-tui
-    pkgs.framework-system-tools
+    pkgs.framework-tool
     pkgs.fw-ectool
     pkgs.powertop
 
