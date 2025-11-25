@@ -29,14 +29,18 @@
         "thunderbolt"
         "nvme"
         "usb_storage"
+        "xe"
         "usbhid"
         "sd_mod"
       ];
 
       kernelModules = [
         "dm-snapshot"
+        "xe"
       ];
     };
+
+    blacklistedKernelModules = [ "i915" ];
 
     kernelModules = [
       "kvm-intel"
@@ -62,13 +66,19 @@
       "intel_iommu=on"
       "i915.force_probe=!46a6"
       "xe.force_probe=46a6"
+      "xe.max_vfs=7"
     ];
 
     kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
   };
 
   services = {
-    udev.packages = [ pkgs.ddcutil ];
+    udev = {
+      packages = [ pkgs.ddcutil ];
+      extraRules = ''
+        ACTION=="add", SUBSYSTEM=="pci", KERNEL=="0000:00:02.0",ATTR{sriov_numvfs}="7"
+      '';
+    };
     hardware.bolt.enable = true;
   };
 
@@ -81,7 +91,6 @@
         intel-media-driver
         libvdpau-va-gl
       ];
-      sriov.enable = true;
     };
 
     logitech.wireless = {
@@ -101,6 +110,7 @@
       powerOnBoot = true;
     };
 
+    gpgSmartcards.enable = true;
     i2c.enable = true;
   };
 }

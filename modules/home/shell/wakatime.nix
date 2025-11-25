@@ -11,7 +11,7 @@
     [
       wakatime-cli
     ]
-    ++ (with inputs.terminal-wakatime.packages.${pkgs.system}; [
+    ++ (with inputs.terminal-wakatime.packages.${pkgs.stdenv.hostPlatform.system}; [
       default
     ]);
 

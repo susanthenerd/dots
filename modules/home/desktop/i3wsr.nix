@@ -43,6 +43,7 @@
       };
 
       app_id = {
+        "Slack" = "Slack";
         "virt-manager-wrapped" = "virt-manager";
         "com.mitchellh.ghostty" = "Ghostty";
         "firefox" = "firefox";
@@ -58,10 +59,13 @@
         "org.prismlauncher.PrismLauncher" = "Prism Launcher";
         "windsurf" = "Code";
         "org.pulseaudio.volumecontrol" = "Volume";
+        "org.keepassxc.KeePassXC" = "Keepass";
+        "Mullvad VPN" = "Mullvad";
       };
     };
 
     icons = {
+      "Slack" = "";
       "firefox" = "";
       "Chrome" = "";
       "CLion" = "";
@@ -86,6 +90,9 @@
       "Prism Launcher" = "";
       "Volume" = "󰎄";
       "Super Productivity" = "";
+      "emacs" = "";
+      "Mullvad" = "";
+      "Keepass" = "󰌆";
     };
 
     options = {

@@ -23,12 +23,11 @@
     sway = {
       enable = true;
       extraPackages = [ ];
+      extraSessionCommands = ''
+        #        export WLR_DRM_DEVICES=/dev/dri/card7
+      '';
     };
 
-    gnupg.agent = {
-      enable = true;
-      enableSSHSupport = true;
-    };
   };
 
   services = {
@@ -61,6 +60,13 @@
     fprintd.enable = true;
     pulseaudio.enable = false;
     gvfs.enable = true;
+    livebook.enableUserService = true;
+    thermald.enable = true;
+  };
+
+  powerManagement = {
+    enable = true;
+    powertop.enable = true;
   };
 
   environment.systemPackages = [
@@ -75,6 +81,8 @@
     pkgs.framework-tool
     pkgs.fw-ectool
     pkgs.powertop
+
+    pkgs.pcsclite
 
     (pkgs.runCommand "intelgopdriver"
       {

@@ -27,6 +27,8 @@
           command = "${pkgs.i3wsr}/bin/i3wsr";
           always = true;
         }
+        { command = "keepassxc --minimized"; }
+        { command = "mullvad-vpn"; }
       ];
 
       bars = [

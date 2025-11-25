@@ -65,7 +65,6 @@
     # Before changing this value read the documentation for this option
     # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
     stateVersion = "25.05"; # Did you read the comment?
-    rebuild.enableNg = true;
   };
 
   documentation.nixos.enable = false;

@@ -20,5 +20,7 @@
     ./ghostty.nix
     ./kanshi.nix
     ./handlr-regex.nix
+    ./keepassxc.nix
+    ./gpg.nix
   ];
 }
