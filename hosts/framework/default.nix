@@ -8,7 +8,10 @@
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
+    ./kanata.nix
     ../../modules/nixos/kvmfr.nix
+    ../../modules/nixos/llama-server.nix
+    ./llama-server.nix
   ];
 
   programs = {
@@ -40,6 +43,17 @@
     };
 
     fwupd.enable = true;
+    ollama = {
+      enable = true;
+      package = pkgs.ollama-rocm;
+      rocmOverrideGfx = "11.0.0";
+    };
+
+    open-webui = {
+      enable = true;
+      host = "127.0.0.1";
+      port = 11111;
+    };
 
     blueman.enable = true;
     flatpak.enable = true;
@@ -56,12 +70,16 @@
       package = pkgs.mullvad-vpn;
     };
     resolved.enable = true;
-    power-profiles-daemon.enable = true;
+
     fprintd.enable = true;
     pulseaudio.enable = false;
     gvfs.enable = true;
     livebook.enableUserService = true;
-    thermald.enable = true;
+
+    tuned = {
+      enable = true;
+      ppdSupport = true;
+    };
   };
 
   powerManagement = {
@@ -76,6 +94,12 @@
         "$@"
     '')
 
+    pkgs.ryzenadj
+    pkgs.rocmPackages.rocminfo
+    pkgs.rocmPackages.rocsolver
+    pkgs.clinfo
+    pkgs.nvtopPackages.amd
+
     pkgs.stress-ng
     pkgs.s-tui
     pkgs.framework-tool
@@ -83,16 +107,6 @@
     pkgs.powertop
 
     pkgs.pcsclite
-
-    (pkgs.runCommand "intelgopdriver"
-      {
-      }
-      ''
-        mkdir -p $out/share/kvm
-
-        cp ${./intelgopdriver.bin} $out/intelgopdriver.bin
-      ''
-    )
   ];
   virtualisation = {
     docker = {

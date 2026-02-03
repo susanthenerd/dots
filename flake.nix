@@ -45,8 +45,6 @@
 
     deploy-rs.url = "github:serokell/deploy-rs";
 
-    terminal-wakatime.url = "github:hackclub/terminal-wakatime";
-
   };
 
   outputs =
@@ -60,7 +58,6 @@
       sops-nix,
       deploy-rs,
       microvm-nix,
-      terminal-wakatime,
       emacs-overlay,
       ...
     }:
@@ -85,9 +82,23 @@
               {
                 config,
                 inputs',
-                pkgs,
                 ...
               }:
+              let
+                pkgs = import nixpkgs {
+                  system = "x86_64-linux";
+                  overlays = [
+                    top.config.flake.overlays.looking-glass-overlay
+                    top.config.flake.overlays.cmake-overlay
+                    emacs-overlay.overlay
+                    top.config.flake.overlays.multiviewer-overlay
+                  ];
+                  config = {
+                    allowUnfree = true;
+                    rocmSupport = true;
+                  };
+                };
+              in
               nixpkgs.lib.nixosSystem {
                 system = "x86_64-linux";
                 specialArgs = {
@@ -97,7 +108,9 @@
                 };
 
                 modules = [
-                  { nixpkgs = { inherit pkgs; }; }
+                  {
+                    nixpkgs = { inherit pkgs; };
+                  }
                   {
                     nix.settings = {
                       substituters = [
@@ -128,7 +141,10 @@
                       useUserPackages = true;
                       useGlobalPkgs = true;
                       backupFileExtension = "bak";
-                      extraSpecialArgs = { inherit inputs; packages = config.packages; };
+                      extraSpecialArgs = {
+                        inherit inputs;
+                        packages = config.packages;
+                      };
                       users.susan = {
                         imports = [
                           ./modules/home

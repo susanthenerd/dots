@@ -9,7 +9,6 @@
     enable = true;
     shellInit = ''
       set -g fish_greeting
-      terminal-wakatime init | source
     '';
 
   };

@@ -99,6 +99,9 @@
         "${modifier}+b" = "splith";
         "${modifier}+v" = "splitv";
 
+        # EasyFocus
+        "${modifier}+Tab" = "exec ${pkgs.sway-easyfocus}/bin/sway-easyfocus focus";
+
         # Switch the current container between different layout styles
         "${modifier}+s" = "layout stacking";
         "${modifier}+w" = "layout tabbed";

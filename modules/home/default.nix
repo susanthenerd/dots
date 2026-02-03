@@ -19,7 +19,8 @@
     homeDirectory = "/home/susan";
 
     sessionVariables = {
-      "NIXOS_OZONE_WL" = 1;
+      "NIXOS_OZONE_WL" = "1";
+
     };
 
     packages =
@@ -33,6 +34,8 @@
         cmake
 
         jetbrains.clion
+        jetbrains-toolbox
+
         # jetbrains.rust-rover
         grim
         slurp
@@ -54,11 +57,12 @@
 
         brightnessctl
         obsidian
+        lmstudio
         code-cursor
         remmina
         playerctl
         rustup
-        youtube-music
+        pear-desktop
         easyeffects
         btop
         nautilus
@@ -68,9 +72,9 @@
         libation
 
         windsurf
-        slack
-        super-productivity
+        # super-productivity
         gcc
+        libreoffice
         signal-desktop
       ])
       ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
@@ -98,6 +102,7 @@
       enable = true;
       nix-direnv.enable = true;
     };
+
     ripgrep.enable = true;
   };
 

@@ -14,6 +14,7 @@
     ./mako.nix
     ./swayidle.nix
     ./swaylock.nix
+    ./sway-easyfocus.nix
     ./xdg.nix
     ./i3wsr.nix
     ./looking-glass-client.nix

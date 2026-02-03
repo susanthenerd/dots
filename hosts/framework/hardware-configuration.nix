@@ -29,22 +29,17 @@
         "thunderbolt"
         "nvme"
         "usb_storage"
-        "xe"
         "usbhid"
+        "amdgpu"
         "sd_mod"
       ];
 
       kernelModules = [
         "dm-snapshot"
-        "xe"
       ];
     };
 
-    blacklistedKernelModules = [ "i915" ];
-
-    kernelModules = [
-      "kvm-intel"
-    ];
+    blacklistedKernelModules = [ ];
 
     extraModulePackages = [ ];
 
@@ -62,11 +57,11 @@
     };
 
     kernelParams = [
-      "iommu=pt"
-      "intel_iommu=on"
-      "i915.force_probe=!46a6"
-      "xe.force_probe=46a6"
-      "xe.max_vfs=7"
+      "amd_iommu=on"
+      "amd_pstate=active"
+      "amdgpu.dcdebugmask=0x10"
+      "ttm.pages_limit=30720000"
+      "ttm.page_pool_size=30720000"
     ];
 
     kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
@@ -75,20 +70,24 @@
   services = {
     udev = {
       packages = [ pkgs.ddcutil ];
-      extraRules = ''
-        ACTION=="add", SUBSYSTEM=="pci", KERNEL=="0000:00:02.0",ATTR{sriov_numvfs}="7"
-      '';
     };
     hardware.bolt.enable = true;
   };
 
   hardware = {
     kvmfr.enable = true;
+    amdgpu = {
+      initrd.enable = true;
+      opencl.enable = true;
+    };
+
+    opengl.extraPackages = [
+      pkgs.rocmPackages.clr.icd
+    ];
 
     graphics = {
       enable = true;
       extraPackages = with pkgs; [
-        intel-media-driver
         libvdpau-va-gl
       ];
     };
@@ -99,7 +98,10 @@
     };
 
     cpu = {
-      intel.updateMicrocode = true;
+      amd = {
+        updateMicrocode = true;
+        ryzen-smu.enable = true;
+      };
       x86.msr.enable = true;
     };
 
