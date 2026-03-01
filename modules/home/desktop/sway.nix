@@ -60,6 +60,8 @@
         "XF86AudioNext" = "exec ${pkgs.playerctl}/bin/playerctl next";
         "XF86AudioPrev" = "exec ${pkgs.playerctl}/bin/playerctl previous";
 
+        # Swaybar
+        "${modifier}+Shift+b" = "exec swaymsg bar mode toggle";
         #Launch stuff
         "${modifier}+Return" = "exec ${terminal}";
         "${modifier}+Shift+Return" = "exec ${menu}";

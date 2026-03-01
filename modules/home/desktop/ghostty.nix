@@ -8,7 +8,7 @@
   programs.ghostty = {
     enable = true;
     settings = {
-      theme = "Gruvbox Dark Hard";
+      theme = "Monokai Pro";
       font-family = [
         "RecMonoDuotone Nerd Font Mono"
         "FontAwesome"

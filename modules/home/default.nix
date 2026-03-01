@@ -26,8 +26,7 @@
     packages =
       (with pkgs; [
         lutris
-        htop
-        pavucontrol
+
         brightnessctl
         vlc
         gdb
@@ -48,7 +47,7 @@
         sops
         devenv
         (discord.override {
-          withEquicord = true;
+          withVencord = true;
         })
 
         (bottles.override {
@@ -59,9 +58,8 @@
         obsidian
         lmstudio
         code-cursor
-        remmina
         playerctl
-        rustup
+
         pear-desktop
         easyeffects
         btop
@@ -71,8 +69,8 @@
         nicotine-plus
         libation
 
+        pavucontrol
         windsurf
-        # super-productivity
         gcc
         libreoffice
         signal-desktop
@@ -97,17 +95,16 @@
     home-manager.enable = true;
     obs-studio.enable = true;
     google-chrome.enable = true;
-    firefox.enable = true;
+    firefox = {
+      enable = true;
+      package = pkgs.firefox-bin;
+    };
     direnv = {
       enable = true;
       nix-direnv.enable = true;
     };
 
     ripgrep.enable = true;
-  };
-
-  services = {
-    blueman-applet.enable = true;
   };
 
   gtk = {

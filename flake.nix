@@ -18,11 +18,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    claude-desktop = {
-      url = "github:k3d3/claude-desktop-linux-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -39,12 +34,9 @@
     };
 
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
-
     llm-agents.url = "github:numtide/llm-agents.nix";
     flake-parts.url = "github:hercules-ci/flake-parts";
-
     deploy-rs.url = "github:serokell/deploy-rs";
-
   };
 
   outputs =
@@ -193,6 +185,7 @@
 
             packages = {
               pano-scrobbler = pkgs.callPackage ./packages/pano-scrobbler.nix { };
+              jackbox-utility = pkgs.callPackage ./packages/jackbox-utility.nix { };
             };
           };
       }

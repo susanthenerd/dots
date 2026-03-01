@@ -31,6 +31,18 @@
         ctx-size = "16384";
         fit = "on";
         jinja = "on";
+        cache-type-k = "q4_1";
+      };
+
+      "glm-4.7-flash-uncensored" = {
+        hf-repo = "DavidAU/GLM-4.7-Flash-Uncensored-Heretic-NEO-CODE-Imatrix-MAX-GGUF:Q4_K_M";
+        temp = "1.0";
+        top-p = "0.95";
+        min-p = "0.01";
+        ctx-size = "16384";
+        fit = "on";
+        jinja = "on";
+        cache-type-k = "q4_1";
       };
 
       "minimax-m2.1-139b" = {

@@ -29,6 +29,8 @@
       extraSessionCommands = ''
         #        export WLR_DRM_DEVICES=/dev/dri/card7
       '';
+
+      package = pkgs.swayfx;
     };
 
   };
@@ -43,19 +45,7 @@
     };
 
     fwupd.enable = true;
-    ollama = {
-      enable = true;
-      package = pkgs.ollama-rocm;
-      rocmOverrideGfx = "11.0.0";
-    };
 
-    open-webui = {
-      enable = true;
-      host = "127.0.0.1";
-      port = 11111;
-    };
-
-    blueman.enable = true;
     flatpak.enable = true;
     gnome.gnome-keyring.enable = true;
     displayManager = {
@@ -107,6 +97,10 @@
     pkgs.powertop
 
     pkgs.pcsclite
+    pkgs.bluetui
+    pkgs.impala
+    pkgs.wiremix
+
   ];
   virtualisation = {
     docker = {

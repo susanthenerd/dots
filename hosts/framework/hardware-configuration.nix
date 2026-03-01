@@ -12,7 +12,22 @@
 
   networking = {
     hostName = "framework";
-    networkmanager.enable = true;
+    networkmanager = {
+      enable = true;
+      wifi.backend = "iwd";
+    };
+
+    wireless.iwd = {
+      enable = true;
+      settings = {
+        Network = {
+          EnableIPv6 = true;
+        };
+        Settings = {
+          AutoConnect = true;
+        };
+      };
+    };
     useDHCP = lib.mkDefault true;
     firewall.trustedInterfaces = [
       "wlp166s0"
@@ -41,7 +56,14 @@
 
     blacklistedKernelModules = [ ];
 
-    extraModulePackages = [ ];
+    extraModulePackages = [
+      config.boot.kernelPackages.ddcci-driver
+    ];
+
+    kernelModules = [
+      "i2c-dev"
+      "ddcci_backlight"
+    ];
 
     loader = {
       systemd-boot = {
@@ -59,7 +81,6 @@
     kernelParams = [
       "amd_iommu=on"
       "amd_pstate=active"
-      "amdgpu.dcdebugmask=0x10"
       "ttm.pages_limit=30720000"
       "ttm.page_pool_size=30720000"
     ];
