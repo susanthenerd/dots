@@ -1,5 +1,5 @@
-{config, lib, pkgs, ...} : {
-  programs.bat = {
-    enable = true;
+{...}: {
+  flake.homeModules.bat = {
+    programs.bat.enable = true;
   };
 }

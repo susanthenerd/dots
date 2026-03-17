@@ -1,12 +1,6 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
-  nix = {
-    settings = {
+{...}: {
+  flake.nixosModules.nixCommon = {
+    nix.settings = {
       experimental-features = [
         "nix-command"
         "flakes"

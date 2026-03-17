@@ -1,6 +1,5 @@
-{ config, lib, pkgs, ... }:
-{
-  programs.starship = {
-    enable = true;
+{...}: {
+  flake.homeModules.starship = {
+    programs.starship.enable = true;
   };
 }

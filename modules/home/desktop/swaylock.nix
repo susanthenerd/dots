@@ -1,11 +1,5 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
-  programs.swaylock = {
-    enable = true;
+{...}: {
+  flake.homeModules.swaylock = {
+    programs.swaylock.enable = true;
   };
 }

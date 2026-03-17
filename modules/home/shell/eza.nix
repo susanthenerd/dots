@@ -1,8 +1,9 @@
-{ config, lib, pkgs, ... }:
-{
-  programs.eza = {
-    enable = true;
-    git = true;
-    icons = "auto";
+{...}: {
+  flake.homeModules.eza = {
+    programs.eza = {
+      enable = true;
+      git = true;
+      icons = "auto";
+    };
   };
 }

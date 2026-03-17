@@ -1,29 +1,25 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
-  programs.jujutsu = {
-    enable = true;
-    settings = {
-      user = {
-        email = "susan@susan.lol";
-        name = "Susan";
-      };
+{...}: {
+  flake.homeModules.jujutsu = {
+    programs.jujutsu = {
+      enable = true;
+      settings = {
+        user = {
+          email = "susan@susan.lol";
+          name = "Susan";
+        };
 
-      pager = {
-        paginate = "never";
-      };
+        pager = {
+          paginate = "never";
+        };
 
-      signing = {
-        behavior = "own";
-        backend = "gpg";
-      };
+        signing = {
+          behavior = "own";
+          backend = "gpg";
+        };
 
-      git = {
-        sign-on-push = true;
+        git = {
+          sign-on-push = true;
+        };
       };
     };
   };

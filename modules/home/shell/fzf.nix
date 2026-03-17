@@ -1,11 +1,5 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
-  programs.fzf = {
-    enable = true;
+{...}: {
+  flake.homeModules.fzf = {
+    programs.fzf.enable = true;
   };
 }

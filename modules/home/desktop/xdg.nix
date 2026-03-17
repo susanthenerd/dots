@@ -1,42 +1,35 @@
-{
-  config,
-  lib,
-  pkgs,
-  inputs,
-  ...
-}:
-{
-  xdg = {
-    enable = true;
-    portal = {
+{...}: {
+  flake.homeModules.xdg = {pkgs, ...}: {
+    xdg = {
       enable = true;
-      config = {
-        sway = {
-          default = [ "gtk" ];
-          "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
-          "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
+      portal = {
+        enable = true;
+        config = {
+          sway = {
+            default = ["gtk"];
+            "org.freedesktop.impl.portal.Screenshot" = ["wlr"];
+            "org.freedesktop.impl.portal.ScreenCast" = ["wlr"];
+          };
         };
+
+        extraPortals = [
+          pkgs.xdg-desktop-portal-wlr
+          pkgs.xdg-desktop-portal-gtk
+        ];
       };
 
-      extraPortals = [
-        pkgs.xdg-desktop-portal-wlr
-        pkgs.xdg-desktop-portal-gtk
-      ];
+      mimeApps = {
+        enable = true;
+        defaultApplications = {
+          "x-scheme-handler/http" = ["handlr-dispatcher.desktop"];
+          "x-scheme-handler/https" = ["handlr-dispatcher.desktop"];
+          "application/pdf" = ["firefox.desktop"];
+        };
 
-    };
-
-    mimeApps = {
-      enable = true;
-      defaultApplications = {
-        # see handlr-regex.nix for more details
-        "x-scheme-handler/http" = [ "handlr-dispatcher.desktop" ];
-        "x-scheme-handler/https" = [ "handlr-dispatcher.desktop" ];
-        "application/pdf" = [ "firefox.desktop" ];
+        defaultApplicationPackages = [
+          pkgs.firefox
+        ];
       };
-
-      defaultApplicationPackages = [
-        pkgs.firefox
-      ];
     };
   };
 }

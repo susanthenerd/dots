@@ -1,11 +1,5 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
-  services.mako = {
-    enable = true;
+{...}: {
+  flake.homeModules.mako = {
+    services.mako.enable = true;
   };
 }
