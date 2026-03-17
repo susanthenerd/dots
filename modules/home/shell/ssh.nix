@@ -4,9 +4,11 @@
       enable = true;
       enableDefaultConfig = false;
 
+
       matchBlocks."*" = {
         forwardAgent = false;
-        addKeysToAgent = "no";
+        addKeysToAgent = "yes";
+	identityFile = "~/.ssh/id_ed25519";
         compression = false;
         serverAliveInterval = 0;
         serverAliveCountMax = 3;

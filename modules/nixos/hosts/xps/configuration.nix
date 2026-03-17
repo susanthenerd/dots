@@ -3,27 +3,28 @@
   self,
   ...
 }: {
-  flake.nixosConfigurations.framework = inputs.nixpkgs.lib.nixosSystem {
+  flake.nixosConfigurations.xps = inputs.nixpkgs.lib.nixosSystem {
     modules = [
-      self.nixosModules.hostFramework
+      self.nixosModules.hostXps
     ];
   };
 
-  flake.nixosModules.hostFramework = {pkgs, ...}: {
+  flake.nixosModules.hostXps = {pkgs, ...}: {
     imports = [
-      self.nixosModules.frameworkHardware
-      self.nixosModules.frameworkKanata
-      self.nixosModules.frameworkLlamaServer
+      self.nixosModules.xpsHardware
+      self.nixosModules.xpsKanata
+#      self.nixosModules.xpsLlamaServer
       self.nixosModules.nixCommon
       self.nixosModules.kvmfr
-      self.nixosModules.llamaServer
+#      self.nixosModules.llamaServer
 
       inputs.sops-nix.nixosModules.sops
       inputs.disko.nixosModules.disko
       inputs.lanzaboote.nixosModules.lanzaboote
       inputs.home-manager.nixosModules.home-manager
+      inputs.nixos-hardware.nixosModules.dell-xps-15-9570-nvidia
 
-      self.diskoConfigurations.hostFramework
+      self.diskoConfigurations.hostXps
     ];
 
     nixpkgs.overlays = [
@@ -106,9 +107,6 @@
       sway = {
         enable = true;
         extraPackages = [];
-        extraSessionCommands = ''
-          #        export WLR_DRM_DEVICES=/dev/dri/card7
-        '';
         package = pkgs.swayfx;
       };
     };
@@ -120,16 +118,14 @@
       pciutils
       killall
 
-      ryzenadj
-      rocmPackages.rocminfo
-      rocmPackages.rocsolver
-      clinfo
-      nvtopPackages.amd
+      # ryzenadj
+      # rocmPackages.rocminfo
+      # rocmPackages.rocsolver
+      # clinfo
+      # nvtopPackages.amd
 
       stress-ng
       s-tui
-      framework-tool
-      fw-ectool
       powertop
 
       pcsclite

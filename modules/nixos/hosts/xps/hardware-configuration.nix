@@ -1,5 +1,5 @@
 {...}: {
-  flake.nixosModules.frameworkHardware = {
+  flake.nixosModules.xpsHardware = {
     config,
     lib,
     pkgs,
@@ -11,7 +11,7 @@
     ];
 
     networking = {
-      hostName = "framework";
+      hostName = "xps";
       networkmanager = {
         enable = true;
         wifi.backend = "iwd";
@@ -45,7 +45,7 @@
           "nvme"
           "usb_storage"
           "usbhid"
-          "amdgpu"
+          "i915"
           "sd_mod"
         ];
 
@@ -79,10 +79,6 @@
       };
 
       kernelParams = [
-        "amd_iommu=on"
-        "amd_pstate=active"
-        "ttm.pages_limit=30720000"
-        "ttm.page_pool_size=30720000"
       ];
 
       kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
@@ -108,8 +104,10 @@
 
       graphics = {
         enable = true;
+
+        # TODO: find if any extra is needed
         extraPackages = with pkgs; [
-          libvdpau-va-gl
+          
         ];
       };
 
@@ -119,11 +117,6 @@
       };
 
       cpu = {
-        amd = {
-          updateMicrocode = true;
-          ryzen-smu.enable = true;
-        };
-        x86.msr.enable = true;
       };
 
       enableRedistributableFirmware = true;

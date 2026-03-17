@@ -96,5 +96,8 @@
         inputs.sops-nix.homeManagerModules.sops
       ];
     };
+    networking = {
+      hostName = "wsl";
+    };
   };
 }

@@ -13,5 +13,5 @@ echo -n "Password" > /tmp/password.key
 ### Do the install
 
 ```sh
-sudo nix run 'github:nix-community/disko/latest#disko-install' -- --write-efi-boot-entries --flake 'github:susanthenerd/dots#framework' --disk nvme /dev/nvme0
+sudo nix --experimental-features 'nix-command flakes' run 'github:nix-community/disko/latest#disko-install' -- --write-efi-boot-entries --flake 'github:susanthenerd/dots#xps' --disk nvme /dev/nvme0
 ```

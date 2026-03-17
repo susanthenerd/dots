@@ -7,11 +7,8 @@
         gpg = {
           format = "ssh";
         };
-        "gpg \"ssh\"" = {
-          program = "${pkgs._1password-gui}/bin/op-ssh-sign";
-        };
         commit = {
-          gpgsign = true;
+          gpgsign = false;
         };
 
         user = {

@@ -46,7 +46,7 @@
     };
 
     sops = {
-      defaultSopsFile = ../../secrets/framework.yaml;
+      defaultSopsFile = ../../secrets/xps.yaml;
       age.keyFile = "/home/susan/.config/sops/age/keys.txt";
     };
   };

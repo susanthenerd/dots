@@ -1,5 +1,5 @@
 {...}: {
-  flake.diskoConfigurations.hostFramework = {
+  flake.diskoConfigurations.hostXps = {
     disko.devices = {
       disk = {
         nvme = {

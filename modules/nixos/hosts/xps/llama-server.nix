@@ -1,5 +1,5 @@
 {...}: {
-  flake.nixosModules.frameworkLlamaServer = {pkgs, ...}: {
+  flake.nixosModules.xpsLlamaServer = {pkgs, ...}: {
     services.llama-server = {
       enable = true;
       package = pkgs.llama-cpp.override {

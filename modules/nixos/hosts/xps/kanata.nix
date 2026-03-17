@@ -1,5 +1,5 @@
 {...}: {
-  flake.nixosModules.frameworkKanata = {
+  flake.nixosModules.xpsKanata = {
     hardware.uinput.enable = true;
     services.kanata = {
       enable = true;

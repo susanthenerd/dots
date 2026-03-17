@@ -12,11 +12,6 @@
           paginate = "never";
         };
 
-        signing = {
-          behavior = "own";
-          backend = "gpg";
-        };
-
         git = {
           sign-on-push = true;
         };
