@@ -7,6 +7,7 @@
         self.overlays.cmake
         inputs.emacs-overlay.overlay
         self.overlays.multiviewer
+        inputs.nix-vscode-extensions.overlays.default
       ];
       config = {
         allowUnfree = true;
@@ -16,6 +17,8 @@
     packages = {
       pano-scrobbler = pkgs.callPackage ../packages/pano-scrobbler.nix {};
       jackbox-utility = pkgs.callPackage ../packages/jackbox-utility.nix {};
+      t3code = pkgs.callPackage ../packages/t3code.nix {};
+      xwaylandvideobridge = pkgs.kdePackages.callPackage ../packages/xwaylandvideobridge.nix {};
     };
   };
 }

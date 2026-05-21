@@ -35,9 +35,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
-    llm-agents.url = "github:numtide/llm-agents.nix";
     deploy-rs.url = "github:serokell/deploy-rs";
+    nixos-hardware.url = "github:nixos/nixos-hardware";
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
     nixos-wsl = {
       url = "github:nix-community/NixOS-WSL/main";
@@ -45,5 +51,5 @@
     };
   };
 
-  outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 }

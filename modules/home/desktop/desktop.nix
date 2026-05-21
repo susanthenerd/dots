@@ -14,7 +14,6 @@
       self.homeModules.xdg
       self.homeModules.keepassxc
       self.homeModules.gpg
-      self.homeModules.handlrRegex
       self.homeModules.lookingGlassClient
     ];
   };

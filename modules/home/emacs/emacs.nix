@@ -1,7 +1,7 @@
 {...}: {
   flake.homeModules.emacs = {pkgs, ...}: {
     programs.emacs = {
-      enable = true;
+      enable = false;
       package =
         pkgs.emacsWithPackagesFromUsePackage {
           config = ./config.el;

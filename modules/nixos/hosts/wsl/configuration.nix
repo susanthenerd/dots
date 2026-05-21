@@ -25,6 +25,7 @@
     };
 
     nixpkgs.overlays = [
+      inputs.nix-vscode-extensions.overlays.default
       inputs.emacs-overlay.overlay
     ];
     nixpkgs.config.allowUnfree = true;

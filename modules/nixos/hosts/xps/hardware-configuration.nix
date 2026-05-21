@@ -1,133 +1,139 @@
-{...}: {
-  flake.nixosModules.xpsHardware = {
-    config,
-    lib,
-    pkgs,
-    modulesPath,
-    ...
-  }: {
-    imports = [
-      (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+{ ... }:
+{
+  flake.nixosModules.xpsHardware =
+    {
+      config,
+      lib,
+      pkgs,
+      modulesPath,
+      ...
+    }:
+    {
+      imports = [
+        (modulesPath + "/installer/scan/not-detected.nix")
+      ];
 
-    networking = {
-      hostName = "xps";
-      networkmanager = {
-        enable = true;
-        wifi.backend = "iwd";
-      };
+      networking = {
+        hostName = "xps";
+        networkmanager = {
+          enable = true;
+          wifi.backend = "iwd";
+          plugins = [pkgs.networkmanager-openvpn];
+        };
 
-      wireless.iwd = {
-        enable = true;
-        settings = {
-          Network = {
-            EnableIPv6 = true;
-          };
-          Settings = {
-            AutoConnect = true;
+        wireless.iwd = {
+          enable = true;
+          settings = {
+            Network = {
+              EnableIPv6 = true;
+            };
+            Settings = {
+              AutoConnect = true;
+            };
           };
         };
+        useDHCP = lib.mkDefault true;
+        firewall.trustedInterfaces = [
+          "wlp166s0"
+          "virbr0"
+        ];
       };
-      useDHCP = lib.mkDefault true;
-      firewall.trustedInterfaces = [
-        "wlp166s0"
-        "virbr0"
-      ];
-    };
 
-    nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+      nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
-    boot = {
-      initrd = {
-        availableKernelModules = [
-          "xhci_pci"
-          "thunderbolt"
-          "nvme"
-          "usb_storage"
-          "usbhid"
-          "i915"
-          "sd_mod"
+      boot = {
+        initrd = {
+          availableKernelModules = [
+            "xhci_pci"
+            "thunderbolt"
+            "nvme"
+            "usb_storage"
+            "usbhid"
+            "i915"
+            "sd_mod"
+          ];
+
+          kernelModules = [
+            "dm-snapshot"
+            "nvidia"
+            "i915"
+            "nvidia_modeset"
+            "nvidia_uvm"
+            "nvidia_drm"
+          ];
+        };
+
+        blacklistedKernelModules = [ ];
+
+        extraModulePackages = [
+          config.boot.kernelPackages.ddcci-driver
         ];
 
         kernelModules = [
-          "dm-snapshot"
+          "i2c-dev"
+          "ddcci_backlight"
         ];
-      };
 
-      blacklistedKernelModules = [];
-
-      extraModulePackages = [
-        config.boot.kernelPackages.ddcci-driver
-      ];
-
-      kernelModules = [
-        "i2c-dev"
-        "ddcci_backlight"
-      ];
-
-      loader = {
-        systemd-boot = {
-          enable = lib.mkForce true;
+        loader = {
+          systemd-boot = {
+            enable = lib.mkForce true;
+          };
+          efi.canTouchEfiVariables = true;
         };
-        efi.canTouchEfiVariables = true;
-      };
 
-      plymouth.enable = true;
-      lanzaboote = {
-        enable = false;
-        pkiBundle = "/etc/secureboot";
-      };
+        plymouth.enable = true;
+        lanzaboote = {
+          enable = false;
+          pkiBundle = "/etc/secureboot";
+        };
 
-      kernelParams = [
-      ];
-
-      kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
-    };
-
-    services = {
-      udev = {
-        packages = [pkgs.ddcutil];
-      };
-      hardware.bolt.enable = true;
-    };
-
-    hardware = {
-      kvmfr.enable = true;
-      amdgpu = {
-        initrd.enable = true;
-        opencl.enable = true;
-      };
-
-      opengl.extraPackages = [
-        pkgs.rocmPackages.clr.icd
-      ];
-
-      graphics = {
-        enable = true;
-
-        # TODO: find if any extra is needed
-        extraPackages = with pkgs; [
-          
+        kernelParams = [
         ];
+
+        kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
       };
 
-      logitech.wireless = {
-        enable = true;
-        enableGraphical = true;
+      services = {
+        udev = {
+          packages = [ pkgs.ddcutil ];
+        };
+        hardware.bolt.enable = true;
       };
 
-      cpu = {
+      hardware = {
+
+        nvidia = {
+          modesetting.enable = true;
+
+          package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
+        };
+
+        graphics = {
+          enable = true;
+
+          # TODO: find if any extra is needed
+          extraPackages = with pkgs; [
+
+          ];
+        };
+
+        logitech.wireless = {
+          enable = true;
+          enableGraphical = true;
+        };
+
+        cpu = {
+        };
+
+        enableRedistributableFirmware = true;
+
+        bluetooth = {
+          enable = true;
+          powerOnBoot = true;
+        };
+
+        gpgSmartcards.enable = true;
+        i2c.enable = true;
       };
-
-      enableRedistributableFirmware = true;
-
-      bluetooth = {
-        enable = true;
-        powerOnBoot = true;
-      };
-
-      gpgSmartcards.enable = true;
-      i2c.enable = true;
     };
-  };
 }

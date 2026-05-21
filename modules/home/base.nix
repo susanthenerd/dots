@@ -8,6 +8,9 @@
       self.homeModules.desktop
       self.homeModules.shell
       self.homeModules.emacs
+      self.homeModules.vscode
+      self.homeModules.discord
+      self.homeModules.cybesecurity
     ];
 
     home = {
@@ -20,67 +23,49 @@
 
       packages =
         (with pkgs; [
-          lutris
-
           brightnessctl
           vlc
           gdb
           cmake
 
-          jetbrains.clion
-          jetbrains-toolbox
+          # jetbrains.clion
 
-          # jetbrains.rust-rover
           grim
           slurp
           wl-clipboard
           wget
           unzip
           deploy-rs
-          vscode
           age
           sops
           devenv
-          (discord.override {
-            withVencord = true;
-          })
 
-          (bottles.override {
-            removeWarningPopup = true;
-          })
+          (discord-canary)
 
           brightnessctl
-          obsidian
-          lmstudio
-          code-cursor
           playerctl
 
-          pear-desktop
           easyeffects
           btop
           nautilus
-          heroic
-          prismlauncher
-          nicotine-plus
-          libation
-
+          
           pavucontrol
-          windsurf
           gcc
           libreoffice
           signal-desktop
+
+
+          prismlauncher
         ])
+        ++ [
+          packages.t3code
+        ]
         ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
           opencode
           codex
-          claude-code
-          gemini-cli
-        ])
-        ++ [
-          packages.pano-scrobbler
-        ];
+        ]);
 
-      stateVersion = "24.11";
+      stateVersion = "26.05";
       shell = {
         enableFishIntegration = true;
       };
