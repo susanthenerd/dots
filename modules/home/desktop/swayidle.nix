@@ -1,13 +1,13 @@
-{...}: {
-  flake.homeModules.swayidle = {pkgs, ...}: {
-    services.swayidle = {
-      enable = true;
-      events = [
-        {
-          event = "before-sleep";
-          command = "${pkgs.swaylock}/bin/swaylock -fF";
-        }
-      ];
+{ ... }:
+{
+  flake.homeModules.swayidle =
+    { pkgs, ... }:
+    {
+      services.swayidle = {
+        enable = true;
+        events = {
+          "before-sleep" = "${pkgs.swaylock}/bin/swaylock -fF";
+        };
+      };
     };
-  };
 }

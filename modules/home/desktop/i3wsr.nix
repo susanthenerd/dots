@@ -22,10 +22,11 @@
             "Cursor" = "Code";
             "ticktick" = "ticktick";
             "steam" = "Steam";
+            "CyberEDU Sentinel v1.0.3" = "sentinel";
           };
 
           app_id = {
-            "Slack" = "Slack";
+            "slack" = "Slack";
             "virt-manager-wrapped" = "virt-manager";
             "com.mitchellh.ghostty" = "Ghostty";
             "firefox" = "firefox";
@@ -77,6 +78,7 @@
           "Mullvad" = "";
           "Keepass" = "󰌆";
           "Signal" = "󰭹";
+          "sentinel" = "";
         };
 
         options = {

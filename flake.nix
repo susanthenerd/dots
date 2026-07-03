@@ -30,6 +30,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixpkgs-super-productivity-pr.url =
+      "github:NixOS/nixpkgs/pull/527809/head";
+
+    codex-desktop-linux = {
+      url= "github:ilysenko/codex-desktop-linux";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -37,18 +45,19 @@
 
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
+    };
+
+    pano-scrobbler-flake = {
+      url = "github:kawaiiDango/pano-scrobbler-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
 
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
     deploy-rs.url = "github:serokell/deploy-rs";
     nixos-hardware.url = "github:nixos/nixos-hardware";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
-    nixos-wsl = {
-      url = "github:nix-community/NixOS-WSL/main";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);

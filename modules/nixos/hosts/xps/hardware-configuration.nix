@@ -55,11 +55,7 @@
 
           kernelModules = [
             "dm-snapshot"
-            "nvidia"
             "i915"
-            "nvidia_modeset"
-            "nvidia_uvm"
-            "nvidia_drm"
           ];
         };
 
@@ -72,6 +68,10 @@
         kernelModules = [
           "i2c-dev"
           "ddcci_backlight"
+          "nvidia"
+          "nvidia_modeset"
+          "nvidia_uvm"
+          "nvidia_drm"
         ];
 
         loader = {

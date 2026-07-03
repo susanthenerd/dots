@@ -31,6 +31,7 @@
       ];
 
       nixpkgs.overlays = [
+        self.overlays.codex-desktop-linux
         #      self.overlays.looking-glass
         #      self.overlays.cmake
         inputs.emacs-overlay.overlay
@@ -85,17 +86,6 @@
             ];
             hashedPassword = "$6$vru/Kz/2RFnBeCXQ$FPDE/DET/P2pNfE2bpVsEdDCeMegmeMApE4l3m/2YR9t6qCSrdiTzqUr8aN1gnOTAcYXBQ30NUf3UtqxINmDL.";
           };
-          onsc = {
-            isNormalUser = true;
-            extraGroups = [
-              "docker"
-              "video"
-              "networkmanager"
-              "kvm"
-              "libvirtd"
-            ];
-            hashedPassword = "$y$j9T$mCe2epot4QPgXAA8gpq9s/$yACqUKw.x5xC7JXDTrBmJ5sfGmDJY3iMhsbcVcsGqH6";
-          };
         };
       };
 
@@ -113,54 +103,18 @@
           flake = "/home/susan/dots";
         };
         steam.enable = true;
-        virt-manager.enable = true;
-        nix-ld = {
-          enable = true;
-          libraries = with pkgs; [
-            stdenv.cc.cc
-
-            libglvnd
-            mesa
-            vulkan-loader
-
-            wayland
-            libxkbcommon
-
-            xorg.libX11
-            xorg.libxcb
-            xorg.libXext
-            xorg.libXi
-            xorg.libXrandr
-            xorg.libXrender
-            xorg.libXfixes
-            xorg.libXcursor
-
-            glib
-            gtk3
-            cairo
-            pango
-            gdk-pixbuf
-            fontconfig
-            freetype
-
-            zlib
-            openssl
-            nss
-            nspr
-            dbus
-            alsa-lib
-          ];
-        };
         sway = {
           enable = true;
           extraPackages = [ ];
-          package = pkgs.swayfx;
+          package = pkgs.sway;
         };
+
+        virt-manager.enable = true;
       };
 
       environment.systemPackages = with pkgs; [
         nixd
-        nixfmt-rfc-style
+        nixfmt
         sbctl
         pciutils
         killall
@@ -207,7 +161,7 @@
           enable = true;
           wayland.enable = true;
         };
-        desktopManager.plasma6.enable = true;
+        displayManager.defaultSession = "sway";
 
         mullvad-vpn = {
           enable = true;
@@ -218,8 +172,6 @@
         fprintd.enable = true;
         pulseaudio.enable = false;
         gvfs.enable = true;
-        livebook.enableUserService = true;
-
       };
 
       powerManagement = {
@@ -251,12 +203,19 @@
 
       xdg.portal = {
         enable = true;
+        wlr = {
+          enable = true;
+          settings.screencast = {
+            chooser_type = "dmenu";
+            chooser_cmd = "${pkgs.fuzzel}/bin/fuzzel -d -l 10 -p 'Select a source to share:'";
+          };
+        };
         config.common.default = "*";
       };
 
       security.pam.services.sddm.enableGnomeKeyring = true;
       documentation.nixos.enable = false;
-      system.stateVersion = "25.05";
+      system.stateVersion = "26.11";
 
       # home-manager
       home-manager = {
@@ -271,7 +230,6 @@
           susan.imports = [
             self.homeModules.base
           ];
-          onsc.imports = [ self.homeModules.onsc ];
         };
         sharedModules = [
           inputs.sops-nix.homeManagerModules.sops

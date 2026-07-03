@@ -28,15 +28,14 @@
 
           startup = [
             { command = "${pkgs.gnome-keyring}/bin/gnome-keyring-daemon --start --components=secrets"; }
-            { command = "${pkgs.mako}/bin/mako"; }
             { command = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"; }
             { command = "discord"; }
+            {command =  "slack"; }
             {
               command = "${pkgs.i3wsr}/bin/i3wsr";
               always = true;
             }
             { command = "keepassxc --minimized"; }
-            { command = "mullvad-vpn"; }
           ];
 
           bars = [
@@ -141,6 +140,9 @@
 
             "${modifier}+r" = "mode resize";
 
+
+            "${modifier}+Ctrl+d" = "exec ${pkgs.kanshi}/bin/kanshictl switch docked";
+            "${modifier}+Ctrl+Shift+d" = "exec ${pkgs.kanshi}/bin/kanshictl switch docked-rotated";
             "${modifier}+Shift+o" = "exec ${pkgs.swaylock}/bin/swaylock -fF";
             "${modifier}+Shift+r" = "reload";
             "${modifier}+Shift+e" =
