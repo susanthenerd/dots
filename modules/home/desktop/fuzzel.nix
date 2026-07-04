@@ -1,11 +1,11 @@
-{...}: {
+{ ... }: {
   flake.homeModules.fuzzel = {
     programs.fuzzel = {
       enable = true;
       settings = {
         main = {
-          terminal = "ghostty -e";
-          fields = "filename, name, generic, exec";
+          terminal = "emacs-terminal -e";
+          fields = "filename,name,generic,exec";
         };
       };
     };

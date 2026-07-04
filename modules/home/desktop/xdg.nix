@@ -1,29 +1,23 @@
-{...}: {
-  flake.homeModules.xdg = {pkgs, ...}: {
-    xdg = {
-      enable = true;
-      portal = {
+{ ... }:
+{
+  flake.homeModules.xdg =
+    { pkgs, ... }:
+    {
+      xdg = {
         enable = true;
-                  config.common.default = [ "wlr" ];
 
-        extraPortals = [
-          
-          pkgs.xdg-desktop-portal-wlr
-        ];
-      };
+        mimeApps = {
+          enable = true;
+          defaultApplications = {
+            "x-scheme-handler/http" = [ "firefox.desktop" ];
+            "x-scheme-handler/https" = [ "firefox.desktop" ];
+            "application/pdf" = [ "firefox.desktop" ];
+          };
 
-      mimeApps = {
-        enable = true;
-        defaultApplications = {
-          "x-scheme-handler/http" = ["firefox.desktop"];
-          "x-scheme-handler/https" = ["firefox.desktop"];
-          "application/pdf" = ["firefox.desktop"];
+          defaultApplicationPackages = [
+            pkgs.firefox
+          ];
         };
-
-        defaultApplicationPackages = [
-          pkgs.firefox
-        ];
       };
     };
-  };
 }

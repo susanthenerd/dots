@@ -18,7 +18,7 @@
         package = null;
         config = {
           modifier = lib.mkDefault "Mod4";
-          terminal = "ghostty";
+          terminal = "emacs-terminal";
           menu = "${pkgs.fuzzel}/bin/fuzzel";
 
           fonts = {
@@ -30,7 +30,7 @@
             { command = "${pkgs.gnome-keyring}/bin/gnome-keyring-daemon --start --components=secrets"; }
             { command = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"; }
             { command = "discord"; }
-            {command =  "slack"; }
+            { command = "slack"; }
             {
               command = "${pkgs.i3wsr}/bin/i3wsr";
               always = true;
@@ -70,20 +70,20 @@
 
             "${modifier}+Shift+c" = "kill";
 
-            "${modifier}+Shift+h" = "move left";
-            "${modifier}+Shift+j" = "move down";
-            "${modifier}+Shift+k" = "move up";
-            "${modifier}+Shift+l" = "move right";
+            "${modifier}+Shift+y" = "move left";
+            "${modifier}+Shift+h" = "move down";
+            "${modifier}+Shift+a" = "move up";
+            "${modifier}+Shift+e" = "move right";
 
             "${modifier}+Shift+Left" = "move left";
             "${modifier}+Shift+Down" = "move down";
             "${modifier}+Shift+Up" = "move up";
             "${modifier}+Shift+Right" = "move right";
 
-            "${modifier}+h" = "focus left";
-            "${modifier}+j" = "focus down";
-            "${modifier}+k" = "focus up";
-            "${modifier}+l" = "focus right";
+            "${modifier}+y" = "focus left";
+            "${modifier}+h" = "focus down";
+            "${modifier}+a" = "focus up";
+            "${modifier}+e" = "focus right";
 
             "${modifier}+Left" = "focus left";
             "${modifier}+Down" = "focus down";
@@ -100,13 +100,13 @@
 
             "${modifier}+s" = "layout stacking";
             "${modifier}+w" = "layout tabbed";
-            "${modifier}+e" = "layout toggle split";
+            "${modifier}+Ctrl+e" = "layout toggle split";
 
             "${modifier}+f" = "fullscreen";
 
             "${modifier}+Shift+space" = "floating toggle";
             "${modifier}+space" = "focus mode_toggle";
-            "${modifier}+a" = "focus parent";
+            "${modifier}+Ctrl+a" = "focus parent";
 
             "${modifier}+1" = "workspace number 1";
             "${modifier}+2" = "workspace number 2";
@@ -140,12 +140,11 @@
 
             "${modifier}+r" = "mode resize";
 
-
             "${modifier}+Ctrl+d" = "exec ${pkgs.kanshi}/bin/kanshictl switch docked";
             "${modifier}+Ctrl+Shift+d" = "exec ${pkgs.kanshi}/bin/kanshictl switch docked-rotated";
             "${modifier}+Shift+o" = "exec ${pkgs.swaylock}/bin/swaylock -fF";
             "${modifier}+Shift+r" = "reload";
-            "${modifier}+Shift+e" =
+            "${modifier}+Shift+Escape" =
               "exec ${pkgs.sway}/bin/swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
           };
 
@@ -163,10 +162,10 @@
               "Return" = "mode default";
               "Right" = "resize grow width 10 px";
               "Up" = "resize shrink height 10 px";
-              "h" = "resize shrink width 10 px";
-              "j" = "resize grow height 10 px";
-              "k" = "resize shrink height 10 px";
-              "l" = "resize grow width 10 px";
+              "y" = "resize shrink width 10 px";
+              "h" = "resize grow height 10 px";
+              "a" = "resize shrink height 10 px";
+              "e" = "resize grow width 10 px";
             };
           };
 

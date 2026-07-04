@@ -28,7 +28,6 @@
           app_id = {
             "slack" = "Slack";
             "virt-manager-wrapped" = "virt-manager";
-            "com.mitchellh.ghostty" = "Ghostty";
             "firefox" = "firefox";
             "looking-glass-client" = "looking-glass";
             "google-chrome" = "Chrome";
@@ -42,7 +41,6 @@
             "windsurf" = "Code";
             "org.pulseaudio.volumecontrol" = "Volume";
             "org.keepassxc.KeePassXC" = "Keepass";
-            "Mullvad VPN" = "Mullvad";
             "codium" = "Codium";
             "signal" = "Signal";
           };
@@ -58,7 +56,6 @@
           "PyCharm" = "";
           "Code" = "";
           "Discord" = "󰙯";
-          "Ghostty" = "";
           "Steam" = "";
           "obs" = "";
           "virt-manager" = "";
@@ -75,7 +72,6 @@
           "Volume" = "󰎄";
           "Super Productivity" = "";
           "emacs" = "";
-          "Mullvad" = "";
           "Keepass" = "󰌆";
           "Signal" = "󰭹";
           "sentinel" = "";

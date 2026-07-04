@@ -43,6 +43,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    ewm = {
+      url = "git+https://codeberg.org/ezemtsov/ewm.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
     };
@@ -56,8 +61,6 @@
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
     deploy-rs.url = "github:serokell/deploy-rs";
     nixos-hardware.url = "github:nixos/nixos-hardware";
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-
   };
 
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);

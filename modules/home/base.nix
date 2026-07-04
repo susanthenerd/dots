@@ -11,7 +11,6 @@
         self.homeModules.desktop
         self.homeModules.shell
         self.homeModules.emacs
-        self.homeModules.vscode
         self.homeModules.discord
       ];
 
@@ -20,7 +19,9 @@
         homeDirectory = "/home/susan";
 
         sessionVariables = {
+          "GTK_CSD" = "0";
           "NIXOS_OZONE_WL" = "1";
+          "QT_WAYLAND_DISABLE_WINDOWDECORATION" = "1";
         };
 
         packages =
@@ -52,9 +53,6 @@
             super-productivity
             prismlauncher
           ])
-          ++ [
-            packages.t3code
-          ]
           ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
             opencode
             claude-code
@@ -79,12 +77,18 @@
           enable = true;
           nix-direnv.enable = true;
         };
-
         ripgrep.enable = true;
+
       };
 
       gtk = {
         enable = true;
+        gtk3.extraConfig = {
+          "gtk-decoration-layout" = "";
+        };
+        gtk4.extraConfig = {
+          "gtk-decoration-layout" = "";
+        };
       };
 
       sops = {
