@@ -3,12 +3,9 @@
     _module.args.pkgs = import inputs.nixpkgs {
       inherit system;
       overlays = [
-        self.overlays.codex-desktop-linux
         self.overlays.looking-glass
         self.overlays.cmake
         inputs.emacs-overlay.overlay
-        inputs.ewm.overlays.default
-        self.overlays.ewm
         self.overlays.multiviewer
       ];
       config = {

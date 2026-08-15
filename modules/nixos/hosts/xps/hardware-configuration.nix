@@ -8,6 +8,16 @@
       modulesPath,
       ...
     }:
+    let
+      ddcciDriver = config.boot.kernelPackages.ddcci-driver.overrideAttrs (old: {
+        # Linux 7.2 removed strncpy from the in-kernel API.
+        # https://gitlab.com/ddcci-driver-linux/ddcci-driver-linux/-/merge_requests/20
+        postPatch = (old.postPatch or "") + ''
+          substituteInPlace ddcci/ddcci.c \
+            --replace-warn 'strncpy(' 'strscpy('
+        '';
+      });
+    in
     {
       imports = [
         (modulesPath + "/installer/scan/not-detected.nix")
@@ -18,7 +28,7 @@
         networkmanager = {
           enable = true;
           wifi.backend = "iwd";
-          plugins = [pkgs.networkmanager-openvpn];
+          plugins = [ pkgs.networkmanager-openvpn ];
         };
 
         wireless.iwd = {
@@ -62,7 +72,7 @@
         blacklistedKernelModules = [ ];
 
         extraModulePackages = [
-          config.boot.kernelPackages.ddcci-driver
+          ddcciDriver
         ];
 
         kernelModules = [

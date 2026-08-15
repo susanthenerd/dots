@@ -5,7 +5,9 @@
     let
       system = pkgs.stdenv.hostPlatform.system;
       codexAcp = inputs.llm-agents.packages.${system}.codex-acp;
-      emacsPackage = pkgs.callPackage ../../../packages/emacs-configured.nix { };
+      emacsPackage = pkgs.callPackage ../../../packages/emacs-configured.nix {
+        emacsSrc = inputs.emacs-pwayland;
+      };
       emacsTerminal = pkgs.writeShellScriptBin "emacs-terminal" ''
         set -eu
 

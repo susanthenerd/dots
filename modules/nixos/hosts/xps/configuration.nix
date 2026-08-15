@@ -18,7 +18,126 @@
       ...
     }:
     let
-      ewmEmacsPackage = config.programs.ewm.emacsPackage;
+      rekaBaseEmacs = pkgs.callPackage ../../../../packages/emacs-pwayland-skia.nix {
+        emacsSrc = inputs.emacs-pwayland;
+      };
+      rekaPackage = pkgs.callPackage ../../../../packages/emacs-reka.nix {
+        emacsPackage = rekaBaseEmacs;
+        src = inputs.reka;
+      };
+      rekaEarlyInit = pkgs.writeText "early-default.el" ''
+        ;;; -*- lexical-binding: t; -*-
+
+        (defvar susan/reka-early-bootstrap nil
+          "Whether Reka was enabled by the pre-frame startup shim.")
+
+        (defvar susan/reka-first-frame-timeout 15.0
+          "Seconds to wait for Reka to request its first pwayl frame.")
+
+        (defun susan/reka-enable-before-first-frame ()
+          "Enable Reka and synchronously obtain its initial pwayl frame."
+          (when (getenv "REKA_SESSION")
+            (unless (and (eq initial-window-system 'pwayl)
+                         (not noninteractive)
+                         (zerop (recursion-depth))
+                         (zerop (minibuffer-depth)))
+              (error
+               "Reka frame bootstrap requires interactive pwayl at depth 0/0"))
+            (require 'reka)
+            (setq reka-intercept-prefixes nil
+                  susan/reka-early-bootstrap t)
+            (let (capture-frame handle-on-pwayl make-first-frame)
+              (setq capture-frame
+                    (lambda (frame)
+                      (when (and (not (frame-live-p frame-initial-frame))
+                                 (eq (framep frame) 'pwayl))
+                        (setq frame-initial-frame frame)))
+                    handle-on-pwayl
+                    (lambda (original &rest args)
+                      (let ((window-system initial-window-system))
+                        (apply original args))))
+              (unwind-protect
+                  (progn
+                    (advice-add 'reka--handle-commands :around
+                                handle-on-pwayl)
+                    (add-hook 'after-make-frame-functions capture-frame)
+                    (unless reka-handle
+                      (reka-enable))
+                    ;; Match stock `frame-initialize', while applying this
+                    ;; snapshot to exactly the first Reka-requested frame.
+                    (setq frame-initial-frame-alist
+                          (cons (cons 'window-system initial-window-system)
+                                (append initial-frame-alist
+                                        default-frame-alist nil))
+                          make-first-frame
+                          (lambda (original &optional parameters)
+                            (advice-remove 'make-frame make-first-frame)
+                            (funcall original
+                                     (append parameters
+                                             frame-initial-frame-alist))))
+                    (advice-add 'make-frame :around make-first-frame)
+                    (let ((events (get-process "reka-events"))
+                          (deadline (+ (float-time)
+                                       susan/reka-first-frame-timeout)))
+                      (unless events
+                        (error "Reka event process was not created"))
+                      (while (not (frame-live-p frame-initial-frame))
+                        (unless (process-live-p events)
+                          (error
+                           "Reka event process stopped before creating a frame"))
+                        (when (>= (float-time) deadline)
+                          (error
+                           "Reka did not create a pwayl frame within %.1f seconds"
+                           susan/reka-first-frame-timeout))
+                        ;; The pipe filter only schedules a timer; drain the
+                        ;; queue directly while startup waits synchronously.
+                        (reka--handle-commands)
+                        (unless (frame-live-p frame-initial-frame)
+                          (accept-process-output events 0.25))))
+                    ;; Stock `frame-initialize' now adopts the existing frame,
+                    ;; copies the terminal environment, and deletes the
+                    ;; terminal frame.  pwayl itself initialized this frame as
+                    ;; `default-minibuffer-frame' on the pwayl kboard.
+                    (setq initial-frame-alist
+                          (frame-remove-geometry-params initial-frame-alist)))
+                (advice-remove 'make-frame make-first-frame)
+                (advice-remove 'reka--handle-commands handle-on-pwayl)
+                (remove-hook 'after-make-frame-functions capture-frame)))))
+
+        (add-hook 'before-init-hook #'susan/reka-enable-before-first-frame)
+      '';
+      rekaEmacsPackage = pkgs.callPackage ../../../../packages/emacs-configured.nix {
+        emacsSrc = inputs.emacs-pwayland;
+        extraEmacsPackages = epkgs: [
+          rekaPackage
+          (epkgs.trivialBuild {
+            pname = "early-default";
+            version = "0.1.0";
+            src = rekaEarlyInit;
+            packageRequires = [ rekaPackage ];
+          })
+        ];
+      };
+      rekaSessionCommand = pkgs.writeShellScriptBin "reka-session" ''
+        export REKA_SESSION=1
+        exec ${pkgs.river}/bin/river -c ${rekaEmacsPackage}/bin/emacs
+      '';
+      rekaSession =
+        pkgs.runCommand "reka-wayland-session"
+          {
+            passthru.providedSessions = [ "reka" ];
+          }
+          ''
+            mkdir -p "$out/share/wayland-sessions"
+            cat > "$out/share/wayland-sessions/reka.desktop" <<EOF
+            [Desktop Entry]
+            Name=Reka
+            Comment=Emacs window manager for River
+            Exec=${rekaSessionCommand}/bin/reka-session
+            Type=Application
+            DesktopNames=reka
+            EOF
+          '';
     in
     {
       imports = [
@@ -34,18 +153,14 @@
         inputs.lanzaboote.nixosModules.lanzaboote
         inputs.home-manager.nixosModules.home-manager
         inputs.nixos-hardware.nixosModules.dell-xps-15-9570-nvidia
-        inputs.ewm.nixosModules.default
-
         self.diskoConfigurations.hostXps
       ];
 
       nixpkgs.overlays = [
-        self.overlays.codex-desktop-linux
+        self.overlays.waypipe
         #      self.overlays.looking-glass
         #      self.overlays.cmake
         inputs.emacs-overlay.overlay
-        inputs.ewm.overlays.default
-        self.overlays.ewm
         #      self.overlays.multiviewer
       ];
       nixpkgs.config = {
@@ -77,6 +192,16 @@
       security = {
         polkit.enable = true;
         rtkit.enable = true;
+      };
+
+      xdg.portal = {
+        enable = true;
+        wlr.enable = true;
+        extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+        config.reka.default = [
+          "wlr"
+          "gtk"
+        ];
       };
 
       fonts.packages = with pkgs; [
@@ -123,35 +248,25 @@
           flake = "/home/susan/dots";
         };
         steam.enable = true;
-        ewm = {
-          enable = true;
-          ewmPackage = pkgs.ewm;
-          emacsPackage = pkgs.callPackage ../../../../packages/emacs-configured.nix {
-            extraEmacsPackages = _epkgs: [
-              config.programs.ewm.ewmPackage
-            ];
-          };
-        };
-
         virt-manager.enable = true;
       };
 
-      system.activationScripts.reloadEwmEmacs = lib.stringAfter [ "users" ] ''
-        ewm_user=susan
-        if ! ewm_uid="$(${pkgs.coreutils}/bin/id -u "$ewm_user" 2>/dev/null)"; then
-          echo "ewm-emacs: skipping reload; user $ewm_user does not exist"
+      system.activationScripts.reloadRekaEmacs = lib.stringAfter [ "users" ] ''
+        reka_user=susan
+        if ! reka_uid="$(${pkgs.coreutils}/bin/id -u "$reka_user" 2>/dev/null)"; then
+          echo "reka-emacs: skipping reload; user $reka_user does not exist"
         else
-          ewm_runtime_dir="/run/user/$ewm_uid"
-          ewm_server="$ewm_runtime_dir/emacs/server"
+          reka_runtime_dir="/run/user/$reka_uid"
+          reka_server="$reka_runtime_dir/emacs/server"
 
-          if [ ! -S "$ewm_server" ]; then
-            echo "ewm-emacs: skipping reload; no Emacs server at $ewm_server"
+          if [ ! -S "$reka_server" ]; then
+            echo "reka-emacs: skipping reload; no Emacs server at $reka_server"
           else
-            echo "ewm-emacs: reloading config from ${ewmEmacsPackage}"
-            if ! ewm_expr="$(${ewmEmacsPackage}/bin/emacs -Q --batch --eval '
+            echo "reka-emacs: reloading config from ${rekaEmacsPackage}"
+            if ! reka_expr="$(${rekaEmacsPackage}/bin/emacs -Q --batch --eval '
         (let ((default (locate-library "default")))
           (unless default
-            (error "Cannot locate default.el from NixOS EWM Emacs"))
+            (error "Cannot locate default.el from NixOS Reka Emacs"))
           (prin1
            (append
             (list (quote progn)
@@ -165,11 +280,11 @@
                      (list (quote quote) native-comp-eln-load-path))))
             (list (list (quote load-file) default)))))
         ')"; then
-              echo "ewm-emacs: warning: could not create reload expression; continuing"
-            elif ! ${pkgs.util-linux}/bin/runuser -u "$ewm_user" -- \
-              ${pkgs.coreutils}/bin/env XDG_RUNTIME_DIR="$ewm_runtime_dir" \
-              ${ewmEmacsPackage}/bin/emacsclient --socket-name="$ewm_server" --eval "$ewm_expr" >/dev/null; then
-              echo "ewm-emacs: warning: live reload failed; continuing"
+              echo "reka-emacs: warning: could not create reload expression; continuing"
+            elif ! ${pkgs.util-linux}/bin/runuser -u "$reka_user" -- \
+              ${pkgs.coreutils}/bin/env XDG_RUNTIME_DIR="$reka_runtime_dir" \
+              ${rekaEmacsPackage}/bin/emacsclient --socket-name="$reka_server" --eval "$reka_expr" >/dev/null; then
+              echo "reka-emacs: warning: live reload failed; continuing"
             fi
           fi
         fi
@@ -186,6 +301,8 @@
         sbctl
         pciutils
         killall
+        glib
+        river
 
         waypipe
         xwayland-satellite
@@ -230,7 +347,8 @@
           enable = true;
           wayland.enable = true;
         };
-        displayManager.defaultSession = "ewm";
+        displayManager.sessionPackages = [ rekaSession ];
+        displayManager.defaultSession = "reka";
 
         resolved.enable = true;
 

@@ -1,13 +1,10 @@
-{ inputs, lib, ... }:
+{ ... }:
 
 {
   flake.overlays = {
-    codex-desktop-linux = import ../overlays/codex-desktop-linux.nix { inherit inputs; };
-    ewm = final: prev: {
-      ewm = prev.ewm.override {
-        pkgs = prev // {
-          libdisplay-info = final.libdisplay-info_0_3;
-        };
+    waypipe = final: prev: {
+      waypipe = prev.waypipe.override {
+        ffmpeg_8 = final.ffmpeg_8;
       };
     };
     looking-glass = import ../overlays/looking-glass-client.nix;

@@ -116,6 +116,12 @@
   :config
   (savehist-mode 1))
 
+(use-package tab-bar
+  :ensure nil
+  :config
+  (tab-bar-mode 1)
+  (tab-bar-history-mode 1))
+
 (use-package which-key
   :ensure nil
   :config
@@ -561,45 +567,177 @@
   (interactive)
   (susan/window-swap 'down))
 
-(defun susan/ewm-close-or-kill-buffer ()
+(defun susan/other-frame-backward ()
   (interactive)
-  (if (and (boundp 'ewm-surface-id) ewm-surface-id)
-      (ewm-close ewm-surface-id)
-    (kill-current-buffer)))
+  (other-frame -1))
 
-(use-package ewm
+(defun susan/move-buffer-to-other-frame (step)
+  (let ((buffer (current-buffer)))
+    (other-frame step)
+    (switch-to-buffer buffer)))
+
+(defun susan/move-buffer-to-previous-frame ()
+  (interactive)
+  (susan/move-buffer-to-other-frame -1))
+
+(defun susan/move-buffer-to-next-frame ()
+  (interactive)
+  (susan/move-buffer-to-other-frame 1))
+
+(defun susan/xdg-apps ()
+  (let ((data-dirs
+         (cons (or (getenv "XDG_DATA_HOME")
+                   (expand-file-name "~/.local/share"))
+               (split-string (or (getenv "XDG_DATA_DIRS")
+                                 "/usr/local/share:/usr/share")
+                             path-separator t)))
+        apps)
+    (dolist (data-dir data-dirs)
+      (let ((app-dir (expand-file-name "applications" data-dir)))
+        (when (file-directory-p app-dir)
+          (dolist (file (directory-files-recursively app-dir "\\.desktop\\'"))
+            (with-temp-buffer
+              (insert-file-contents file)
+              (goto-char (point-min))
+              (when (re-search-forward "^Name=\\(.+\\)$" nil t)
+                (let ((name (match-string 1)))
+                  (goto-char (point-min))
+                  (unless (re-search-forward "^NoDisplay=true$" nil t)
+                    (push (propertize name 'susan/desktop-file file)
+                          apps)))))))))
+    (delete-dups apps)))
+
+(defun susan/launch-xdg-app (app)
+  (when-let ((desktop-file (get-text-property 0 'susan/desktop-file app)))
+    (let ((process-connection-type nil))
+      (start-process "xdg-app" nil "gio" "launch" desktop-file))))
+
+(defun susan/reka-key-to-xkb (key-string)
+  "Convert KEY-STRING for Reka, including modified symbolic keys."
+  (let* ((event (aref (kbd key-string) 0))
+         (basic (event-basic-type event))
+         (mods (mapcar (lambda (mod)
+                         (alist-get mod reka--modifier-bits))
+                       (event-modifiers event)))
+         (key (cond
+               ((characterp basic) basic)
+               ((and basic (symbolp basic)) (symbol-name basic))
+               ((symbolp event)
+                (replace-regexp-in-string
+                 "\\`\\(?:A-\\|C-\\|H-\\|M-\\|s-\\|S-\\)+" ""
+                 (symbol-name event)))
+               (t (user-error "Unsupported Reka key: %s" key-string)))))
+    (list event key (apply #'logior mods))))
+
+(defun susan/setup-reka-buffer ()
+  "Keep Reka's external-window buffers out of Meow's modal states."
+  (when (fboundp 'meow-mode)
+    (funcall 'meow-mode -1)))
+
+(defun susan/reka-select-created-window (window)
+  "Select WINDOW after Reka displays a newly managed Wayland surface."
+  (when (window-live-p window)
+    (select-window window 'norecord))
+  window)
+
+(defvar susan/reka--frame-focus-state
+  (make-symbol "reka-frame-focus")
+  "Cache marker for focus directed to an Emacs frame.")
+
+(defvar susan/reka--focus-timer nil
+  "Pending timer for a coalesced Reka focus update.")
+
+(defun susan/reka--apply-focus-request ()
+  "Send the latest safe focus request to Reka."
+  (setq susan/reka--focus-timer nil)
+  (when reka-handle
+    (let* ((buffer (window-buffer (selected-window)))
+           (can-focus-window
+            (and (reka--is-reka-buffer buffer)
+                 (not this-command)
+                 (= 0 (length unread-command-events))
+                 (= 0 (length (this-single-command-keys)))
+                 (= 0 (minibuffer-depth))
+                 (= 0 (recursion-depth))))
+           (state (if can-focus-window
+                      buffer
+                    susan/reka--frame-focus-state)))
+      (unless (eq state reka--last-focused)
+        (reka-set-focus-request
+         reka-handle
+         (when can-focus-window
+           (buffer-local-value 'reka-window buffer)))
+        (setq reka--last-focused state)))))
+
+(defun susan/reka-update-focus-request (&rest _)
+  "Coalesce Reka focus updates until the current command has finished."
+  (unless (timerp susan/reka--focus-timer)
+    (setq susan/reka--focus-timer
+          (run-at-time 0 nil #'susan/reka--apply-focus-request))))
+
+(use-package reka
   :ensure nil
-  :if (locate-library "ewm")
+  :if (and (getenv "REKA_SESSION") (locate-library "reka"))
   :demand t
-  :bind (:map ewm-mode-map
-              ("s-<return>" . susan/new-ghostel)
-              ("s-S-<return>" . consult-buffer)
-              ("s-y" . ewm-focus-left)
-              ("s-h" . ewm-focus-down)
-              ("s-a" . ewm-focus-up)
-              ("s-e" . ewm-focus-right)
-              ("s-S-y" . ewm-frame-left)
-              ("s-S-e" . ewm-frame-right)
-              ("s-S-a" . susan/window-swap-up)
-              ("s-S-h" . susan/window-swap-down)
-              ("C-s-y" . ewm-frame-move-left)
-              ("C-s-e" . ewm-frame-move-right)
-              ("C-s-a" . susan/window-swap-up)
-              ("C-s-h" . susan/window-swap-down)
-              ("s-S-c" . susan/ewm-close-or-kill-buffer)
-              ("<print>" . susan/screenshot-region-to-clipboard)
-              ("C-<print>" . susan/screenshot-full-to-clipboard)
-              ("S-<print>" . susan/screenshot-full-to-file)
-              ("s-S-<print>" . susan/screenshot-region-to-file))
+  :hook (reka-mode . susan/setup-reka-buffer)
+  :bind (("s-<return>" . susan/new-ghostel)
+         ("s-S-<return>" . consult-buffer)
+         ("s-y" . windmove-left)
+         ("s-h" . windmove-down)
+         ("s-a" . windmove-up)
+         ("s-e" . windmove-right)
+         ("s-S-y" . susan/other-frame-backward)
+         ("s-S-e" . other-frame)
+         ("s-S-a" . susan/window-swap-up)
+         ("s-S-h" . susan/window-swap-down)
+         ("C-s-y" . susan/move-buffer-to-previous-frame)
+         ("C-s-e" . susan/move-buffer-to-next-frame)
+         ("C-s-a" . susan/window-swap-up)
+         ("C-s-h" . susan/window-swap-down)
+         ("s-S-c" . kill-current-buffer)
+         ("<print>" . susan/screenshot-region-to-clipboard)
+         ("C-<print>" . susan/screenshot-full-to-clipboard)
+         ("S-<print>" . susan/screenshot-full-to-file)
+         ("s-S-<print>" . susan/screenshot-region-to-file))
+  :init
+  (setq reka-intercept-prefixes
+        '("s-<return>" "s-S-<return>"
+          "s-y" "s-h" "s-a" "s-e"
+          "s-S-y" "s-S-h" "s-S-a" "s-S-e" "s-S-c"
+          "C-s-y" "C-s-h" "C-s-a" "C-s-e"
+          "<print>" "C-<print>" "S-<print>" "s-S-<print>"))
   :config
+  (advice-add 'reka--key-to-xkb :override #'susan/reka-key-to-xkb)
+  (advice-add 'reka--create-buffer :filter-return
+              #'susan/reka-select-created-window)
+  (advice-add 'reka--update-focus-request :override
+              #'susan/reka-update-focus-request)
+
+  ;; Reloading the config re-enables Meow globally before reaching Reka.
+  ;; Re-apply the external-buffer opt-out to wrappers which already exist.
+  (dolist (buffer (buffer-list))
+    (with-current-buffer buffer
+      (when (derived-mode-p 'reka-mode)
+        (susan/setup-reka-buffer))))
+
+  ;; `early-default.el' starts Reka before pwayl creates its first frame.
+  ;; It deliberately leaves compositor bindings empty until this config has
+  ;; installed the complete key conversion and intercept list.
+  (when (bound-and-true-p susan/reka-early-bootstrap)
+    (setq susan/reka-early-bootstrap nil)
+    (reka-push-intercept-prefixes))
+
   (defvar consult-source-xdg-apps
     `(:name "Apps"
       :narrow ?a
       :category app
       :items ,(lambda ()
-                (mapcar #'car (ewm-list-xdg-apps)))
-      :action ,#'ewm-launch-xdg-command))
+                (sort (susan/xdg-apps) #'string-lessp))
+      :action ,#'susan/launch-xdg-app))
 
   (setq consult-buffer-sources
         (append (delq 'consult-source-xdg-apps consult-buffer-sources)
-                '(consult-source-xdg-apps))))
+                '(consult-source-xdg-apps)))
+
+  (unless reka-handle
+    (reka-enable)))

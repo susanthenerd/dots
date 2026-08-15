@@ -33,19 +33,19 @@
     nixpkgs-super-productivity-pr.url =
       "github:NixOS/nixpkgs/pull/527809/head";
 
-    codex-desktop-linux = {
-      url= "github:ilysenko/codex-desktop-linux";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    ewm = {
-      url = "git+https://codeberg.org/ezemtsov/ewm.git";
-      inputs.nixpkgs.follows = "nixpkgs";
+    reka = {
+      url = "git+https://codeberg.org/tazjin/reka";
+      flake = false;
+    };
+
+    emacs-pwayland = {
+      url = "git+https://codeberg.org/ezemtsov/emacs.git?ref=refs/heads/wayland&shallow=1";
+      flake = false;
     };
 
     llm-agents = {
