@@ -237,6 +237,7 @@
         users = {
           susan.imports = [
             self.homeModules.base
+            self.homeModules.personal
           ];
         };
         sharedModules = [

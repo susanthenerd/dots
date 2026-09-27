@@ -119,7 +119,6 @@
           };
           flake = "/home/susan/dots";
         };
-        steam.enable = true;
         sway = {
           enable = true;
           extraPackages = [ ];

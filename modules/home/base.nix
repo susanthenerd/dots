@@ -46,12 +46,8 @@
             nautilus
 
             pavucontrol
-            libreoffice
-            jetbrains.idea
-            signal-desktop
             slack
             super-productivity
-            prismlauncher
           ])
           ++ (with inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}; [
             opencode
@@ -69,7 +65,6 @@
       programs = {
         home-manager.enable = true;
         thunderbird.enable = true;
-        obs-studio.enable = true;
         google-chrome.enable = true;
         firefox = {
           enable = true;
