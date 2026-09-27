@@ -1,13 +1,10 @@
 {
   pkgs,
-  emacsSrc,
   configPath ? ../modules/home/emacs/config.el,
   extraEmacsPackages ? (_: [ ]),
 }:
 
 let
-  emacsPackage = pkgs.callPackage ./emacs-pwayland-skia.nix { inherit emacsSrc; };
-
   treeSitterGrammars =
     let
       grammars = with pkgs.tree-sitter-grammars; {
@@ -35,7 +32,7 @@ pkgs.emacsWithPackagesFromUsePackage {
   config = configPath;
   defaultInitFile = true;
   alwaysEnsure = true;
-  package = emacsPackage;
+  package = pkgs.emacs-pgtk;
   override = self: _super: {
     ghostel = self.callPackage ./emacs-ghostel.nix { };
     susan-treesit-grammars = self.trivialBuild {

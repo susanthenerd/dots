@@ -16,23 +16,26 @@
         aliases = {
           class = {
             "Google-chrome" = "Chrome";
+            "thunderbird" = "Thunderbird";
             "jetbrains-clion" = "CLion";
             "jetbrains-rustrover" = "Rust Rover";
             "jetbrains-pycharm" = "PyCharm";
-            "Cursor" = "Code";
-            "ticktick" = "ticktick";
+            "jetbrains-idea" = "IDEA";
+            "vlc" = "Vlc";
             "steam" = "Steam";
-            "CyberEDU Sentinel v1.0.3" = "sentinel";
           };
 
           app_id = {
+	    "jetbrains-idea" = "IDEA";
             "slack" = "Slack";
             "virt-manager-wrapped" = "virt-manager";
             "firefox" = "firefox";
+            "thunderbird" = "Thunderbird";
             "looking-glass-client" = "looking-glass";
             "google-chrome" = "Chrome";
             "cursor" = "Code";
             "discord" = "Discord";
+            "emacs" = "emacs";
             "com.github.th_ch.youtube_music" = "Youtube Music";
             "ticktick" = "ticktick";
             "org.gnome.Nautilus" = "Nautilus";
@@ -50,6 +53,7 @@
           "Codium" = "";
           "Slack" = "";
           "firefox" = "";
+          "Thunderbird" = "";
           "Chrome" = "";
           "CLion" = "";
           "Rust Rover" = "";
@@ -59,14 +63,13 @@
           "Steam" = "";
           "obs" = "";
           "virt-manager" = "";
-
+          "IDEA" = "";
           "nvim.*" = "";
           "steam*" = "";
           "Youtube Music" = "";
           "Claude" = "";
           "looking-glass" = "";
           "heroic" = "";
-          "ticktick" = "";
           "Nautilus" = "";
           "Prism Launcher" = "";
           "Volume" = "󰎄";
@@ -74,7 +77,7 @@
           "emacs" = "";
           "Keepass" = "󰌆";
           "Signal" = "󰭹";
-          "sentinel" = "";
+	  "Vlc" = "󰕼";
         };
 
         options = {

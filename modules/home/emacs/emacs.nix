@@ -4,14 +4,12 @@
     { pkgs, ... }:
     let
       system = pkgs.stdenv.hostPlatform.system;
+      claudeAgentAcp = inputs.llm-agents.packages.${system}.claude-agent-acp;
       codexAcp = inputs.llm-agents.packages.${system}.codex-acp;
-      emacsPackage = pkgs.callPackage ../../../packages/emacs-configured.nix {
-        emacsSrc = inputs.emacs-pwayland;
-      };
+      emacsPackage = pkgs.callPackage ../../../packages/emacs-configured.nix { };
       emacsTerminal = pkgs.writeShellScriptBin "emacs-terminal" ''
         set -eu
 
-        emacs=${emacsPackage}/bin/emacs
         emacsclient=${emacsPackage}/bin/emacsclient
 
         escape_lisp_string() {
@@ -31,23 +29,20 @@
           expr="(progn (require 'ghostel) (ghostel t))"
         fi
 
-        if "$emacsclient" --eval t >/dev/null 2>&1; then
-          exec "$emacsclient" -c --eval "$expr"
-        fi
-
-        exec "$emacs" --eval "$expr"
+        exec "$emacsclient" -c --eval "$expr"
       '';
     in
     {
-      programs.emacs = {
+      services.emacs = {
         enable = true;
         package = emacsPackage;
+        client.enable = true;
+        socketActivation.enable = true;
       };
-
-      services.emacs.enable = false;
 
       home.packages = [
         emacsTerminal
+        claudeAgentAcp
         codexAcp
         pkgs.clang-tools
         pkgs.elixir-ls

@@ -31,6 +31,7 @@
             { command = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"; }
             { command = "discord"; }
             { command = "slack"; }
+            { command = "thunderbird"; }
             {
               command = "${pkgs.i3wsr}/bin/i3wsr";
               always = true;
@@ -80,10 +81,10 @@
             "${modifier}+Shift+Up" = "move up";
             "${modifier}+Shift+Right" = "move right";
 
-            "${modifier}+y" = "focus left";
-            "${modifier}+h" = "focus down";
-            "${modifier}+a" = "focus up";
-            "${modifier}+e" = "focus right";
+            "${modifier}+Ctrl+y" = "focus left";
+            "${modifier}+Ctrl+h" = "focus down";
+            "${modifier}+Ctrl+a" = "focus up";
+            "${modifier}+Ctrl+e" = "focus right";
 
             "${modifier}+Left" = "focus left";
             "${modifier}+Down" = "focus down";
@@ -100,13 +101,13 @@
 
             "${modifier}+s" = "layout stacking";
             "${modifier}+w" = "layout tabbed";
-            "${modifier}+Ctrl+e" = "layout toggle split";
+            "${modifier}+e" = "layout toggle split";
 
             "${modifier}+f" = "fullscreen";
 
             "${modifier}+Shift+space" = "floating toggle";
             "${modifier}+space" = "focus mode_toggle";
-            "${modifier}+Ctrl+a" = "focus parent";
+            "${modifier}+a" = "focus parent";
 
             "${modifier}+1" = "workspace number 1";
             "${modifier}+2" = "workspace number 2";

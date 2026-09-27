@@ -148,10 +148,12 @@
          ("C-c m" . consult-man)
          ("C-c i" . consult-info)
          ([remap Info-search] . consult-info)
+         ([remap switch-to-buffer] . consult-buffer)
          ("C-x M-:" . consult-complex-command)
          ("C-x b" . consult-buffer)
          ("C-x 4 b" . consult-buffer-other-window)
          ("C-x 5 b" . consult-buffer-other-frame)
+         ("C-c b" . consult-buffer)
          ("C-x r b" . consult-bookmark)
          ("C-x p b" . consult-project-buffer)
          ("M-#" . consult-register-load)
@@ -192,6 +194,8 @@
   (advice-add #'register-preview :override #'consult-register-window)
   (consult-customize
    consult-theme :preview-key '(:debounce 0.2 any)
+   consult-buffer consult-project-buffer
+   :preview-key '(:debounce 0.2 any)
    consult-ripgrep consult-git-grep consult-grep consult-bookmark
    consult-recent-file
    :preview-key '(:debounce 0.4 any))
@@ -350,15 +354,20 @@
   :demand t
   :bind ("C-c a" . agent-shell)
   :config
+  (require 'agent-shell-anthropic)
   (require 'agent-shell-openai)
+  (require 'agent-shell-omp)
   (require 'agent-shell-opencode)
   (setq agent-shell-session-restore-verbosity 'full
+        agent-shell-openai-default-model-id "gpt-6-astra"
         agent-shell-openai-authentication
         (agent-shell-openai-make-authentication :login t)
         agent-shell-opencode-authentication
         (agent-shell-opencode-make-authentication :none t)
         agent-shell-agent-configs
-        (list (agent-shell-openai-make-codex-config)
+        (list (agent-shell-anthropic-make-claude-code-config)
+              (agent-shell-openai-make-codex-config)
+              (agent-shell-omp-make-agent-config)
               (agent-shell-opencode-make-agent-config))))
 
 (defun susan/setup-ghostel-buffer ()
@@ -522,222 +531,3 @@
         org-appear-autoemphasis t
         org-appear-autolinks t
         org-appear-autosubmarkers t))
-
-(defun susan/shell-command (name command)
-  (start-process-shell-command name nil command))
-
-(use-package windmove
-  :ensure nil
-  :demand t)
-
-(defun susan/screenshot-region-to-clipboard ()
-  (interactive)
-  (susan/shell-command "screenshot-region"
-                       "slurp | grim -g - - | wl-copy"))
-
-(defun susan/screenshot-full-to-clipboard ()
-  (interactive)
-  (susan/shell-command "screenshot-full"
-                       "grim - | wl-copy"))
-
-(defun susan/screenshot-full-to-file ()
-  (interactive)
-  (susan/shell-command
-   "screenshot-full-file"
-   "mkdir -p ~/Pictures && grim ~/Pictures/screenshot-$(date +'%Y-%m-%d-%H-%M-%S').png"))
-
-(defun susan/screenshot-region-to-file ()
-  (interactive)
-  (susan/shell-command
-   "screenshot-region-file"
-   "mkdir -p ~/Pictures && slurp | grim -g - ~/Pictures/screenshot-slurp-$(date +'%Y-%m-%d-%H-%M-%S').png"))
-
-(defun susan/window-swap (direction)
-  (let ((other (windmove-find-other-window direction)))
-    (unless other
-      (user-error "No window in direction %s" direction))
-    (window-swap-states (selected-window) other)
-    (select-window other)))
-
-(defun susan/window-swap-up ()
-  (interactive)
-  (susan/window-swap 'up))
-
-(defun susan/window-swap-down ()
-  (interactive)
-  (susan/window-swap 'down))
-
-(defun susan/other-frame-backward ()
-  (interactive)
-  (other-frame -1))
-
-(defun susan/move-buffer-to-other-frame (step)
-  (let ((buffer (current-buffer)))
-    (other-frame step)
-    (switch-to-buffer buffer)))
-
-(defun susan/move-buffer-to-previous-frame ()
-  (interactive)
-  (susan/move-buffer-to-other-frame -1))
-
-(defun susan/move-buffer-to-next-frame ()
-  (interactive)
-  (susan/move-buffer-to-other-frame 1))
-
-(defun susan/xdg-apps ()
-  (let ((data-dirs
-         (cons (or (getenv "XDG_DATA_HOME")
-                   (expand-file-name "~/.local/share"))
-               (split-string (or (getenv "XDG_DATA_DIRS")
-                                 "/usr/local/share:/usr/share")
-                             path-separator t)))
-        apps)
-    (dolist (data-dir data-dirs)
-      (let ((app-dir (expand-file-name "applications" data-dir)))
-        (when (file-directory-p app-dir)
-          (dolist (file (directory-files-recursively app-dir "\\.desktop\\'"))
-            (with-temp-buffer
-              (insert-file-contents file)
-              (goto-char (point-min))
-              (when (re-search-forward "^Name=\\(.+\\)$" nil t)
-                (let ((name (match-string 1)))
-                  (goto-char (point-min))
-                  (unless (re-search-forward "^NoDisplay=true$" nil t)
-                    (push (propertize name 'susan/desktop-file file)
-                          apps)))))))))
-    (delete-dups apps)))
-
-(defun susan/launch-xdg-app (app)
-  (when-let ((desktop-file (get-text-property 0 'susan/desktop-file app)))
-    (let ((process-connection-type nil))
-      (start-process "xdg-app" nil "gio" "launch" desktop-file))))
-
-(defun susan/reka-key-to-xkb (key-string)
-  "Convert KEY-STRING for Reka, including modified symbolic keys."
-  (let* ((event (aref (kbd key-string) 0))
-         (basic (event-basic-type event))
-         (mods (mapcar (lambda (mod)
-                         (alist-get mod reka--modifier-bits))
-                       (event-modifiers event)))
-         (key (cond
-               ((characterp basic) basic)
-               ((and basic (symbolp basic)) (symbol-name basic))
-               ((symbolp event)
-                (replace-regexp-in-string
-                 "\\`\\(?:A-\\|C-\\|H-\\|M-\\|s-\\|S-\\)+" ""
-                 (symbol-name event)))
-               (t (user-error "Unsupported Reka key: %s" key-string)))))
-    (list event key (apply #'logior mods))))
-
-(defun susan/setup-reka-buffer ()
-  "Keep Reka's external-window buffers out of Meow's modal states."
-  (when (fboundp 'meow-mode)
-    (funcall 'meow-mode -1)))
-
-(defun susan/reka-select-created-window (window)
-  "Select WINDOW after Reka displays a newly managed Wayland surface."
-  (when (window-live-p window)
-    (select-window window 'norecord))
-  window)
-
-(defvar susan/reka--frame-focus-state
-  (make-symbol "reka-frame-focus")
-  "Cache marker for focus directed to an Emacs frame.")
-
-(defvar susan/reka--focus-timer nil
-  "Pending timer for a coalesced Reka focus update.")
-
-(defun susan/reka--apply-focus-request ()
-  "Send the latest safe focus request to Reka."
-  (setq susan/reka--focus-timer nil)
-  (when reka-handle
-    (let* ((buffer (window-buffer (selected-window)))
-           (can-focus-window
-            (and (reka--is-reka-buffer buffer)
-                 (not this-command)
-                 (= 0 (length unread-command-events))
-                 (= 0 (length (this-single-command-keys)))
-                 (= 0 (minibuffer-depth))
-                 (= 0 (recursion-depth))))
-           (state (if can-focus-window
-                      buffer
-                    susan/reka--frame-focus-state)))
-      (unless (eq state reka--last-focused)
-        (reka-set-focus-request
-         reka-handle
-         (when can-focus-window
-           (buffer-local-value 'reka-window buffer)))
-        (setq reka--last-focused state)))))
-
-(defun susan/reka-update-focus-request (&rest _)
-  "Coalesce Reka focus updates until the current command has finished."
-  (unless (timerp susan/reka--focus-timer)
-    (setq susan/reka--focus-timer
-          (run-at-time 0 nil #'susan/reka--apply-focus-request))))
-
-(use-package reka
-  :ensure nil
-  :if (and (getenv "REKA_SESSION") (locate-library "reka"))
-  :demand t
-  :hook (reka-mode . susan/setup-reka-buffer)
-  :bind (("s-<return>" . susan/new-ghostel)
-         ("s-S-<return>" . consult-buffer)
-         ("s-y" . windmove-left)
-         ("s-h" . windmove-down)
-         ("s-a" . windmove-up)
-         ("s-e" . windmove-right)
-         ("s-S-y" . susan/other-frame-backward)
-         ("s-S-e" . other-frame)
-         ("s-S-a" . susan/window-swap-up)
-         ("s-S-h" . susan/window-swap-down)
-         ("C-s-y" . susan/move-buffer-to-previous-frame)
-         ("C-s-e" . susan/move-buffer-to-next-frame)
-         ("C-s-a" . susan/window-swap-up)
-         ("C-s-h" . susan/window-swap-down)
-         ("s-S-c" . kill-current-buffer)
-         ("<print>" . susan/screenshot-region-to-clipboard)
-         ("C-<print>" . susan/screenshot-full-to-clipboard)
-         ("S-<print>" . susan/screenshot-full-to-file)
-         ("s-S-<print>" . susan/screenshot-region-to-file))
-  :init
-  (setq reka-intercept-prefixes
-        '("s-<return>" "s-S-<return>"
-          "s-y" "s-h" "s-a" "s-e"
-          "s-S-y" "s-S-h" "s-S-a" "s-S-e" "s-S-c"
-          "C-s-y" "C-s-h" "C-s-a" "C-s-e"
-          "<print>" "C-<print>" "S-<print>" "s-S-<print>"))
-  :config
-  (advice-add 'reka--key-to-xkb :override #'susan/reka-key-to-xkb)
-  (advice-add 'reka--create-buffer :filter-return
-              #'susan/reka-select-created-window)
-  (advice-add 'reka--update-focus-request :override
-              #'susan/reka-update-focus-request)
-
-  ;; Reloading the config re-enables Meow globally before reaching Reka.
-  ;; Re-apply the external-buffer opt-out to wrappers which already exist.
-  (dolist (buffer (buffer-list))
-    (with-current-buffer buffer
-      (when (derived-mode-p 'reka-mode)
-        (susan/setup-reka-buffer))))
-
-  ;; `early-default.el' starts Reka before pwayl creates its first frame.
-  ;; It deliberately leaves compositor bindings empty until this config has
-  ;; installed the complete key conversion and intercept list.
-  (when (bound-and-true-p susan/reka-early-bootstrap)
-    (setq susan/reka-early-bootstrap nil)
-    (reka-push-intercept-prefixes))
-
-  (defvar consult-source-xdg-apps
-    `(:name "Apps"
-      :narrow ?a
-      :category app
-      :items ,(lambda ()
-                (sort (susan/xdg-apps) #'string-lessp))
-      :action ,#'susan/launch-xdg-app))
-
-  (setq consult-buffer-sources
-        (append (delq 'consult-source-xdg-apps consult-buffer-sources)
-                '(consult-source-xdg-apps)))
-
-  (unless reka-handle
-    (reka-enable)))

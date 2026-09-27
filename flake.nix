@@ -38,16 +38,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    reka = {
-      url = "git+https://codeberg.org/tazjin/reka";
-      flake = false;
-    };
-
-    emacs-pwayland = {
-      url = "git+https://codeberg.org/ezemtsov/emacs.git?ref=refs/heads/wayland&shallow=1";
-      flake = false;
-    };
-
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
     };

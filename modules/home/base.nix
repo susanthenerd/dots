@@ -41,13 +41,13 @@
             brightnessctl
             playerctl
             cloudflared
-            beekeeper-studio
             easyeffects
             btop
             nautilus
 
             pavucontrol
             libreoffice
+            jetbrains.idea
             signal-desktop
             slack
             super-productivity
@@ -57,6 +57,7 @@
             opencode
             claude-code
             codex
+            omp
           ]);
 
         stateVersion = "26.11";
@@ -67,6 +68,7 @@
 
       programs = {
         home-manager.enable = true;
+        thunderbird.enable = true;
         obs-studio.enable = true;
         google-chrome.enable = true;
         firefox = {
@@ -79,6 +81,17 @@
         };
         ripgrep.enable = true;
 
+      };
+
+      services.davmail = {
+        enable = true;
+        settings = {
+          "davmail.mode" = "O365Graph";
+          "davmail.authentication" = "O365DeviceCode";
+          "davmail.enableOidc" = true;
+          "davmail.allowRemote" = false;
+          "davmail.bindAddress" = "127.0.0.1";
+        };
       };
 
       gtk = {
