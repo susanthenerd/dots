@@ -170,7 +170,10 @@
       services = {
         udev.packages = [ pkgs.yubikey-personalization ];
         pcscd.enable = true;
-        openssh.enable = true;
+        openssh = {
+          enable = true;
+          settings.PasswordAuthentication = true;
+        };
 
         pipewire = {
           enable = true;
